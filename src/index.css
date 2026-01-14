@@ -5,22 +5,15 @@ html, body {
 }
 
 :root{
-  --brand-orange: #E99713;
-
-  /* construction neutrals */
-  --ink: #0B0F14;        /* near-black */
-  --charcoal: #121821;
-  --slate: #1A2430;
-  --steel: #2B3643;
-
-  /* ✅ NEW: lighter sand (eggshell-ish) */
-  --sand: #E6E1D3;       /* lighter than your current */
-  --sand-2: #D8D2C2;     /* slightly deeper banding */
-
-  /* paper */
-  --paper: #FFFFFF;
-  --paper-2: #F6F6F6;
+  --ink: #0B0F14;             /* near-black */
+  --sand: #0F141A;            /* dark asphalt */
+  --sand-2: #141B23;          /* slightly lighter asphalt */
+  --brand-orange: #F08A00;    /* safety orange */
+  --steel: rgba(255,255,255,0.10);
+  --muted: rgba(255,255,255,0.70);
+  --muted2: rgba(255,255,255,0.52);
 }
+
 
 
 /* Nice selection */
@@ -30,6 +23,7 @@ html, body {
 
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
+  color: rgba(255,255,255,0.88); background: var(--sand);
 }
 
 .noise {

@@ -41,6 +41,9 @@ function MobileMenu() {
   // how much of the sheet peeks when "closed" (top peek only)
   const PEEK = 28;
 
+  // ✅ Hide only when the footer is in view (near bottom)
+  const [hideNearBottom, setHideNearBottom] = useState(false);
+
   useEffect(() => {
     if (!sheetRef.current) return;
 
@@ -52,6 +55,33 @@ function MobileMenu() {
     setSheetH(el.getBoundingClientRect().height);
 
     return () => ro.disconnect();
+  }, []);
+
+  // ✅ Observe the footer entering the viewport to hide the menu only near bottom
+  useEffect(() => {
+    const footerEl = document.querySelector("#site-footer");
+    if (!footerEl) return;
+
+    const obs = new IntersectionObserver(
+      ([entry]) => {
+        const isNearBottom = entry.isIntersecting;
+        setHideNearBottom(isNearBottom);
+
+        // optional: auto-close if footer is coming in so nothing overlaps
+        if (isNearBottom) setOpen(false);
+      },
+      {
+        root: null,
+        threshold: 0.01,
+        // tune this:
+        // - smaller negative (ex: -10%) => hides later (closer to bottom)
+        // - larger negative (ex: -50%) => hides earlier
+        rootMargin: "0px 0px -35% 0px",
+      }
+    );
+
+    obs.observe(footerEl);
+    return () => obs.disconnect();
   }, []);
 
   // lock scroll when open
@@ -85,6 +115,15 @@ function MobileMenu() {
   // closed position: slide up so only the TOP "peek" area shows
   const closedY = Math.min(0, -(sheetH - PEEK));
 
+  // fully hidden position (push the whole sheet up beyond the top)
+  const hiddenY = Math.min(0, -(sheetH + 24));
+
+  // if we're near the footer, hide completely; otherwise use the peek
+  const effectiveY = open ? 0 : hideNearBottom ? hiddenY : closedY;
+
+  // if hidden, disable drag (so you don't accidentally pull it down over footer)
+  const canDrag = !(hideNearBottom && !open);
+
   return (
     <div className="md:hidden">
       {/* Backdrop */}
@@ -103,12 +142,12 @@ function MobileMenu() {
       <motion.div
         className="fixed left-0 right-0 top-0 z-[70]"
         initial={false}
-        animate={{ y: open ? 0 : closedY }}
+        animate={{ y: effectiveY }}
         transition={{ type: "spring", stiffness: 380, damping: 38 }}
-        drag="y"
+        drag={canDrag ? "y" : false}
         dragDirectionLock
         dragElastic={0.06}
-        dragConstraints={{ top: closedY, bottom: 0 }}
+        dragConstraints={{ top: hideNearBottom ? hiddenY : closedY, bottom: 0 }}
         onDragEnd={(_, info) => {
           const draggedDownFar = info.point.y > window.innerHeight * 0.18;
           const fastDown = info.velocity.y > 600;
@@ -117,7 +156,7 @@ function MobileMenu() {
           if (fastDown || draggedDownFar) setOpen(true);
           else if (fastUp) setOpen(false);
           else {
-            const midpoint = closedY / 2;
+            const midpoint = (hideNearBottom ? hiddenY : closedY) / 2;
             setOpen(info.offset.y > midpoint);
           }
         }}
@@ -543,6 +582,278 @@ function StatRow() {
   );
 }
 
+function Footer() {
+  const year = new Date().getFullYear();
+
+    const [pop, setPop] = useState(null); // "phone" | "email" | null
+
+  const phoneValue = "(305) 331-5759";
+  const emailValue = "aimconstructionmgt@gmail.com";
+
+  useEffect(() => {
+    const onKey = (e) => e.key === "Escape" && setPop(null);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, []);
+
+  useEffect(() => {
+    const html = document.documentElement;
+    const body = document.body;
+
+    if (pop) {
+      html.classList.add("overflow-hidden");
+      body.classList.add("overflow-hidden");
+    } else {
+      html.classList.remove("overflow-hidden");
+      body.classList.remove("overflow-hidden");
+    }
+  }, [pop]);
+
+  const copy = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+    } catch {
+      // fallback
+      const ta = document.createElement("textarea");
+      ta.value = text;
+      document.body.appendChild(ta);
+      ta.select();
+      document.execCommand("copy");
+      ta.remove();
+    }
+  };
+
+
+  const scrollToTop = () => {
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  };
+
+
+  const footerLink =
+  "relative inline-flex w-fit font-semibold text-black/70 hover:text-black transition " +
+  "after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:origin-left after:scale-x-0 " +
+  "after:bg-black/50 after:transition-transform after:duration-300 after:ease-out " +
+  "hover:after:scale-x-100";
+
+  return (
+    <footer id="site-footer" className="relative bg-[var(--brand-orange)] text-black -mt-[22vh] pt-[26vh] min-h-[92vh] md:min-h-[88vh] pb-[18vh]">
+
+      {/* soft top fade so page blends into footer */}
+      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 [background:linear-gradient(to_bottom,rgba(0,0,0,0.32),rgba(0,0,0,0))]" />
+
+      {/* subtle depth in orange */}
+      <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background:radial-gradient(900px_420px_at_20%_10%,rgba(0,0,0,0.22),transparent_60%),radial-gradient(900px_420px_at_80%_30%,rgba(255,255,255,0.14),transparent_60%)]" />
+
+      {/* BIG watermark text (bottom-leak only, full width visible) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      <div
+          className="
+          absolute
+          right-[max(2vw,16px)]
+          bottom-[max(env(safe-area-inset-bottom),0px)]
+          translate-y-[0.22em]
+          text-[clamp(240px,30vw,820px)]
+          font-extrabold tracking-tight opacity-[0.10]
+          select-none leading-none whitespace-nowrap
+          "
+      >
+          AIM
+      </div>
+      </div>
+
+      <Container>
+        <div className="relative grid gap-12 md:grid-cols-12 text-black/85">
+          {/* Left */}
+          <div className="md:col-span-5">
+            <img
+              src="/img/logo.png"
+              alt="Aim Construction"
+              className="h-12 w-auto"
+              style={{
+                filter: "brightness(0) saturate(100%)",
+                WebkitFilter: "brightness(0) saturate(100%)",
+              }}
+            />
+
+            <p className="mt-6 max-w-[46ch] text-[16px] md:text-[17px] text-black/75 font-semibold leading-relaxed">
+              Safety-first operations and dependable delivery for underground utility, directional boring, and
+              restoration work.
+            </p>
+
+            <div className="mt-8 h-1 w-28 rounded-full bg-black/25" />
+          </div>
+
+          {/* Right */}
+          <div className="md:col-span-7 md:col-start-6">
+            {/* 3 columns on desktop: | Navigate | Connect + Top button | */}
+            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start">
+              {/* Navigate column (with left divider + mid divider) */}
+              <div className="relative pl-6">
+                {/* left divider (to the left of Navigate) */}
+                <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-px bg-black/15" />
+
+                <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
+                  Navigate
+                </div>
+
+                <div className="mt-5 grid gap-3 font-semibold">
+                  <a className={footerLink} href="/services.html">Services</a>
+                  <a className={footerLink} href="/about.html">Company</a>
+                  <a className={footerLink} href="/projects.html">Projects</a>
+                  <a className={footerLink} href="/contact.html">Work with us</a>
+                </div>
+
+                {/* divider between Navigate and Connect (sits on Navigate's right edge) */}
+                <div className="hidden sm:block absolute -right-5 top-0 bottom-0 w-px bg-black/15" />
+              </div>
+
+              {/* Connect column */}
+              <div className="relative pl-6">
+                <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
+                  Connect
+                </div>
+
+                <div className="mt-5 grid gap-3 font-semibold">
+                  <button type="button" onClick={() => setPop("phone")} className={footerLink}>
+                    Phone
+                  </button>
+
+                  <button type="button" onClick={() => setPop("email")} className={footerLink}>
+                    Email
+                  </button>
+                </div>
+              </div>
+
+              {/* Back to top button (to the right of Connect links) */}
+              <div className="sm:justify-self-end md:pt-[28px]">
+                <button
+                  type="button"
+                  onClick={scrollToTop}
+                  className="inline-flex items-center gap-2 text-black/70 hover:text-black transition font-semibold"
+                  aria-label="Back to top"
+                >
+                  <span className="h-10 w-10 rounded-full border border-black/20 bg-black/5 backdrop-blur grid place-items-center">
+                    ↑
+                  </span>
+                  <span className="uppercase tracking-[0.22em] text-xs font-extrabold">
+                    Top
+                  </span>
+                </button>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        {/* bottom row — pinned to the bottom edge */}
+        <div className="absolute inset-x-0 bottom-0 pb-[max(env(safe-area-inset-bottom),2.5vh)]">
+            <div className="border-t border-black/15 pt-8 text-sm font-semibold text-black/65">
+                <Container>
+                <div className="flex flex-wrap items-center justify-between gap-4">
+                    <div>© {year} AIM Construction Management. All rights reserved.</div>
+                    <div className="flex items-center gap-6">
+                    <a className="hover:underline underline-offset-4" href="/privacy.html">
+                        Privacy
+                    </a>
+                    <a className="hover:underline underline-offset-4" href="/terms.html">
+                        Terms
+                    </a>
+                    </div>
+                </div>
+                </Container>
+            </div>
+        </div>
+
+
+      </Container>
+
+      {/* Popup modal */}
+      {pop && (
+        <div className="fixed inset-0 z-[999]">
+          {/* backdrop */}
+          <button
+            type="button"
+            className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
+            onClick={() => setPop(null)}
+            aria-label="Close popup"
+          />
+
+          {/* modal */}
+          <div className="absolute inset-0 grid place-items-center p-5">
+            <div className="w-full max-w-[520px] overflow-hidden rounded-[22px] border border-white/12 bg-black/80 text-white shadow-[0_40px_120px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
+              {/* glow */}
+              <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(900px_380px_at_20%_0%,rgba(255,255,255,0.10),transparent_60%)]" />
+
+              <div className="relative p-6">
+                <div className="flex items-start justify-between gap-4">
+                  <div>
+                    <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/60">
+                      {pop === "phone" ? "Phone" : "Email"}
+                    </div>
+                    <div className="mt-3 text-2xl font-extrabold text-white leading-tight break-words">
+                      {pop === "phone" ? phoneValue : emailValue}
+                    </div>
+                  </div>
+
+                  <button
+                    type="button"
+                    onClick={() => setPop(null)}
+                    className="shrink-0 h-10 w-10 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition grid place-items-center text-white/80"
+                    aria-label="Close"
+                  >
+                    ✕
+                  </button>
+                </div>
+
+                <div className="mt-6 grid gap-3 sm:grid-cols-2">
+                  {pop === "phone" ? (
+                    <>
+                      <a
+                        href={`tel:${phoneValue.replace(/[^\d+]/g, "")}`}
+                        className="rounded-full bg-[var(--brand-orange)] px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition text-center"
+                      >
+                        Call now
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => copy(phoneValue)}
+                        className="rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white/90 hover:bg-white/10 transition"
+                      >
+                        Copy
+                      </button>
+                    </>
+                  ) : (
+                    <>
+                      <a
+                        href={`mailto:${emailValue}`}
+                        className="rounded-full bg-[var(--brand-orange)] px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition text-center"
+                      >
+                        Compose email
+                      </a>
+                      <button
+                        type="button"
+                        onClick={() => copy(emailValue)}
+                        className="rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white/90 hover:bg-white/10 transition"
+                      >
+                        Copy
+                      </button>
+                    </>
+                  )}
+                </div>
+
+                <div className="mt-5 text-sm font-semibold text-white/60">
+                  Press <span className="text-white/80">Esc</span> to close.
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      )}
+
+    </footer>
+  );
+}
+
 function HomeContent() {
   return (
     <main className="relative bg-[var(--sand)] text-[var(--ink)]">
@@ -804,53 +1115,7 @@ function HomeContent() {
           </div>
         </div>
 
-        {/* ✅ FOOTER (force true black background) */}
-        <div className="relative -mt-[140px] pt-[140px] pb-14 bg-black">
-          {/* subtle separator fade where shell lifts off */}
-          <div className="pointer-events-none absolute inset-x-0 top-[140px] h-14 [background:linear-gradient(to_bottom,rgba(0,0,0,0.55),rgba(0,0,0,0))]" />
-
-          <footer className="pt-10 bg-black">
-            <Container>
-              <div className="grid gap-10 md:grid-cols-12 text-white/85">
-                <div className="md:col-span-6">
-                  <img src="/img/logo.png" alt="Aim Construction" className="h-12 w-auto opacity-95" />
-                  <p className="mt-4 max-w-[52ch] text-white/70 font-semibold">
-                    Safety-first operations and dependable delivery for underground utility,
-                    directional boring, and restoration work.
-                  </p>
-                  <div className="mt-6 h-1 w-24 rounded-full bg-[var(--brand-orange)]" />
-                </div>
-
-                <div className="md:col-span-3">
-                  <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/55">Navigate</div>
-                  <div className="mt-3 grid gap-2 font-semibold">
-                    <a className="hover:text-[var(--brand-orange)]" href="/about.html">Who We Are</a>
-                    <a className="hover:text-[var(--brand-orange)]" href="/services.html">Services</a>
-                    <a className="hover:text-[var(--brand-orange)]" href="/projects.html">Projects</a>
-                    <a className="hover:text-[var(--brand-orange)]" href="/contact.html">Contact</a>
-                  </div>
-                </div>
-
-                <div className="md:col-span-3">
-                  <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/55">Connect</div>
-                  <div className="mt-3 grid gap-2 font-semibold">
-                    <a className="hover:text-[var(--brand-orange)]" href="tel:3053315759">(305) 331-5759</a>
-                    <a className="hover:text-[var(--brand-orange)]" href="mailto:aimconstructionmgt@gmail.com">Email</a>
-                    <a className="hover:text-[var(--brand-orange)]" href="/contact.html">Request a Quote</a>
-                  </div>
-                </div>
-              </div>
-
-              <div className="mt-10 flex flex-wrap items-center justify-between gap-3 border-t border-white/12 pt-6 text-white/55 font-semibold">
-                <div>© {new Date().getFullYear()} Aim Construction Management</div>
-                <div className="flex gap-4">
-                  <a className="hover:text-[var(--brand-orange)]" href="/privacy.html">Privacy</a>
-                  <a className="hover:text-[var(--brand-orange)]" href="/contact.html">Contact</a>
-                </div>
-              </div>
-            </Container>
-          </footer>
-        </div>
+        <Footer />
 
       </div>
     </main>
