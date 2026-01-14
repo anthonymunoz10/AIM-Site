@@ -1,20 +1,33 @@
 @import "tailwindcss";
 
-/* Prevent iOS “white bar” flashes + keep it premium */
 html, body {
-  background: #000;
+  background: var(--sand);
 }
 
-:root {
-  --brand-orange: #e99713;
+:root{
+  --brand-orange: #E99713;
+
+  /* construction neutrals */
+  --ink: #0B0F14;        /* near-black */
+  --charcoal: #121821;
+  --slate: #1A2430;
+  --steel: #2B3643;
+
+  /* ✅ NEW: lighter sand (eggshell-ish) */
+  --sand: #E6E1D3;       /* lighter than your current */
+  --sand-2: #D8D2C2;     /* slightly deeper banding */
+
+  /* paper */
+  --paper: #FFFFFF;
+  --paper-2: #F6F6F6;
 }
+
 
 /* Nice selection */
 ::selection {
   background: rgba(233, 151, 19, 0.35);
 }
 
-/* Smooth fonts */
 body {
   font-family: ui-sans-serif, system-ui, -apple-system, Segoe UI, Roboto, Arial, "Apple Color Emoji","Segoe UI Emoji";
 }
@@ -24,10 +37,5 @@ body {
   background-size: 260px 260px;
 }
 
-/* iOS momentum scroll in menu content if needed */
-.ios-scroll {
-  -webkit-overflow-scrolling: touch;
-}
-
-/* prevent weird tap highlight */
+.ios-scroll { -webkit-overflow-scrolling: touch; }
 button, a { -webkit-tap-highlight-color: transparent; }
