@@ -55,7 +55,7 @@ function FadeIn({ children, className = "", delay = 0 }) {
 
 function PageShell({ children }) {
   return (
-    <main className="relative bg-[var(--sand)] text-[var(--ink)]">
+    <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)]">
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[var(--sand)]" />
 
       <div className="pointer-events-none fixed inset-0 -z-20">
@@ -70,7 +70,7 @@ function PageShell({ children }) {
       </div>
 
       <div className="relative">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[900px] -z-10">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[900px] -z-10 hidden md:block">
           <div className="absolute inset-0 bg-black" />
           <div className="absolute inset-0 opacity-[0.55] [background:radial-gradient(1100px_520px_at_20%_20%,rgba(255,255,255,0.08),transparent_60%),radial-gradient(900px_420px_at_80%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
           <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_20%_30%,rgba(233,151,19,0.22),transparent_62%)]" />
