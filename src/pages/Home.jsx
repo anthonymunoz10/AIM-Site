@@ -1,11 +1,8 @@
-import React, { useEffect, useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
+import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
 
-const Container = ({ children }) => (
-  <div className="mx-auto w-[92%] max-w-[1200px]">{children}</div>
-);
-
-/** Floating rounded section wrapper (what you asked for) */
+/** Floating rounded section wrapper */
 function FloatSection({ children, tone = "light" }) {
   const shell =
     "rounded-[26px] border overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.18)]";
@@ -15,7 +12,6 @@ function FloatSection({ children, tone = "light" }) {
       ? "bg-[var(--ink)] text-white border-white/12"
       : "bg-white text-[var(--ink)] border-black/10";
 
-  // ✅ IMPORTANT: different overlay per tone (no more white-washing dark sections)
   const innerOverlay =
     tone === "dark"
       ? "bg-[linear-gradient(180deg,rgba(255,255,255,0.06),rgba(255,255,255,0.00))]"
@@ -32,267 +28,7 @@ function FloatSection({ children, tone = "light" }) {
   );
 }
 
-
-function MobileMenu() {
-  const [open, setOpen] = useState(false);
-  const sheetRef = useRef(null);
-  const [sheetH, setSheetH] = useState(0);
-
-  // how much of the sheet peeks when "closed" (top peek only)
-  const PEEK = 28;
-
-  // ✅ Hide only when the footer is in view (near bottom)
-  const [hideNearBottom, setHideNearBottom] = useState(false);
-
-  useEffect(() => {
-    if (!sheetRef.current) return;
-
-    const el = sheetRef.current;
-    const ro = new ResizeObserver(() => {
-      setSheetH(el.getBoundingClientRect().height);
-    });
-    ro.observe(el);
-    setSheetH(el.getBoundingClientRect().height);
-
-    return () => ro.disconnect();
-  }, []);
-
-  // ✅ Observe the footer entering the viewport to hide the menu only near bottom
-  useEffect(() => {
-    const footerEl = document.querySelector("#site-footer");
-    if (!footerEl) return;
-
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        const isNearBottom = entry.isIntersecting;
-        setHideNearBottom(isNearBottom);
-
-        // optional: auto-close if footer is coming in so nothing overlaps
-        if (isNearBottom) setOpen(false);
-      },
-      {
-        root: null,
-        threshold: 0.01,
-        // tune this:
-        // - smaller negative (ex: -10%) => hides later (closer to bottom)
-        // - larger negative (ex: -50%) => hides earlier
-        rootMargin: "0px 0px -35% 0px",
-      }
-    );
-
-    obs.observe(footerEl);
-    return () => obs.disconnect();
-  }, []);
-
-  // lock scroll when open
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-
-    if (open) {
-      html.classList.add("overflow-hidden");
-      body.classList.add("overflow-hidden");
-    } else {
-      html.classList.remove("overflow-hidden");
-      body.classList.remove("overflow-hidden");
-    }
-
-    const onKey = (e) => {
-      if (e.key === "Escape") setOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [open]);
-
-  const links = [
-    { href: "/", label: "Home" },
-    { href: "/about.html", label: "Who We Are" },
-    { href: "/services.html", label: "Services" },
-    { href: "/projects.html", label: "Projects" },
-    { href: "/contact.html", label: "Contact" },
-  ];
-
-  // closed position: slide up so only the TOP "peek" area shows
-  const closedY = Math.min(0, -(sheetH - PEEK));
-
-  // fully hidden position (push the whole sheet up beyond the top)
-  const hiddenY = Math.min(0, -(sheetH + 24));
-
-  // if we're near the footer, hide completely; otherwise use the peek
-  const effectiveY = open ? 0 : hideNearBottom ? hiddenY : closedY;
-
-  // if hidden, disable drag (so you don't accidentally pull it down over footer)
-  const canDrag = !(hideNearBottom && !open);
-
-  return (
-    <div className="md:hidden">
-      {/* Backdrop */}
-      <div
-        className={[
-          "fixed inset-0 z-[60] transition-opacity duration-300",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
-        ].join(" ")}
-        onClick={() => setOpen(false)}
-        aria-hidden={!open}
-      >
-        <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" />
-      </div>
-
-      {/* Sheet */}
-      <motion.div
-        className="fixed left-0 right-0 top-0 z-[70]"
-        initial={false}
-        animate={{ y: effectiveY }}
-        transition={{ type: "spring", stiffness: 380, damping: 38 }}
-        drag={canDrag ? "y" : false}
-        dragDirectionLock
-        dragElastic={0.06}
-        dragConstraints={{ top: hideNearBottom ? hiddenY : closedY, bottom: 0 }}
-        onDragEnd={(_, info) => {
-          const draggedDownFar = info.point.y > window.innerHeight * 0.18;
-          const fastDown = info.velocity.y > 600;
-          const fastUp = info.velocity.y < -600;
-
-          if (fastDown || draggedDownFar) setOpen(true);
-          else if (fastUp) setOpen(false);
-          else {
-            const midpoint = (hideNearBottom ? hiddenY : closedY) / 2;
-            setOpen(info.offset.y > midpoint);
-          }
-        }}
-        style={{
-          paddingTop: "max(env(safe-area-inset-top),14px)",
-        }}
-      >
-        <div className="mx-auto w-[92%] max-w-[1200px]">
-          <div
-            ref={sheetRef}
-            className="relative overflow-hidden rounded-[26px] border border-white/12 bg-black/70 backdrop-blur-2xl shadow-[0_40px_120px_rgba(0,0,0,0.65)]"
-          >
-            {/* subtle highlight */}
-            <div className="pointer-events-none absolute inset-0 [background:radial-gradient(900px_360px_at_20%_0%,rgba(255,255,255,0.10),transparent_60%)]" />
-
-            {/* header (logo only) */}
-            <div className="relative flex items-center justify-between gap-4 px-6 py-5 border-b border-white/10">
-              <a
-                href="/"
-                onClick={() => setOpen(false)}
-                className="flex items-center"
-                aria-label="Home"
-              >
-                <img src="/img/logo.png" alt="Aim Construction" className="h-10 w-auto" />
-              </a>
-
-              <a
-                href="/contact.html"
-                onClick={() => setOpen(false)}
-                className="rounded-full bg-[var(--brand-orange)] px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition"
-              >
-                Quote
-              </a>
-            </div>
-
-            {/* links */}
-            <div className="relative px-6 py-2">
-              <nav className="grid">
-                {links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
-                    onClick={() => setOpen(false)}
-                    className="group flex items-center justify-between py-5 border-b border-white/10 last:border-b-0"
-                  >
-                    <span className="text-white/90 font-extrabold uppercase tracking-[0.14em] text-base">
-                      {l.label}
-                    </span>
-                    <span className="text-white/35 group-hover:text-[var(--brand-orange)] transition">
-                      →
-                    </span>
-                  </a>
-                ))}
-              </nav>
-            </div>
-
-            {/* BOTTOM NOTCH / HANDLE (tap toggles, also a drag affordance) */}
-            <button
-              type="button"
-              onClick={() => setOpen((v) => !v)}
-              className="relative w-full flex items-center justify-center gap-2 py-4 border-t border-white/10"
-              aria-label="Toggle menu"
-              aria-expanded={open}
-            >
-              <span className="h-1.5 w-12 rounded-full bg-white/22" />
-              <span className="h-1.5 w-8 rounded-full bg-white/14" />
-            </button>
-          </div>
-
-          <div className="h-[max(env(safe-area-inset-bottom),14px)]" />
-        </div>
-      </motion.div>
-    </div>
-  );
-}
-
-
-
-
-function Nav() {
-  const [scrolled, setScrolled] = useState(false);
-
-  useEffect(() => {
-    const onScroll = () => setScrolled(window.scrollY > 30);
-    onScroll();
-    window.addEventListener("scroll", onScroll, { passive: true });
-    return () => window.removeEventListener("scroll", onScroll);
-  }, []);
-
-  return (
-    // ✅ Desktop-only nav (completely hidden on mobile)
-    <div className="hidden md:block fixed inset-x-0 top-0 z-50">
-      <Container>
-        <div className="pt-5">
-          <div
-            className={[
-              "rounded-2xl border transition-all duration-300",
-              "shadow-[0_20px_80px_rgba(0,0,0,0.45)]",
-              scrolled
-                ? "border-white/10 bg-black/60 backdrop-blur-xl"
-                : "border-white/10 bg-black/25 backdrop-blur-md",
-            ].join(" ")}
-          >
-            <div className="flex items-center justify-between px-6 py-4">
-              <a href="/" className="flex items-center gap-3">
-                <img src="/img/logo.png" alt="Aim Construction" className="h-11 w-auto" />
-
-              </a>
-
-              <div className="flex items-center gap-8 text-xs uppercase tracking-[0.18em] font-semibold text-white/85">
-                <a className="hover:text-[var(--brand-orange)]" href="/about.html">Who We Are</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/services.html">Services</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/projects.html">Projects</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/contact.html">Contact</a>
-              </div>
-
-              <a
-                href="/contact.html"
-                className="rounded-full bg-[var(--brand-orange)] px-5 py-2.5 font-bold uppercase tracking-wider text-xs text-white hover:opacity-90 transition"
-              >
-                Request a Quote
-              </a>
-            </div>
-          </div>
-        </div>
-      </Container>
-    </div>
-  );
-}
-
-function RevealLines({
-  lines = [],
-  as: Tag = "h2",
-  className = "",
-  delay = 0,
-}) {
+function RevealLines({ lines = [], as: Tag = "h2", className = "", delay = 0 }) {
   const ref = useRef(null);
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
 
@@ -318,8 +54,6 @@ function RevealLines({
   );
 }
 
-
-
 function Hero() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -331,8 +65,10 @@ function Hero() {
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.35]);
 
   return (
-    <header ref={heroRef} className="relative min-h-[100svh] bg-[var(--black)] overflow-hidden">
-
+    <header
+      ref={heroRef}
+      className="relative min-h-[100svh] bg-[var(--black)] overflow-hidden"
+    >
       {/* Background video layer */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
         <video
@@ -363,34 +99,30 @@ function Hero() {
         {/* Grain */}
         <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
       </motion.div>
+
       <Nav />
 
-      
-      
-      {/* ✅ Mobile top-centered logo (clean, always visible) */}
-        <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
-          <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-            <img
-              src="/img/logo.png"
-              alt="Aim Construction"
-              className="h-16 w-auto opacity-90"
-            />
-          </a>
-        </div>
-
-        {/* ✅ Mobile pull-down menu (only on mobile) */}
-        <div className="md:hidden">
-          <MobileMenu />
+      {/* ✅ Mobile top-centered logo */}
+      <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
+        <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
+          <img
+            src="/img/logo.png"
+            alt="Aim Construction"
+            className="h-16 w-auto opacity-90"
+          />
+        </a>
       </div>
 
+      {/* ✅ Mobile pull-down menu (SiteChrome Option A: hide only at bottom) */}
+      <div className="md:hidden">
+        <MobileMenu />
+      </div>
 
       <div className="relative z-10 min-h-[100svh]">
         <Container>
-          {/* MOBILE: logo -> headline -> pill, then bottom text+CTAs near scroll */}
+          {/* MOBILE */}
           <div className="md:hidden flex min-h-[100svh] flex-col pt-44 pb-24 text-center">
-            {/* top stack */}
             <div className="flex flex-col items-center">
-
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -401,10 +133,8 @@ function Hero() {
               </motion.div>
             </div>
 
-            {/* pushes the bottom content down */}
             <div className="flex-1" />
 
-            {/* bottom stack */}
             <div>
               <motion.p
                 initial={{ opacity: 0, y: 18 }}
@@ -438,7 +168,7 @@ function Hero() {
             </div>
           </div>
 
-          {/* DESKTOP: keep your original desktop spacing/left align */}
+          {/* DESKTOP */}
           <div className="hidden md:block pt-40">
             <div className="max-w-[720px] text-left">
               <motion.div
@@ -456,8 +186,7 @@ function Hero() {
                 transition={{ duration: 0.7, delay: 0.05 }}
                 className="mt-5 text-[clamp(2.6rem,5.2vw,4.5rem)] leading-[0.95] font-extrabold tracking-tight text-white"
               >
-                Plan. Build.{" "}
-                <span className="text-[var(--brand-orange)]">Deliver.</span>
+                Plan. Build. <span className="text-[var(--brand-orange)]">Deliver.</span>
               </motion.h1>
 
               <motion.p
@@ -494,7 +223,6 @@ function Hero() {
         </Container>
       </div>
 
-
       {/* Scroll */}
       <div className="absolute bottom-7 left-0 right-0 z-10">
         <Container>
@@ -514,7 +242,6 @@ function Hero() {
           </button>
         </Container>
       </div>
-
     </header>
   );
 }
@@ -522,7 +249,11 @@ function Hero() {
 function QuickActions() {
   const items = [
     { left: "Call", right: "(305) 331-5759", href: "tel:3053315759" },
-    { left: "Email", right: "aimconstructionmgt@gmail.com", href: "mailto:aimconstructionmgt@gmail.com?subject=Website%20Inquiry" },
+    {
+      left: "Email",
+      right: "aimconstructionmgt@gmail.com",
+      href: "mailto:aimconstructionmgt@gmail.com?subject=Website%20Inquiry",
+    },
     { left: "Quote", right: "Request a Quote →", href: "/contact.html" },
   ];
 
@@ -552,8 +283,6 @@ function QuickActions() {
   );
 }
 
-
-
 function StatRow() {
   const stats = useMemo(
     () => [
@@ -567,7 +296,7 @@ function StatRow() {
 
   return (
     <FloatSection tone="dark">
-      <div id="next" className="grid gap-4 md:grid-cols-4">
+      <div id="stats" className="grid gap-4 md:grid-cols-4">
         {stats.map((s) => (
           <div
             key={s.bottom}
@@ -582,316 +311,30 @@ function StatRow() {
   );
 }
 
-function Footer() {
-  const year = new Date().getFullYear();
-
-    const [pop, setPop] = useState(null); // "phone" | "email" | null
-
-  const phoneValue = "(305) 331-5759";
-  const emailValue = "aimconstructionmgt@gmail.com";
-
-  useEffect(() => {
-    const onKey = (e) => e.key === "Escape" && setPop(null);
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, []);
-
-  useEffect(() => {
-    const html = document.documentElement;
-    const body = document.body;
-
-    if (pop) {
-      html.classList.add("overflow-hidden");
-      body.classList.add("overflow-hidden");
-    } else {
-      html.classList.remove("overflow-hidden");
-      body.classList.remove("overflow-hidden");
-    }
-  }, [pop]);
-
-  const copy = async (text) => {
-    try {
-      await navigator.clipboard.writeText(text);
-    } catch {
-      // fallback
-      const ta = document.createElement("textarea");
-      ta.value = text;
-      document.body.appendChild(ta);
-      ta.select();
-      document.execCommand("copy");
-      ta.remove();
-    }
-  };
-
-
-  const scrollToTop = () => {
-    window.scrollTo({ top: 0, behavior: "smooth" });
-  };
-
-
-  const footerLink =
-  "relative inline-flex w-fit font-semibold text-black/70 hover:text-black transition " +
-  "after:absolute after:left-0 after:-bottom-[2px] after:h-[2px] after:w-full after:origin-left after:scale-x-0 " +
-  "after:bg-black/50 after:transition-transform after:duration-300 after:ease-out " +
-  "hover:after:scale-x-100";
-
-  return (
-    <footer id="site-footer" className="relative bg-[var(--brand-orange)] text-black -mt-[22vh] pt-[26vh] min-h-[92vh] md:min-h-[88vh] pb-[18vh]">
-
-      {/* soft top fade so page blends into footer */}
-      <div className="pointer-events-none absolute inset-x-0 top-0 h-40 [background:linear-gradient(to_bottom,rgba(0,0,0,0.32),rgba(0,0,0,0))]" />
-
-      {/* subtle depth in orange */}
-      <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background:radial-gradient(900px_420px_at_20%_10%,rgba(0,0,0,0.22),transparent_60%),radial-gradient(900px_420px_at_80%_30%,rgba(255,255,255,0.14),transparent_60%)]" />
-
-      {/* BIG watermark text (bottom-leak only, full width visible) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
-      <div
-          className="
-          absolute
-          right-[max(2vw,16px)]
-          bottom-[max(env(safe-area-inset-bottom),0px)]
-          translate-y-[0.22em]
-          text-[clamp(240px,30vw,820px)]
-          font-extrabold tracking-tight opacity-[0.10]
-          select-none leading-none whitespace-nowrap
-          "
-      >
-          AIM
-      </div>
-      </div>
-
-      <Container>
-        <div className="relative grid gap-12 md:grid-cols-12 text-black/85">
-          {/* Left */}
-          <div className="md:col-span-5">
-            <img
-              src="/img/logo.png"
-              alt="Aim Construction"
-              className="h-12 w-auto"
-              style={{
-                filter: "brightness(0) saturate(100%)",
-                WebkitFilter: "brightness(0) saturate(100%)",
-              }}
-            />
-
-            <p className="mt-6 max-w-[46ch] text-[16px] md:text-[17px] text-black/75 font-semibold leading-relaxed">
-              Safety-first operations and dependable delivery for underground utility, directional boring, and
-              restoration work.
-            </p>
-
-            <div className="mt-8 h-1 w-28 rounded-full bg-black/25" />
-          </div>
-
-          {/* Right */}
-          <div className="md:col-span-7 md:col-start-6">
-            {/* 3 columns on desktop: | Navigate | Connect + Top button | */}
-            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start">
-              {/* Navigate column (with left divider + mid divider) */}
-              <div className="relative pl-6">
-                {/* left divider (to the left of Navigate) */}
-                <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-px bg-black/15" />
-
-                <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
-                  Navigate
-                </div>
-
-                <div className="mt-5 grid gap-3 font-semibold">
-                  <a className={footerLink} href="/services.html">Services</a>
-                  <a className={footerLink} href="/about.html">Company</a>
-                  <a className={footerLink} href="/projects.html">Projects</a>
-                  <a className={footerLink} href="/contact.html">Work with us</a>
-                </div>
-
-                {/* divider between Navigate and Connect (sits on Navigate's right edge) */}
-                <div className="hidden sm:block absolute -right-5 top-0 bottom-0 w-px bg-black/15" />
-              </div>
-
-              {/* Connect column */}
-              <div className="relative pl-6">
-                <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
-                  Connect
-                </div>
-
-                <div className="mt-5 grid gap-3 font-semibold">
-                  <button type="button" onClick={() => setPop("phone")} className={footerLink}>
-                    Phone
-                  </button>
-
-                  <button type="button" onClick={() => setPop("email")} className={footerLink}>
-                    Email
-                  </button>
-                </div>
-              </div>
-
-              {/* Back to top button (to the right of Connect links) */}
-              <div className="sm:justify-self-end md:pt-[28px]">
-                <button
-                  type="button"
-                  onClick={scrollToTop}
-                  className="inline-flex items-center gap-2 text-black/70 hover:text-black transition font-semibold"
-                  aria-label="Back to top"
-                >
-                  <span className="h-10 w-10 rounded-full border border-black/20 bg-black/5 backdrop-blur grid place-items-center">
-                    ↑
-                  </span>
-                  <span className="uppercase tracking-[0.22em] text-xs font-extrabold">
-                    Top
-                  </span>
-                </button>
-              </div>
-            </div>
-          </div>
-
-        </div>
-
-        {/* bottom row — pinned to the bottom edge */}
-        <div className="absolute inset-x-0 bottom-0 pb-[max(env(safe-area-inset-bottom),2.5vh)]">
-            <div className="border-t border-black/15 pt-8 text-sm font-semibold text-black/65">
-                <Container>
-                <div className="flex flex-wrap items-center justify-between gap-4">
-                    <div>© {year} AIM Construction Management. All rights reserved.</div>
-                    <div className="flex items-center gap-6">
-                    <a className="hover:underline underline-offset-4" href="/privacy.html">
-                        Privacy
-                    </a>
-                    <a className="hover:underline underline-offset-4" href="/terms.html">
-                        Terms
-                    </a>
-                    </div>
-                </div>
-                </Container>
-            </div>
-        </div>
-
-
-      </Container>
-
-      {/* Popup modal */}
-      {pop && (
-        <div className="fixed inset-0 z-[999]">
-          {/* backdrop */}
-          <button
-            type="button"
-            className="absolute inset-0 bg-black/55 backdrop-blur-[2px]"
-            onClick={() => setPop(null)}
-            aria-label="Close popup"
-          />
-
-          {/* modal */}
-          <div className="absolute inset-0 grid place-items-center p-5">
-            <div className="w-full max-w-[520px] overflow-hidden rounded-[22px] border border-white/12 bg-black/80 text-white shadow-[0_40px_120px_rgba(0,0,0,0.65)] backdrop-blur-2xl">
-              {/* glow */}
-              <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(900px_380px_at_20%_0%,rgba(255,255,255,0.10),transparent_60%)]" />
-
-              <div className="relative p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
-                    <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/60">
-                      {pop === "phone" ? "Phone" : "Email"}
-                    </div>
-                    <div className="mt-3 text-2xl font-extrabold text-white leading-tight break-words">
-                      {pop === "phone" ? phoneValue : emailValue}
-                    </div>
-                  </div>
-
-                  <button
-                    type="button"
-                    onClick={() => setPop(null)}
-                    className="shrink-0 h-10 w-10 rounded-full border border-white/15 bg-white/5 hover:bg-white/10 transition grid place-items-center text-white/80"
-                    aria-label="Close"
-                  >
-                    ✕
-                  </button>
-                </div>
-
-                <div className="mt-6 grid gap-3 sm:grid-cols-2">
-                  {pop === "phone" ? (
-                    <>
-                      <a
-                        href={`tel:${phoneValue.replace(/[^\d+]/g, "")}`}
-                        className="rounded-full bg-[var(--brand-orange)] px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition text-center"
-                      >
-                        Call now
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => copy(phoneValue)}
-                        className="rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white/90 hover:bg-white/10 transition"
-                      >
-                        Copy
-                      </button>
-                    </>
-                  ) : (
-                    <>
-                      <a
-                        href={`mailto:${emailValue}`}
-                        className="rounded-full bg-[var(--brand-orange)] px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition text-center"
-                      >
-                        Compose email
-                      </a>
-                      <button
-                        type="button"
-                        onClick={() => copy(emailValue)}
-                        className="rounded-full border border-white/15 bg-white/5 px-5 py-3 text-sm font-extrabold uppercase tracking-wider text-white/90 hover:bg-white/10 transition"
-                      >
-                        Copy
-                      </button>
-                    </>
-                  )}
-                </div>
-
-                <div className="mt-5 text-sm font-semibold text-white/60">
-                  Press <span className="text-white/80">Esc</span> to close.
-                </div>
-              </div>
-            </div>
-          </div>
-        </div>
-      )}
-
-    </footer>
-  );
-}
-
 function HomeContent() {
   return (
     <main className="relative bg-[var(--sand)] text-[var(--ink)]">
-      {/* ✅ SAND / EGGSHELL BACKGROUND (global + obvious) */}
+      {/* sand background */}
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[var(--sand)]" />
 
-      {/* subtle sand depth + texture */}
       <div className="pointer-events-none fixed inset-0 -z-20">
-        {/* soft banding */}
         <div className="absolute inset-0 [background:linear-gradient(180deg,var(--sand)_0%,var(--sand-2)_70%,var(--sand)_100%)]" />
-        {/* light speckle */}
         <div className="absolute inset-0 opacity-[0.10] [background-image:radial-gradient(rgba(0,0,0,0.16)_1px,transparent_1px)] [background-size:22px_22px]" />
-        {/* grain */}
         <div className="absolute inset-0 noise opacity-[0.06] mix-blend-multiply" />
       </div>
 
       <div className="relative">
-        {/* ✅ FOOTER BLACK ZONE (this is the actual footer “area” background) */}
+        {/* footer black zone */}
         <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[900px] -z-10">
-          {/* true black base */}
           <div className="absolute inset-0 bg-black" />
-
-          {/* subtle steel sheen so black isn’t flat */}
           <div className="absolute inset-0 opacity-[0.55] [background:radial-gradient(1100px_520px_at_20%_20%,rgba(255,255,255,0.08),transparent_60%),radial-gradient(900px_420px_at_80%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
-
-          {/* orange industrial glow */}
           <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_20%_30%,rgba(233,151,19,0.26),transparent_62%)]" />
-
-          {/* hazard stripe band (visible but not obnoxious) */}
           <div className="absolute left-0 right-0 top-[150px] h-[88px] opacity-[0.18] [background:repeating-linear-gradient(135deg,rgba(233,151,19,1)_0px,rgba(233,151,19,1)_14px,rgba(0,0,0,1)_14px,rgba(0,0,0,1)_28px)]" />
-
-          {/* grain */}
           <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
         </div>
 
-        {/* ✅ PAGE SHELL (shadow clipped to curve — no sharp rectangle edge line) */}
+        {/* page shell */}
         <div className="relative z-10 overflow-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
-          {/* top soft highlight */}
           <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(1200px_700px_at_50%_-10%,rgba(255,255,255,0.40),transparent_60%)]" />
 
           <div className="relative">
@@ -899,7 +342,7 @@ function HomeContent() {
             <QuickActions />
             <StatRow />
 
-            {/* ✅ WHO WE ARE */}
+            {/* WHO WE ARE */}
             <FloatSection tone="light">
               <div className="grid gap-8 md:grid-cols-2 md:items-center">
                 <div>
@@ -958,7 +401,7 @@ function HomeContent() {
               </div>
             </FloatSection>
 
-            {/* ✅ SERVICES */}
+            {/* SERVICES */}
             <FloatSection tone="light">
               <div className="text-center">
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
@@ -1029,7 +472,7 @@ function HomeContent() {
               </div>
             </FloatSection>
 
-            {/* ✅ HOW WE WORK (fix visibility) */}
+            {/* HOW WE WORK */}
             <FloatSection tone="dark">
               <div className="text-center">
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
@@ -1050,10 +493,7 @@ function HomeContent() {
                   { n: "03", t: "Build + Restore", d: "Execute the scope, then restore concrete/asphalt to spec and expectations." },
                   { n: "04", t: "Closeout", d: "Clean finish, documented progress, and responsive communication." },
                 ].map((p) => (
-                  <div
-                    key={p.n}
-                    className="rounded-2xl border border-white/14 bg-white/8 p-6"
-                  >
+                  <div key={p.n} className="rounded-2xl border border-white/14 bg-white/8 p-6">
                     <div className="text-[var(--brand-orange)] font-extrabold text-xl">{p.n}</div>
                     <div className="mt-3 font-extrabold text-white text-lg">{p.t}</div>
                     <p className="mt-2 text-white/75 font-semibold">{p.d}</p>
@@ -1062,7 +502,7 @@ function HomeContent() {
               </div>
             </FloatSection>
 
-            {/* ✅ RECENT WORK */}
+            {/* RECENT WORK */}
             <FloatSection tone="light">
               <div className="text-center">
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
@@ -1116,13 +556,10 @@ function HomeContent() {
         </div>
 
         <Footer />
-
       </div>
     </main>
   );
 }
-
-
 
 export default function Home() {
   return <HomeContent />;
