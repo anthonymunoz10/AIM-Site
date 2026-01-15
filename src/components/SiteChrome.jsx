@@ -340,7 +340,7 @@ export function Footer() {
 
 
       <Container>
-        <div className="relative grid gap-12 md:grid-cols-12 text-black/85 text-center md:text-left">
+        <div className="relative grid gap-8 md:grid-cols-12 text-black/85 text-center md:text-left">
           {/* Left */}
           <div className="md:col-span-5 flex flex-col items-center md:items-start">
 
@@ -366,7 +366,7 @@ export function Footer() {
           {/* Right */}
           <div className="md:col-span-7 md:col-start-6">
             {/* 3 columns on desktop: | Navigate | Connect + Top button | */}
-            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start justify-items-center md:justify-items-stretch">
+            <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start justify-items-center md:justify-items-stretch">
 
               {/* Navigate column (with left divider + mid divider) */}
               <div className="relative pl-0 md:pl-6">
@@ -447,10 +447,10 @@ export function Footer() {
 
           <div className="border-t border-black/15 pt-5 text-sm font-semibold text-black/65">
             <Container>
-              <div className="flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
+              <div className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-between md:text-left">
 
                 <div>© {year} AIM Construction Management. All rights reserved.</div>
-                <div className="flex items-center justify-center gap-6">
+                <div className="flex items-center justify-center gap-4">
 
                   <a className="hover:underline underline-offset-4" href="/privacy.html">
                     Privacy
