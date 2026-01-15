@@ -25,8 +25,9 @@ export const PROJECTS = [
     location: "Belle Glade, FL",
     year: "2024",
     category: "Infrastructure",
-    img: "https://i.ytimg.com/vi/AI4wnddU-CU/maxresdefault.jpg",
+    img: "/img/video-poster.webp",     // ✅ local poster (add this file)
     youtubeId: "AI4wnddU-CU",
+    gallery: [],                       // ✅ explicitly empty
   },
   {
     id: "virginia-key-2024",

@@ -80,6 +80,46 @@ function YouTubeEmbed({ id }) {
   );
 }
 
+function VideoSection({ project }) {
+  const hasYoutube = !!project?.youtubeId;
+  const hasMp4 = !!project?.videoSrc;
+
+  if (!hasYoutube && !hasMp4) return null;
+
+  return (
+    <div id="project-video">
+      <FloatSection tone="dark">
+        <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
+          Project Video
+        </div>
+        <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-white">
+          Project Footage
+        </h2>
+        <p className="mt-2 text-white/70 font-semibold max-w-[70ch]">
+          Video walkthrough / progress footage from the field.
+        </p>
+
+        <div className="mt-6">
+          {hasYoutube ? (
+            <YouTubeEmbed id={project.youtubeId} />
+          ) : (
+            <div className="rounded-[22px] overflow-hidden border border-white/12 bg-white/5">
+              <video
+                className="w-full h-auto"
+                controls
+                playsInline
+                preload="metadata"
+                poster={project.poster || "/img/video-poster.webp"}
+                src={project.videoSrc}
+              />
+            </div>
+          )}
+        </div>
+      </FloatSection>
+    </div>
+  );
+}
+
 
 function _isRemoteUrl(v) {
   return /^https?:\/\//i.test(String(v || ""));
@@ -347,7 +387,7 @@ export default function Project() {
                 <button
                   type="button"
                   onClick={() => {
-                    const el = document.querySelector("#project-gallery");
+                    const el = document.querySelector(gallery.length ? "#project-gallery" : "#project-video");
                     el?.scrollIntoView({ behavior: "smooth", block: "start" });
                   }}
                   className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
@@ -439,28 +479,8 @@ export default function Project() {
             </div>
           </div>
         </FloatSection>
-
-        {/* Project Video (only for projects that have youtubeId) */}
-        {project?.youtubeId && (
-        <div id="project-video">
-            <FloatSection tone="dark">
-            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
-                Project Video
-            </div>
-            <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-white">
-                Watch the work in progress
-            </h2>
-            <p className="mt-2 text-white/70 font-semibold max-w-[70ch]">
-                Quick field walkthrough and progress footage.
-            </p>
-
-            <div className="mt-6">
-                <YouTubeEmbed id={project.youtubeId} />
-            </div>
-            </FloatSection>
-        </div>
-        )}
-
+        
+        <VideoSection project={project} />
 
         {/* Gallery */}
         {gallery.length > 0 && (

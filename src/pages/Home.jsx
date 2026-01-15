@@ -129,7 +129,7 @@ function Hero() {
                 transition={{ duration: 0.6, delay: 0.12 }}
                 className="mt-4 inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75"
               >
-                Underground Utility • Directional Boring • Restoration
+                Underground Utility • Directional Drilling • Restoration
               </motion.div>
             </div>
 
@@ -143,7 +143,7 @@ function Hero() {
                 className="mx-auto max-w-[48ch] text-white/72 font-medium text-[15px] leading-relaxed"
               >
                 Safety-first crews delivering fast, dependable underground utility,
-                directional boring, and restoration work across Florida and beyond.
+                directional drilling, and restoration work across Florida and beyond.
               </motion.p>
 
               <motion.div
@@ -177,7 +177,7 @@ function Hero() {
                 transition={{ duration: 0.55 }}
                 className="mt-2 inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.24em] font-extrabold text-white/75"
               >
-                Underground Utility • Directional Boring • Restoration
+                Underground Utility • Directional Drilling • Restoration
               </motion.div>
 
               <motion.h1
@@ -196,7 +196,7 @@ function Hero() {
                 className="mt-4 max-w-[60ch] text-white/72 font-medium text-base leading-relaxed"
               >
                 Safety-first crews delivering fast, dependable underground utility,
-                directional boring, and restoration work across Florida and beyond.
+                directional drilling, and restoration work across Florida and beyond.
               </motion.p>
 
               <motion.div
@@ -287,7 +287,7 @@ function StatRow() {
   const stats = useMemo(
     () => [
       { top: "24+", bottom: "Years Experience" },
-      { top: "2”–24”", bottom: "Directional Boring" },
+      { top: "2”–24”", bottom: "Directional Drilling" },
       { top: "FL + SE", bottom: "Regional Coverage" },
       { top: "Safety", bottom: "First Operations" },
     ],
@@ -369,7 +369,7 @@ function HomeContent() {
                   <div className="mt-6 grid gap-3">
                     {[
                       "Underground utility & ductbank",
-                      "Directional boring (2”–24”)",
+                      "Directional drilling (2”–24”)",
                       "Concrete & asphalt restoration",
                     ].map((t) => (
                       <div
@@ -429,7 +429,7 @@ function HomeContent() {
                   },
                   {
                     img: "/img/service-maintenance.webp",
-                    title: "Directional Boring",
+                    title: "Directional Drilling",
                     desc: "2”–24” bores with a fleet designed for complex runs and demanding field conditions.",
                   },
                   {
