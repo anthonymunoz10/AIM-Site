@@ -285,7 +285,12 @@ export function Footer() {
   return (
     <footer
       id="site-footer"
-      className="relative overflow-visible bg-[var(--brand-orange)] text-black -mt-[22vh] pt-[26vh] min-h-[92vh] md:min-h-[88vh] pb-[18vh]"
+      className="
+        relative overflow-visible bg-[var(--brand-orange)] text-black
+        -mt-[22vh] pt-[26vh]
+        min-h-0 md:min-h-[88vh]
+        pb-[max(env(safe-area-inset-bottom),24px)] md:pb-[18vh]
+      "
     >
       {/* soft top fade so page blends into footer */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 [background:linear-gradient(to_bottom,rgba(0,0,0,0.32),rgba(0,0,0,0))]" />
@@ -296,11 +301,13 @@ export function Footer() {
       {/* BIG watermark text */}
 <>
       {/* ✅ Mobile watermark (barely leaks bottom, wider + spills sides) */}
-      <div className="pointer-events-none absolute inset-0 overflow-visible md:hidden">
+      <div className="pointer-events-none absolute inset-0 md:hidden">
         <div
           className="
             absolute left-1/2 -translate-x-1/2
-            bottom-[-4.2vh]
+            bottom-0 translate-y-[32px]
+            z-10
+            w-[128vw] text-center
             text-[clamp(260px,78vw,560px)]
             font-extrabold tracking-tight opacity-[0.10]
             select-none leading-none whitespace-nowrap
@@ -310,7 +317,6 @@ export function Footer() {
           AIM
         </div>
       </div>
-
 
       {/* ✅ Desktop watermark (keep EXACTLY how it looks now) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
@@ -428,7 +434,7 @@ export function Footer() {
         </div>
 
         {/* bottom row — pinned to the bottom edge */}
-        <div className="absolute inset-x-0 bottom-0 pb-[max(env(safe-area-inset-bottom),2.5vh)]">
+        <div className="relative mt-10 md:absolute md:inset-x-0 md:bottom-0 pb-[max(env(safe-area-inset-bottom),18px)] md:pb-[max(env(safe-area-inset-bottom),2.5vh)]">
           <div className="border-t border-black/15 pt-8 text-sm font-semibold text-black/65">
             <Container>
               <div className="flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
@@ -531,12 +537,11 @@ export function Footer() {
           </div>
         </div>
       )}
-      {/* ✅ Mobile safe-area / overscroll fill (removes black bar under footer) */}
+      {/* ✅ Mobile safe-area / overscroll fill (prevents black bar when watermark overflows) */}
       <div
-        className="md:hidden pointer-events-none absolute left-0 right-0 bottom-0 bg-[var(--brand-orange)]"
-        style={{ height: "calc(env(safe-area-inset-bottom) + 10px)" }}
+        className="md:hidden pointer-events-none absolute left-0 right-0 bottom-0 bg-[var(--brand-orange)] -z-10"
+        style={{ height: "calc(env(safe-area-inset-bottom) + 80px)" }}
       />
-
     </footer>
   );
 }
