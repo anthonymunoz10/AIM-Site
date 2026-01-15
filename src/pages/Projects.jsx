@@ -93,7 +93,6 @@ function PageShell({ children }) {
 ---------------------------------------------- */
 
 export default function Projects() {
-  const [query, setQuery] = useState("");
   const [category, setCategory] = useState("All");
   const [year, setYear] = useState("All");
 
@@ -108,23 +107,18 @@ export default function Projects() {
 
   const years = useMemo(() => {
     const set = new Set(PROJECTS.map((p) => p.year));
-    // sort with a little sanity: newest-ish first if numeric appears
     const arr = Array.from(set);
     arr.sort((a, b) => String(b).localeCompare(String(a)));
     return ["All", ...arr];
   }, []);
 
   const filtered = useMemo(() => {
-    const q = query.trim().toLowerCase();
-
     return PROJECTS.filter((p) => {
-      const hay = `${p.title} ${p.location} ${p.category} ${p.year}`.toLowerCase();
-      const matchesQuery = !q || hay.includes(q);
       const matchesCategory = category === "All" || p.category === category;
       const matchesYear = year === "All" || p.year === year;
-      return matchesQuery && matchesCategory && matchesYear;
+      return matchesCategory && matchesYear;
     });
-  }, [query, category, year]);
+  }, [category, year]);
 
   const scrollToGrid = () => {
     const el = document.querySelector("#projects-grid");
@@ -132,7 +126,6 @@ export default function Projects() {
   };
 
   const clearFilters = () => {
-    setQuery("");
     setCategory("All");
     setYear("All");
   };
@@ -204,16 +197,16 @@ export default function Projects() {
         </div>
       </header>
 
-      {/* TOOLBAR + GRID */}
+      {/* FILTERS + GRID */}
       <section id="projects-grid" className="pt-6">
         <FloatSection tone="light">
           <div className="flex flex-col gap-4 md:flex-row md:items-end md:justify-between">
             <div>
               <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">
-                Search + refine
+                Browse
               </div>
               <div className="mt-2 text-2xl md:text-3xl font-extrabold text-[var(--ink)]">
-                Find the right project
+                Project highlights
               </div>
             </div>
 
@@ -229,20 +222,8 @@ export default function Projects() {
           </div>
 
           <div className="mt-6 grid gap-3 md:grid-cols-12 md:items-center">
-            {/* search */}
-            <div className="md:col-span-6">
-              <label className="sr-only" htmlFor="projectSearch">Search projects</label>
-              <input
-                id="projectSearch"
-                value={query}
-                onChange={(e) => setQuery(e.target.value)}
-                placeholder="Search projects (name, location, category, year…)"
-                className="w-full rounded-2xl border border-black/10 bg-white px-5 py-3 font-semibold text-[var(--ink)] placeholder:text-black/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-              />
-            </div>
-
             {/* category */}
-            <div className="md:col-span-3">
+            <div className="md:col-span-6">
               <label className="sr-only" htmlFor="category">Category</label>
               <select
                 id="category"
@@ -257,7 +238,7 @@ export default function Projects() {
             </div>
 
             {/* year */}
-            <div className="md:col-span-3">
+            <div className="md:col-span-6">
               <label className="sr-only" htmlFor="year">Year</label>
               <select
                 id="year"
@@ -297,29 +278,29 @@ export default function Projects() {
                 >
                   <div className="relative h-56 overflow-hidden">
                     <img
-                        src={p.img}
-                        alt={p.title}
-                        className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
-                        loading="lazy"
-                        decoding="async"
-                        onError={(e) => {
-                            if (p.youtubeId) {
-                            e.currentTarget.src = `https://i.ytimg.com/vi/${p.youtubeId}/hqdefault.jpg`;
-                            }
-                        }}
+                      src={p.img}
+                      alt={p.title}
+                      className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                      loading="lazy"
+                      decoding="async"
+                      onError={(e) => {
+                        if (p.youtubeId) {
+                          e.currentTarget.src = `https://i.ytimg.com/vi/${p.youtubeId}/hqdefault.jpg`;
+                        }
+                      }}
                     />
                     {p.youtubeId && (
-                    <div className="absolute inset-0 grid place-items-center">
+                      <div className="absolute inset-0 grid place-items-center">
                         <div className="rounded-full bg-black/55 backdrop-blur px-4 py-2 border border-white/15 flex items-center gap-2">
-                        <span className="text-white font-extrabold text-sm">▶</span>
-                        <span className="text-white/90 font-extrabold uppercase tracking-wider text-xs">
+                          <span className="text-white font-extrabold text-sm">▶</span>
+                          <span className="text-white/90 font-extrabold uppercase tracking-wider text-xs">
                             Watch
-                        </span>
+                          </span>
                         </div>
-                    </div>
+                      </div>
                     )}
-
                   </div>
+
                   <div className="p-6">
                     <div className="flex items-center justify-between gap-3">
                       <span className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/55">
@@ -339,7 +320,8 @@ export default function Projects() {
                     </div>
 
                     <div className="mt-5 inline-flex items-center gap-2 text-[var(--brand-orange)] font-extrabold uppercase tracking-wider text-xs">
-                      View project <span className="translate-x-0 group-hover:translate-x-[2px] transition">→</span>
+                      View project{" "}
+                      <span className="translate-x-0 group-hover:translate-x-[2px] transition">→</span>
                     </div>
                   </div>
                 </a>
@@ -352,7 +334,7 @@ export default function Projects() {
                   No results found.
                 </div>
                 <div className="mt-2 text-black/60 font-semibold">
-                  Try a different search, reset filters, or browse all projects.
+                  Try different filters or reset to browse all projects.
                 </div>
                 <div className="mt-5">
                   <button
