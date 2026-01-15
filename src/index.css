@@ -48,12 +48,23 @@ body {
 button, a { -webkit-tap-highlight-color: transparent; }
 
 
-/* Mobile: prevent black showing below footer / on overscroll */
 @media (max-width: 767px) {
-  html,
-  body,
-  #root {
+  /* Paint an orange "floor" above the fixed sand layers */
+  body::after {
+    content: "";
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+
+    /* tall enough to cover iOS bottom toolbar + bounce */
+    height: calc(env(safe-area-inset-bottom, 0px) + 220px);
+
     background: var(--brand-orange);
-    min-height: 100%;
+
+    /* must be ABOVE your -z-30 / -z-20 fixed backgrounds */
+    z-index: -5;
+
+    pointer-events: none;
   }
 }

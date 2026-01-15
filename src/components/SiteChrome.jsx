@@ -539,11 +539,6 @@ export function Footer() {
           </div>
         </div>
       )}
-      {/* ✅ Mobile safe-area / overscroll fill */}
-      <div
-        className="md:hidden pointer-events-none absolute left-0 right-0 bottom-0 bg-[var(--brand-orange)] -z-10"
-        style={{ height: "calc(env(safe-area-inset-bottom) + 140px)" }}
-      />
 
     </footer>
   );
