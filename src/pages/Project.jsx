@@ -367,7 +367,7 @@ export default function Project() {
               <FadeIn delay={0.18} className="mt-4">
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
                   {project?.summary ||
-                    "AIM Construction Management delivers safety-first underground utility, directional boring, and restoration work. This page will be updated with full scope + gallery."}
+                    "AIM Construction Management delivers safety-first underground utility, directional drilling, and restoration work. This page will be updated with full scope + gallery."}
                 </p>
               </FadeIn>
 
@@ -540,7 +540,7 @@ export default function Project() {
                     Send scope + photos — we’ll respond fast.
                   </div>
                   <div className="mt-2 text-white/75 font-semibold">
-                    Underground utility, directional boring, and restoration across Florida and beyond.
+                    Underground utility, directional drilling, and restoration across Florida and beyond.
                   </div>
                 </div>
                 <div className="md:col-span-4 md:justify-self-end flex flex-wrap gap-3">

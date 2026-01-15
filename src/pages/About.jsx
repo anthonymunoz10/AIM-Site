@@ -232,7 +232,7 @@ function BentoRail() {
 function BentoBlock() {
   const stats = [
     { big: "24+", small: "Years Experience" },
-    { big: '2”–24”', small: "Directional Boring" },
+    { big: '2”–24”', small: "Directional Drilling" },
     { big: "FL + SE", small: "Regional Coverage" },
     { big: "Safety", small: "First Operations" },
   ];
@@ -463,7 +463,7 @@ function CulturePush() {
             <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white">
               <img
                 src="/img/service-maintenance.webp"
-                alt="Directional boring"
+                alt="Directional drilling"
                 className="h-[340px] md:h-[440px] w-full object-cover"
               />
             </div>

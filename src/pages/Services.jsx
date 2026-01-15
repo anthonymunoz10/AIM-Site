@@ -150,7 +150,7 @@ export default function Services() {
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="text-white/72 font-semibold leading-relaxed">
-                  Directional boring • Duct bank • Concrete • Asphalt
+                  Directional drilling • Duct bank • Concrete • Asphalt
                 </p>
               </FadeIn>
 
@@ -181,7 +181,7 @@ export default function Services() {
           <div className="flex flex-wrap gap-3 justify-center">
             {[
               { id: "utility", label: "Underground Utility" },
-              { id: "boring", label: "Directional Boring" },
+              { id: "drilling", label: "Directional Drilling" },
               { id: "restoration", label: "Restoration" },
               { id: "equipment", label: "Equipment" },
             ].map((x) => (
@@ -219,10 +219,10 @@ export default function Services() {
                       infrastructure work across Florida and beyond.
                     </p>
 
-                    {/* Directional Boring */}
+                    {/* Directional Drilling */}
                     <div className="mt-8" id="boring">
                       <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">
-                        Directional Boring
+                        Directional Drilling
                       </div>
                       <ul className="mt-3 grid gap-3">
                         {[

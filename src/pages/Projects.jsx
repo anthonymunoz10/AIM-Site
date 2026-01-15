@@ -172,7 +172,7 @@ export default function Projects() {
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
-                  Recent underground utility, directional boring, and restoration work—delivered with safety-first
+                  Recent underground utility, directional drilling, and restoration work—delivered with safety-first
                   operations and dependable execution.
                 </p>
               </FadeIn>
