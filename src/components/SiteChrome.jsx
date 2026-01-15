@@ -288,7 +288,7 @@ export function Footer() {
       className="
         relative overflow-visible bg-[var(--brand-orange)] text-black
         -mt-[22vh] pt-[26vh]
-        min-h-0 md:min-h-[88vh]
+        min-h-[100svh] md:min-h-[88vh]
         pb-[max(env(safe-area-inset-bottom),24px)] md:pb-[18vh]
       "
     >
@@ -300,12 +300,13 @@ export function Footer() {
 
       {/* BIG watermark text */}
 <>
-      {/* ✅ Mobile watermark (barely leaks bottom, wider + spills sides) */}
+      {/* ✅ Mobile watermark (locks to safe-area bottom edge) */}
       <div className="pointer-events-none absolute inset-0 md:hidden">
         <div
           className="
             absolute left-1/2 -translate-x-1/2
-            bottom-0 translate-y-[32px]
+            bottom-[calc(env(safe-area-inset-bottom,0px)*-1)]
+            translate-y-[14px]
             z-10
             w-[128vw] text-center
             text-[clamp(260px,78vw,560px)]
@@ -317,6 +318,7 @@ export function Footer() {
           AIM
         </div>
       </div>
+
 
       {/* ✅ Desktop watermark (keep EXACTLY how it looks now) */}
       <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
@@ -537,11 +539,12 @@ export function Footer() {
           </div>
         </div>
       )}
-      {/* ✅ Mobile safe-area / overscroll fill (prevents black bar when watermark overflows) */}
+      {/* ✅ Mobile safe-area / overscroll fill */}
       <div
         className="md:hidden pointer-events-none absolute left-0 right-0 bottom-0 bg-[var(--brand-orange)] -z-10"
-        style={{ height: "calc(env(safe-area-inset-bottom) + 80px)" }}
+        style={{ height: "calc(env(safe-area-inset-bottom) + 140px)" }}
       />
+
     </footer>
   );
 }
