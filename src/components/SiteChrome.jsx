@@ -436,8 +436,16 @@ export function Footer() {
         </div>
 
         {/* bottom row — pinned to the bottom edge */}
-        <div className="relative mt-10 md:absolute md:inset-x-0 md:bottom-0 pb-[max(env(safe-area-inset-bottom),18px)] md:pb-[max(env(safe-area-inset-bottom),2.5vh)]">
-          <div className="border-t border-black/15 pt-8 text-sm font-semibold text-black/65">
+        <div
+          className="
+            relative mt-10
+            md:absolute md:inset-x-0 md:bottom-0
+            pb-[max(env(safe-area-inset-bottom),8px)]
+            md:pb-[max(env(safe-area-inset-bottom),2.5vh)]
+          "
+        >
+
+          <div className="border-t border-black/15 pt-5 text-sm font-semibold text-black/65">
             <Container>
               <div className="flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
 
