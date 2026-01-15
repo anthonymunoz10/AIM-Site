@@ -285,7 +285,7 @@ export function Footer() {
   return (
     <footer
       id="site-footer"
-      className="relative bg-[var(--brand-orange)] text-black -mt-[22vh] pt-[26vh] min-h-[92vh] md:min-h-[88vh] pb-[18vh]"
+      className="relative overflow-visible bg-[var(--brand-orange)] text-black -mt-[22vh] pt-[26vh] min-h-[92vh] md:min-h-[88vh] pb-[18vh]"
     >
       {/* soft top fade so page blends into footer */}
       <div className="pointer-events-none absolute inset-x-0 top-0 h-40 [background:linear-gradient(to_bottom,rgba(0,0,0,0.32),rgba(0,0,0,0))]" />
@@ -293,8 +293,27 @@ export function Footer() {
       {/* subtle depth in orange */}
       <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background:radial-gradient(900px_420px_at_20%_10%,rgba(0,0,0,0.22),transparent_60%),radial-gradient(900px_420px_at_80%_30%,rgba(255,255,255,0.14),transparent_60%)]" />
 
-      {/* BIG watermark text (bottom-leak only, full width visible) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden">
+      {/* BIG watermark text */}
+<>
+      {/* ✅ Mobile watermark (barely leaks bottom, wider + spills sides) */}
+      <div className="pointer-events-none absolute inset-0 overflow-visible md:hidden">
+        <div
+          className="
+            absolute left-1/2 -translate-x-1/2
+            bottom-[-4.2vh]
+            text-[clamp(260px,78vw,560px)]
+            font-extrabold tracking-tight opacity-[0.10]
+            select-none leading-none whitespace-nowrap
+            scale-x-[1.06]
+          "
+        >
+          AIM
+        </div>
+      </div>
+
+
+      {/* ✅ Desktop watermark (keep EXACTLY how it looks now) */}
+      <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
         <div
           className="
             absolute
@@ -309,11 +328,14 @@ export function Footer() {
           AIM
         </div>
       </div>
+    </>
+
 
       <Container>
-        <div className="relative grid gap-12 md:grid-cols-12 text-black/85">
+        <div className="relative grid gap-12 md:grid-cols-12 text-black/85 text-center md:text-left">
           {/* Left */}
-          <div className="md:col-span-5">
+          <div className="md:col-span-5 flex flex-col items-center md:items-start">
+
             <img
               src="/img/logo.png"
               alt="Aim Construction"
@@ -329,15 +351,17 @@ export function Footer() {
               restoration work.
             </p>
 
-            <div className="mt-8 h-1 w-28 rounded-full bg-black/25" />
+            <div className="mt-8 h-1 w-28 rounded-full bg-black/25 mx-auto md:mx-0" />
+
           </div>
 
           {/* Right */}
           <div className="md:col-span-7 md:col-start-6">
             {/* 3 columns on desktop: | Navigate | Connect + Top button | */}
-            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start">
+            <div className="grid gap-10 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start justify-items-center md:justify-items-stretch">
+
               {/* Navigate column (with left divider + mid divider) */}
-              <div className="relative pl-6">
+              <div className="relative pl-0 md:pl-6">
                 {/* left divider (to the left of Navigate) */}
                 <div className="hidden sm:block absolute left-0 top-0 bottom-0 w-px bg-black/15" />
 
@@ -345,7 +369,8 @@ export function Footer() {
                   Navigate
                 </div>
 
-                <div className="mt-5 grid gap-3 font-semibold">
+                <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
+
                   <a className={footerLink} href="/services.html">
                     Services
                   </a>
@@ -365,12 +390,14 @@ export function Footer() {
               </div>
 
               {/* Connect column */}
-              <div className="relative pl-6">
+              <div className="relative pl-0 md:pl-6">
+
                 <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
                   Connect
                 </div>
 
-                <div className="mt-5 grid gap-3 font-semibold">
+                <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
+
                   <button type="button" onClick={() => setPop("phone")} className={footerLink}>
                     Phone
                   </button>
@@ -382,7 +409,8 @@ export function Footer() {
               </div>
 
               {/* Back to top button (to the right of Connect links) */}
-              <div className="sm:justify-self-end md:pt-[28px]">
+              <div className="justify-self-center sm:justify-self-end md:pt-[28px]">
+
                 <button
                   type="button"
                   onClick={scrollToTop}
@@ -403,9 +431,11 @@ export function Footer() {
         <div className="absolute inset-x-0 bottom-0 pb-[max(env(safe-area-inset-bottom),2.5vh)]">
           <div className="border-t border-black/15 pt-8 text-sm font-semibold text-black/65">
             <Container>
-              <div className="flex flex-wrap items-center justify-between gap-4">
+              <div className="flex flex-col items-center gap-4 text-center md:flex-row md:justify-between md:text-left">
+
                 <div>© {year} AIM Construction Management. All rights reserved.</div>
-                <div className="flex items-center gap-6">
+                <div className="flex items-center justify-center gap-6">
+
                   <a className="hover:underline underline-offset-4" href="/privacy.html">
                     Privacy
                   </a>
@@ -501,6 +531,12 @@ export function Footer() {
           </div>
         </div>
       )}
+      {/* ✅ Mobile safe-area / overscroll fill (removes black bar under footer) */}
+      <div
+        className="md:hidden pointer-events-none absolute left-0 right-0 bottom-0 bg-[var(--brand-orange)]"
+        style={{ height: "calc(env(safe-area-inset-bottom) + 10px)" }}
+      />
+
     </footer>
   );
 }

@@ -44,3 +44,13 @@ body {
 
 .ios-scroll { -webkit-overflow-scrolling: touch; }
 button, a { -webkit-tap-highlight-color: transparent; }
+
+
+/* Mobile: prevent black showing below footer / on overscroll */
+@media (max-width: 767px) {
+  html,
+  body {
+    background: var(--brand-orange);
+    overscroll-behavior-y: none;
+  }
+}
