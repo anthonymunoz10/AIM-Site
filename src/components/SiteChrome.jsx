@@ -1,12 +1,14 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
+import { Link } from "react-router-dom";
+
 
 export const Container = ({ children }) => (
   <div className="mx-auto w-[92%] max-w-[1200px]">{children}</div>
 );
 
 /* ----------------------------
-   MOBILE MENU (hide only at page bottom) — Option A
+   MOBILE MENU 
 ---------------------------- */
 export function MobileMenu() {
   const [open, setOpen] = useState(false);
@@ -63,11 +65,11 @@ export function MobileMenu() {
   }, [open]);
 
   const links = [
-    { href: "/", label: "Home" },
-    { href: "/about.html", label: "Who We Are" },
-    { href: "/services.html", label: "Services" },
-    { href: "/projects.html", label: "Projects" },
-    { href: "/contact.html", label: "Contact" },
+    { to: "/", label: "Home" },
+    { to: "/about", label: "Who We Are" },
+    { to: "/services", label: "Services" },
+    { to: "/projects", label: "Projects" },
+    { to: "/contact", label: "Contact" },
   ];
 
   // closed position: slide up so only the TOP "peek" area shows
@@ -94,7 +96,7 @@ export function MobileMenu() {
       {/* Sheet */}
       <motion.div
         className="fixed left-0 right-0 top-0 z-[70]"
-        initial={false}
+        initial={false} // ✅ no mount animation
         animate={{ y: targetY }}
         transition={{ type: "spring", stiffness: 380, damping: 38 }}
         drag={hideAtBottom ? false : "y"}
@@ -117,6 +119,7 @@ export function MobileMenu() {
         }}
         style={{ paddingTop: "max(env(safe-area-inset-top),14px)" }}
       >
+
         <div className="mx-auto w-[92%] max-w-[1200px]">
           <div
             ref={sheetRef}
@@ -125,25 +128,30 @@ export function MobileMenu() {
             <div className="pointer-events-none absolute inset-0 [background:radial-gradient(900px_360px_at_20%_0%,rgba(255,255,255,0.10),transparent_60%)]" />
 
             <div className="relative flex items-center justify-between gap-4 px-6 py-5 border-b border-white/10">
-              <a href="/" onClick={() => setOpen(false)} className="flex items-center" aria-label="Home">
+              <Link
+                to="/"
+                onClick={() => setOpen(false)}
+                className="flex items-center"
+                aria-label="Home"
+              >
                 <img src="/img/logo.png" alt="Aim Construction" className="h-10 w-auto" />
-              </a>
+              </Link>
 
-              <a
-                href="/contact.html"
+              <Link
+                to="/contact"
                 onClick={() => setOpen(false)}
                 className="rounded-full bg-[var(--brand-orange)] px-4 py-2 text-xs font-extrabold uppercase tracking-wider text-white hover:opacity-90 transition"
               >
                 Quote
-              </a>
+              </Link>
             </div>
 
             <div className="relative px-6 py-2">
               <nav className="grid">
                 {links.map((l) => (
-                  <a
-                    key={l.href}
-                    href={l.href}
+                  <Link
+                    key={l.to}
+                    to={l.to}
                     onClick={() => setOpen(false)}
                     className="group flex items-center justify-between py-5 border-b border-white/10 last:border-b-0"
                   >
@@ -151,7 +159,7 @@ export function MobileMenu() {
                       {l.label}
                     </span>
                     <span className="text-white/35 group-hover:text-[var(--brand-orange)] transition">→</span>
-                  </a>
+                  </Link>
                 ))}
               </nav>
             </div>
@@ -175,6 +183,7 @@ export function MobileMenu() {
     </div>
   );
 }
+
 
 /* ----------------------------
    DESKTOP NAV
@@ -203,23 +212,27 @@ export function Nav() {
             ].join(" ")}
           >
             <div className="flex items-center justify-between px-6 py-4">
-              <a href="/" className="flex items-center gap-3">
+              <Link to="/" className="flex items-center gap-3">
+
                 <img src="/img/logo.png" alt="Aim Construction" className="h-11 w-auto" />
-              </a>
+              </Link>
 
               <div className="flex items-center gap-8 text-xs uppercase tracking-[0.18em] font-semibold text-white/85">
-                <a className="hover:text-[var(--brand-orange)]" href="/about.html">Who We Are</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/services.html">Services</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/projects.html">Projects</a>
-                <a className="hover:text-[var(--brand-orange)]" href="/contact.html">Contact</a>
+                <Link className="hover:text-[var(--brand-orange)]" to="/about">Who We Are</Link>
+                <Link className="hover:text-[var(--brand-orange)]" to="/services">Services</Link>
+                <Link className="hover:text-[var(--brand-orange)]" to="/projects">Projects</Link>
+                <Link className="hover:text-[var(--brand-orange)]" to="/contact">Contact</Link>
+
               </div>
 
-              <a
-                href="/contact.html"
+              <Link
+                to="/contact"
                 className="rounded-full bg-[var(--brand-orange)] px-5 py-2.5 font-bold uppercase tracking-wider text-xs text-white hover:opacity-90 transition"
               >
                 Request a Quote
-              </a>
+              </Link>
+
+
             </div>
           </div>
         </div>
@@ -355,7 +368,7 @@ export function Footer() {
             />
 
             <p className="mt-6 max-w-[46ch] text-[16px] md:text-[17px] text-black/75 font-semibold leading-relaxed">
-              Safety-first operations and dependable delivery for underground utility, directional boring, and
+              Safety-first operations and dependable delivery for underground utility, directional drilling, and
               restoration work.
             </p>
 
@@ -379,18 +392,11 @@ export function Footer() {
 
                 <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
 
-                  <a className={footerLink} href="/services.html">
-                    Services
-                  </a>
-                  <a className={footerLink} href="/about.html">
-                    Company
-                  </a>
-                  <a className={footerLink} href="/projects.html">
-                    Projects
-                  </a>
-                  <a className={footerLink} href="/contact.html">
-                    Work with us
-                  </a>
+                  <Link className={footerLink} to="/services">Services</Link>
+                  <Link className={footerLink} to="/about">Company</Link>
+                  <Link className={footerLink} to="/projects">Projects</Link>
+                  <Link className={footerLink} to="/contact">Work with us</Link>
+
                 </div>
 
                 {/* divider between Navigate and Connect (sits on Navigate's right edge) */}
@@ -452,12 +458,9 @@ export function Footer() {
                 <div>© {year} AIM Construction Management. All rights reserved.</div>
                 <div className="flex items-center justify-center gap-4">
 
-                  <a className="hover:underline underline-offset-4" href="/privacy.html">
-                    Privacy
-                  </a>
-                  <a className="hover:underline underline-offset-4" href="/terms.html">
-                    Terms
-                  </a>
+                  <Link className="hover:underline underline-offset-4" to="/privacy">Privacy</Link>
+                  <Link className="hover:underline underline-offset-4" to="/terms">Terms</Link>
+
                 </div>
               </div>
             </Container>
