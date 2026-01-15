@@ -158,7 +158,7 @@ function IntroImageCollage() {
               className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
             >
               <img
-                src="/img/projects-bg.jpg"
+                src="/img/Hero_Comp1.webp"
                 alt="Field work"
                 className="h-[220px] md:h-[260px] w-full object-cover"
               />
@@ -298,7 +298,7 @@ function BentoBlock() {
           <div className="md:col-span-7 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white">
             <div className="h-[320px] md:h-full overflow-hidden">
               <img
-                src="/img/hero-poster.webp"
+                src="/img/hero-bg.avif"
                 alt="AIM work"
                 className="h-full w-full object-cover"
               />
