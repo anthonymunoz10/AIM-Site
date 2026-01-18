@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { PROJECTS } from "../data/projects";
 
 /* ---------------------------------------------
@@ -411,6 +411,7 @@ export default function Project() {
             </div>
           </Container>
         </div>
+        <HeroBlend height={200} />
       </header>
 
       {/* BODY */}

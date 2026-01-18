@@ -1,9 +1,10 @@
+// src/pages/About.jsx
 import React, { useEffect, useMemo, useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 /* ---------------------------------------------
-   Shared primitives (mirrors Home.jsx style)
+   Shared primitives (matches Home/Projects)
 ---------------------------------------------- */
 
 function FloatSection({ children, tone = "light" }) {
@@ -75,61 +76,129 @@ function FadeIn({ children, className = "", delay = 0 }) {
 }
 
 /* ---------------------------------------------
-   About page sections
+   Page shell (same sand + curved shell)
 ---------------------------------------------- */
 
-function ManifestoIntro() {
+function PageShell({ children }) {
   return (
-    <section className="pt-[34svh] pb-12">
-      <Container>
-        <div className="mx-auto max-w-[780px] text-center">
-          <FadeIn delay={0.05}>
-            <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/65">
-              Who We Are
-            </div>
-          </FadeIn>
+    <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)]">
+      <div className="pointer-events-none fixed inset-0 -z-30 bg-[var(--sand)]" />
 
-          <FadeIn delay={0.12} className="mt-7">
-            <p className="text-[clamp(1.6rem,2.8vw,2.3rem)] leading-tight font-extrabold text-white">
-              Built on experience.
-              <span className="text-[var(--brand-orange)]">
-                {" "}
-                Focused on dependable delivery.
-              </span>
-            </p>
-          </FadeIn>
+      <div className="pointer-events-none fixed inset-0 -z-20">
+        <div className="absolute inset-0 [background:linear-gradient(180deg,var(--sand)_0%,var(--sand-2)_70%,var(--sand)_100%)]" />
+        <div
+          className="absolute inset-0 opacity-[0.08]
+          [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),
+          linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)]
+          [background-size:48px_48px]"
+        />
+        <div className="absolute inset-0 noise opacity-[0.06] mix-blend-multiply" />
+      </div>
 
-          <FadeIn delay={0.18} className="mt-6">
-            <p className="mx-auto max-w-[62ch] text-white/65 font-semibold leading-relaxed">
-              AIM Construction Management is a licensed general contractor founded
-              on decades of underground utility and electrical experience. We
-              build infrastructure that powers communities—fiber, electrical,
-              water and sewer, and duct banks.
-            </p>
-          </FadeIn>
-
-          <FadeIn
-            delay={0.24}
-            className="mt-8 flex items-center justify-center gap-6 text-sm font-semibold"
-          >
-            <a
-              href="#background"
-              className="text-white/70 hover:text-white underline underline-offset-4"
-            >
-              Our background
-            </a>
-            <a
-              href="/projects.html"
-              className="text-white/70 hover:text-white underline underline-offset-4"
-            >
-              See selected work
-            </a>
-          </FadeIn>
+      <div className="relative">
+        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[900px] -z-10 hidden md:block">
+          <div className="absolute inset-0 bg-black" />
+          <div className="absolute inset-0 opacity-[0.55] [background:radial-gradient(1100px_520px_at_20%_20%,rgba(255,255,255,0.08),transparent_60%),radial-gradient(900px_420px_at_80%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
+          <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_20%_30%,rgba(233,151,19,0.22),transparent_62%)]" />
+          <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
         </div>
-      </Container>
-    </section>
+
+        <div className="relative z-10 overflow-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
+          <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(1200px_700px_at_50%_-10%,rgba(255,255,255,0.40),transparent_60%)]" />
+          <div className="relative">{children}</div>
+        </div>
+
+        <Footer />
+      </div>
+    </main>
   );
 }
+
+/* ---------------------------------------------
+   HERO (black like other pages)
+---------------------------------------------- */
+
+function AboutHero() {
+  const heroRef = useRef(null);
+  const { scrollYProgress } = useScroll({
+    target: heroRef,
+    offset: ["start start", "end start"],
+  });
+
+  const y = useTransform(scrollYProgress, [0, 1], ["0%", "8%"]);
+  const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.35]);
+
+  return (
+    <header
+      ref={heroRef}
+      className="relative min-h-[72svh] md:min-h-[72vh] bg-black overflow-hidden"
+    >
+      {/* Background image (subtle) */}
+      <motion.div style={{ y, opacity }} className="absolute inset-0">
+        <div
+          className="absolute inset-0 bg-center bg-cover"
+          style={{ backgroundImage: "url('/img/about-bg.jpg')" }}
+        />
+        <div className="absolute inset-0 bg-black/60" />
+
+        {/* orange bloom */}
+        <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_18%_18%,rgba(233,151,19,0.28),transparent_60%)]" />
+        {/* vignette */}
+        <div className="absolute inset-0 [background:radial-gradient(1200px_700px_at_50%_35%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.64)_70%,rgba(0,0,0,0.90)_100%)]" />
+        {/* grain */}
+        <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
+      </motion.div>
+
+      {/* Content */}
+      <div className="relative z-10 pt-44 pb-16 md:pt-52">
+        <Container>
+          <div className="max-w-[860px]">
+            <FadeIn delay={0.05}>
+              <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
+                Who We Are
+              </div>
+            </FadeIn>
+
+            <FadeIn delay={0.12} className="mt-5">
+              <h1 className="text-[clamp(2.2rem,5.0vw,4.1rem)] leading-[0.98] font-extrabold tracking-tight text-white">
+                Built on experience.{" "}
+                <span className="text-[var(--brand-orange)]">Focused on delivery.</span>
+              </h1>
+            </FadeIn>
+
+            <FadeIn delay={0.18} className="mt-4">
+              <p className="max-w-[72ch] text-white/72 font-semibold leading-relaxed">
+                AIM Construction Management is a licensed general contractor founded on decades of underground utility
+                and electrical experience—executing fiber, electrical, water & sewer, and ductbank infrastructure with
+                safety-first operations and clean restoration.
+              </p>
+            </FadeIn>
+
+            <FadeIn delay={0.24} className="mt-8 flex flex-wrap gap-3">
+              <a
+                href="#background"
+                className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
+              >
+                Our Background
+              </a>
+              <a
+                href="/projects.html"
+                className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
+              >
+                See Work
+              </a>
+            </FadeIn>
+          </div>
+        </Container>
+      </div>
+    </header>
+  );
+}
+
+/* ---------------------------------------------
+   MOBILE-SAFE collage + bento
+   (fixes horizontal overflow)
+---------------------------------------------- */
 
 function IntroImageCollage() {
   const left1 = useRef(null);
@@ -148,7 +217,7 @@ function IntroImageCollage() {
   const y2 = useTransform(p2, [0, 1], ["-6%", "6%"]);
 
   return (
-    <section className="pb-8">
+    <section className="pb-8 pt-6">
       <Container>
         <div className="grid gap-5 md:grid-cols-12 md:items-stretch">
           <div className="md:col-span-5 grid gap-5">
@@ -160,7 +229,7 @@ function IntroImageCollage() {
               <img
                 src="/img/Hero_Comp1.webp"
                 alt="Field work"
-                className="h-[220px] md:h-[260px] w-full object-cover"
+                className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
               />
             </motion.div>
 
@@ -170,9 +239,9 @@ function IntroImageCollage() {
               className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
             >
               <img
-                src="/img/service-general.webp"
+                src="/img/hero-bg.avif"
                 alt="Restoration"
-                className="h-[220px] md:h-[260px] w-full object-cover"
+                className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
               />
             </motion.div>
           </div>
@@ -180,9 +249,9 @@ function IntroImageCollage() {
           <div className="md:col-span-7">
             <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] h-full">
               <img
-                src="/img/about-image.webp"
+                src="/img/top-view-site.webp"
                 alt="Construction planning"
-                className="h-[420px] md:h-full w-full object-cover"
+                className="h-[280px] sm:h-[360px] md:h-full w-full object-cover"
               />
             </div>
           </div>
@@ -194,18 +263,15 @@ function IntroImageCollage() {
 
 function BentoRail() {
   return (
-    <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white">
+    <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white w-full max-w-full">
       <div className="h-40 overflow-hidden">
-        <img
-          src="/img/service-planning.webp"
-          alt="AIM"
-          className="h-full w-full object-cover"
-        />
+        <img src="/img/bw-exca.webp" alt="AIM" className="h-full w-full object-cover" />
       </div>
 
-      <div className="border-t border-black/10 bg-[var(--ink)] py-3">
+      <div className="border-t border-black/10 bg-[var(--ink)] py-3 overflow-hidden">
         <div className="relative overflow-hidden">
-          <div className="animate-[marquee_16s_linear_infinite] whitespace-nowrap text-white/85 font-extrabold uppercase tracking-[0.22em] text-xs">
+          {/* NOTE: avoid whitespace-nowrap overflow issues by clipping + giving padding */}
+          <div className="animate-[marquee_16s_linear_infinite] whitespace-nowrap text-white/85 font-extrabold uppercase tracking-[0.22em] text-[11px] px-2">
             <span className="mx-6 inline-block">
               Safety First • Speed + Precision • Clean Restoration • Communication
             </span>
@@ -240,11 +306,11 @@ function BentoBlock() {
   return (
     <section id="background" className="pt-6">
       <Container>
-        <div className="mx-auto max-w-[840px] text-center">
+        <div className="mx-auto max-w-[860px] text-center">
           <FadeIn>
             <RevealLines
               as="h2"
-              className="text-[clamp(1.9rem,4vw,3.0rem)] leading-[1.05] font-extrabold text-white"
+              className="text-[clamp(1.85rem,4vw,3.0rem)] leading-[1.05] font-extrabold text-white"
               lines={[
                 "Built for fast, safe execution—",
                 <span className="text-[var(--brand-orange)]" key="o">
@@ -256,27 +322,25 @@ function BentoBlock() {
 
           <FadeIn delay={0.12} className="mt-4">
             <p className="mx-auto max-w-[66ch] text-white/65 font-semibold">
-              In a fast-moving world, work has to be done quickly and
-              efficiently—without sacrificing safety or finish. We’re based in
-              South Florida and travel where the work demands.
+              In a fast-moving world, work has to be done quickly and efficiently—without sacrificing safety or finish.
+              We’re based in South Florida and travel where the work demands.
             </p>
           </FadeIn>
         </div>
 
-        <div className="mt-10 grid gap-5 md:grid-cols-12">
-          <div className="md:col-span-5 rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.12)] overflow-hidden">
+        {/* IMPORTANT: prevent any accidental horizontal overflow */}
+        <div className="mt-10 grid gap-5 md:grid-cols-12 overflow-x-hidden">
+          {/* Card: built on */}
+          <div className="md:col-span-5 rounded-[22px] border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.12)] overflow-hidden w-full min-w-0">
             <div className="p-6 md:p-7">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/55">
                 What we’re built on
               </div>
               <p className="mt-3 text-xl md:text-2xl font-extrabold text-[var(--ink)] leading-tight">
-                “Scope clarity, safety-first operations, and clean restoration to
-                spec.”
+                “Scope clarity, safety-first operations, and clean restoration to spec.”
               </p>
               <div className="mt-6 h-1 w-20 rounded-full bg-[var(--brand-orange)]" />
-              <div className="mt-4 text-sm font-semibold text-black/60">
-                AIM Construction Management
-              </div>
+              <div className="mt-4 text-sm font-semibold text-black/60">AIM Construction Management</div>
 
               <div className="mt-6 grid gap-3">
                 {[
@@ -286,7 +350,7 @@ function BentoBlock() {
                 ].map((t) => (
                   <div
                     key={t}
-                    className="rounded-2xl border border-black/10 bg-[var(--sand)]/10 px-4 py-3 font-bold text-[var(--ink)]"
+                    className="rounded-2xl border border-black/10 bg-[var(--sand)]/10 px-4 py-3 font-bold text-[var(--ink)] w-full min-w-0 break-words"
                   >
                     {t}
                   </div>
@@ -295,35 +359,33 @@ function BentoBlock() {
             </div>
           </div>
 
-          <div className="md:col-span-7 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white">
-            <div className="h-[320px] md:h-full overflow-hidden">
+          {/* Image */}
+          <div className="md:col-span-7 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white w-full min-w-0">
+            <div className="h-[260px] sm:h-[320px] md:h-full overflow-hidden">
               <img
-                src="/img/hero-bg.avif"
+                src="/img/3d-view-camera-shutter.webp"
                 alt="AIM work"
                 className="h-full w-full object-cover"
               />
             </div>
           </div>
 
-          <div className="md:col-span-7">
+          {/* Rail */}
+          <div className="md:col-span-7 w-full min-w-0">
             <BentoRail />
           </div>
 
-          <div className="md:col-span-5 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.12)] bg-[var(--ink)] text-white">
+          {/* Quick facts */}
+          <div className="md:col-span-5 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.12)] bg-[var(--ink)] text-white w-full min-w-0">
             <div className="p-6 md:p-7">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/55">
                 Quick facts
               </div>
               <div className="mt-5 grid grid-cols-2 gap-4">
                 {stats.map((s) => (
-                  <div
-                    key={s.small}
-                    className="rounded-2xl border border-white/12 bg-white/6 p-4"
-                  >
-                    <div className="text-2xl md:text-3xl font-extrabold text-white">
-                      {s.big}
-                    </div>
-                    <div className="mt-1 text-xs md:text-sm font-semibold text-white/70">
+                  <div key={s.small} className="rounded-2xl border border-white/12 bg-white/6 p-4 min-w-0">
+                    <div className="text-2xl md:text-3xl font-extrabold text-white">{s.big}</div>
+                    <div className="mt-1 text-xs md:text-sm font-semibold text-white/70 break-words">
                       {s.small}
                     </div>
                   </div>
@@ -331,8 +393,7 @@ function BentoBlock() {
               </div>
 
               <div className="mt-6 text-white/75 font-semibold">
-                From utility install to final restoration, we keep production
-                moving while protecting safety and finish.
+                From utility install to final restoration, we keep production moving while protecting safety and finish.
               </div>
             </div>
           </div>
@@ -374,9 +435,7 @@ function ValuesAccordion() {
       <Container>
         <div className="mx-auto max-w-[860px] text-center">
           <FadeIn>
-            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
-              How We Work
-            </div>
+            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">How We Work</div>
           </FadeIn>
 
           <FadeIn delay={0.08} className="mt-3">
@@ -393,27 +452,22 @@ function ValuesAccordion() {
             {values.map((v, i) => (
               <details key={v.t} className="group border-b border-black/10 last:border-b-0">
                 <summary className="list-none cursor-pointer select-none px-6 md:px-8 py-5 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4">
-                    <div className="text-[11px] md:text-xs font-extrabold uppercase tracking-[0.22em] text-black/45 w-10">
+                  <div className="flex items-center gap-4 min-w-0">
+                    <div className="text-[11px] md:text-xs font-extrabold uppercase tracking-[0.22em] text-black/45 w-10 shrink-0">
                       {String(i + 1).padStart(2, "0")}
                     </div>
-                    <div className="text-lg md:text-xl font-extrabold text-[var(--ink)]">
+                    <div className="text-lg md:text-xl font-extrabold text-[var(--ink)] truncate">
                       {v.t}
                     </div>
                   </div>
 
-                  <div className="h-9 w-9 rounded-full border border-black/10 bg-[var(--sand)] grid place-items-center">
-                    {/* NOTE: keep this black so it’s visible */}
-                    <span className="text-black/70 font-extrabold leading-none group-open:rotate-45 transition">
-                      +
-                    </span>
+                  <div className="h-9 w-9 shrink-0 rounded-full border border-black/10 bg-[var(--sand)] grid place-items-center">
+                    <span className="text-white/70 font-extrabold leading-none group-open:rotate-45 transition">+</span>
                   </div>
                 </summary>
 
                 <div className="px-6 md:px-8 pb-6 -mt-1">
-                  <p className="text-black/65 font-semibold leading-relaxed max-w-[70ch]">
-                    {v.d}
-                  </p>
+                  <p className="text-black/65 font-semibold leading-relaxed max-w-[70ch]">{v.d}</p>
                 </div>
               </details>
             ))}
@@ -431,9 +485,7 @@ function CulturePush() {
         <div className="grid gap-6 md:grid-cols-12 md:items-center">
           <div className="md:col-span-5">
             <FadeIn>
-              <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
-                Our culture
-              </div>
+              <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">Our culture</div>
             </FadeIn>
 
             <FadeIn delay={0.08} className="mt-3">
@@ -451,10 +503,9 @@ function CulturePush() {
 
             <FadeIn delay={0.14} className="mt-4">
               <p className="text-white/65 font-semibold leading-relaxed">
-                We operate with a safety-first mindset, respect for the site and
-                the public, and a commitment to restoration that looks right when
-                we leave. The goal is simple: do it right, communicate clearly,
-                and finish strong.
+                We operate with a safety-first mindset, respect for the site and the public, and a commitment to
+                restoration that looks right when we leave. The goal is simple: do it right, communicate clearly, and
+                finish strong.
               </p>
             </FadeIn>
           </div>
@@ -462,55 +513,15 @@ function CulturePush() {
           <div className="md:col-span-7">
             <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white">
               <img
-                src="/img/service-maintenance.webp"
+                src="/img/working-site.webp"
                 alt="Directional drilling"
-                className="h-[340px] md:h-[440px] w-full object-cover"
+                className="h-[300px] sm:h-[340px] md:h-[440px] w-full object-cover"
               />
             </div>
           </div>
         </div>
       </Container>
     </section>
-  );
-}
-
-/* ---------------------------------------------
-   Page shell (same sand + curved shell concept)
----------------------------------------------- */
-
-function PageShell({ children }) {
-  return (
-    <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)]">
-      <div className="pointer-events-none fixed inset-0 -z-30 bg-[var(--sand)]" />
-
-      <div className="pointer-events-none fixed inset-0 -z-20">
-        <div className="absolute inset-0 [background:linear-gradient(180deg,var(--sand)_0%,var(--sand-2)_70%,var(--sand)_100%)]" />
-        <div
-          className="absolute inset-0 opacity-[0.08]
-          [background-image:linear-gradient(rgba(255,255,255,0.12)_1px,transparent_1px),
-          linear-gradient(90deg,rgba(255,255,255,0.12)_1px,transparent_1px)]
-          [background-size:48px_48px]"
-        />
-        <div className="absolute inset-0 noise opacity-[0.06] mix-blend-multiply" />
-      </div>
-
-      <div className="relative">
-        <div className="pointer-events-none absolute inset-x-0 bottom-0 h-[900px] -z-10 hidden md:block">
-          <div className="absolute inset-0 bg-black" />
-          <div className="absolute inset-0 opacity-[0.55] [background:radial-gradient(1100px_520px_at_20%_20%,rgba(255,255,255,0.08),transparent_60%),radial-gradient(900px_420px_at_80%_40%,rgba(255,255,255,0.06),transparent_60%)]" />
-          <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_20%_30%,rgba(233,151,19,0.22),transparent_62%)]" />
-          <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
-        </div>
-
-        <div className="relative z-10 overflow-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
-          <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(1200px_700px_at_50%_-10%,rgba(255,255,255,0.40),transparent_60%)]" />
-          <div className="relative">{children}</div>
-        </div>
-
-        {/* ✅ Uses your latest Footer from SiteChrome */}
-        <Footer />
-      </div>
-    </main>
   );
 }
 
@@ -525,64 +536,67 @@ export default function About() {
 
   return (
     <PageShell>
-      {/* ✅ Uses your latest Nav from SiteChrome */}
       <Nav />
 
-      {/* Mobile top-centered logo + menu (like Home) */}
+      {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
           <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
-
-      {/* ✅ Uses your latest MobileMenu from SiteChrome */}
       <div className="md:hidden">
         <MobileMenu />
       </div>
 
-      <ManifestoIntro />
-      <IntroImageCollage />
-      <BentoBlock />
-      <ValuesAccordion />
+      {/* HERO */}
+      <AboutHero />
 
-      <div
-        className="mx-auto my-10 h-[10px] w-[92%] max-w-[1200px] rounded-full
-        bg-[repeating-linear-gradient(135deg,var(--brand-orange)_0_10px,rgba(255,255,255,0.08)_10px_20px)]
-        opacity-70"
-      />
+      {/* Seam blend between hero and first section (doesn't shrink hero) */}
+      <div className="relative -mt-[240px] h-[240px] overflow-hidden">
+        <HeroBlend height={240} />
+      </div>
 
-      <CulturePush />
+      {/* NOTE: prevent any stray overflow on mobile */}
+      <div className="relative overflow-x-hidden">
+        <IntroImageCollage />
+        <BentoBlock />
+        <ValuesAccordion />
 
-      <FloatSection tone="dark">
-        <div className="grid gap-6 md:grid-cols-12 md:items-center">
-          <div className="md:col-span-7">
-            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
-              Ready to move?
+        <div
+          className="mx-auto my-10 h-[10px] w-[92%] max-w-[1200px] rounded-full
+          bg-[repeating-linear-gradient(135deg,var(--brand-orange)_0_10px,rgba(255,255,255,0.08)_10px_20px)]
+          opacity-70"
+        />
+
+        <CulturePush />
+
+        <FloatSection tone="dark">
+          <div className="grid gap-6 md:grid-cols-12 md:items-center">
+            <div className="md:col-span-7">
+              <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">Ready to move?</div>
+              <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-white leading-tight">
+                Need underground utility or restoration handled right?
+              </h2>
+              <p className="mt-2 text-white/75 font-semibold">Send scope + photos and we’ll review quickly.</p>
             </div>
-            <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-white leading-tight">
-              Need underground utility or restoration handled right?
-            </h2>
-            <p className="mt-2 text-white/75 font-semibold">
-              Send scope + photos and we’ll review quickly.
-            </p>
-          </div>
 
-          <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">
-            <a
-              className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-              href="/contact.html"
-            >
-              Request a Quote
-            </a>
-            <a
-              className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-              href="/projects.html"
-            >
-              See Our Work
-            </a>
+            <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">
+              <a
+                className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
+                href="/contact.html"
+              >
+                Request a Quote
+              </a>
+              <a
+                className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
+                href="/projects.html"
+              >
+                See Our Work
+              </a>
+            </div>
           </div>
-        </div>
-      </FloatSection>
+        </FloatSection>
+      </div>
     </PageShell>
   );
 }

@@ -1,7 +1,7 @@
 // src/pages/Terms.jsx
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 function FloatSection({ children, tone = "light" }) {
   const shell =
@@ -134,6 +134,7 @@ export default function Terms() {
             </div>
           </Container>
         </div>
+        <HeroBlend height={200} />
       </header>
 
       {/* CONTENT */}

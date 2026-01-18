@@ -1,6 +1,6 @@
 import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 /** Floating rounded section wrapper */
 function FloatSection({ children, tone = "light" }) {
@@ -242,6 +242,7 @@ function Hero() {
           </button>
         </Container>
       </div>
+
     </header>
   );
 }

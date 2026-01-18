@@ -2,6 +2,65 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+export function HeroBlend({
+  height = 320,              // taller = smoother
+  sand = "var(--sand)",       // page background
+  sand2 = "var(--sand-2)",    // subtle mid
+  className = "",
+}) {
+  return (
+    <div
+      aria-hidden="true"
+      className={[
+        "pointer-events-none absolute inset-x-0 bottom-0 z-[9] overflow-hidden",
+        className,
+      ].join(" ")}
+      style={{ height }}
+    >
+      {/* Phase 1: soften the black hero edge (removes the “line”) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background:
+            "linear-gradient(to bottom, rgba(0,0,0,0) 0%, rgba(0,0,0,0.55) 70%, rgba(0,0,0,0.80) 100%)",
+          opacity: 0.55,
+        }}
+      />
+
+      {/* Phase 2: blend into sand (the actual transition) */}
+      <div
+        className="absolute inset-0"
+        style={{
+          background: `
+            radial-gradient(1100px 260px at 50% 100%,
+              rgba(0,0,0,0) 0%,
+              rgba(0,0,0,0.18) 45%,
+              rgba(0,0,0,0) 72%
+            ),
+            linear-gradient(
+              to bottom,
+              rgba(0,0,0,0) 0%,
+              ${sand2} 55%,
+              ${sand} 100%
+            )
+          `,
+          opacity: 1,
+        }}
+      />
+
+      {/* Phase 3: tiny seam killer at the very bottom */}
+      <div
+        className="absolute inset-x-0 bottom-0 h-8"
+        style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0), ${sand})` }}
+      />
+
+      {/* Banding killer (optional but recommended) */}
+      <div className="absolute inset-0 noise opacity-[0.05] mix-blend-overlay" />
+    </div>
+  );
+}
+
+
 
 export const Container = ({ children }) => (
   <div className="mx-auto w-[92%] max-w-[1200px]">{children}</div>

@@ -1,7 +1,7 @@
 // src/pages/Privacy.jsx
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 /* ---------------------------------------------
    Small primitives (match your site vibe)
@@ -146,6 +146,7 @@ export default function Privacy() {
             </div>
           </Container>
         </div>
+        <HeroBlend height={200} />
       </header>
 
       {/* CONTENT */}

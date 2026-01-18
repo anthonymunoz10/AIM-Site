@@ -1,7 +1,7 @@
 // src/pages/Services.jsx
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container } from "../components/SiteChrome";
+import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 /* ---------------------------------------------
    Small primitives (match Home/About/Projects vibe)
@@ -172,6 +172,7 @@ export default function Services() {
             </div>
           </Container>
         </div>
+        <HeroBlend height={200} />
       </header>
 
       {/* CONTENT */}
