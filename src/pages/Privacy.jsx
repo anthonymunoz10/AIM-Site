@@ -146,7 +146,7 @@ export default function Privacy() {
             </div>
           </Container>
         </div>
-        <HeroBlend height={200} />
+        <HeroBlend height={100} />
       </header>
 
       {/* CONTENT */}

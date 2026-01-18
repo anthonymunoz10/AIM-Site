@@ -1,7 +1,13 @@
 // src/pages/Contact.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
-import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import {
+  MobileMenu,
+  Nav,
+  Footer,
+  Container,
+  HeroBlend,
+} from "../components/SiteChrome";
 
 /* ---------------------------------------------
    Small primitives (match Home/Projects vibe)
@@ -9,7 +15,8 @@ import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/Sit
 
 function FloatSection({ children, tone = "light" }) {
   const shell =
-    "rounded-[26px] border overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.18)]";
+    // ✅ force shell to never exceed viewport due to child min-width
+    "w-full max-w-full min-w-0 rounded-[26px] border overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.18)]";
 
   const toneCls =
     tone === "dark"
@@ -25,7 +32,10 @@ function FloatSection({ children, tone = "light" }) {
     <div className="py-10 md:py-14">
       <Container>
         <div className={`${shell} ${toneCls}`}>
-          <div className={`p-6 md:p-10 ${innerOverlay}`}>{children}</div>
+          {/* ✅ allow all descendants to shrink */}
+          <div className={`min-w-0 max-w-full p-4 sm:p-6 md:p-10 ${innerOverlay}`}>
+            {children}
+          </div>
         </div>
       </Container>
     </div>
@@ -55,7 +65,7 @@ function FadeIn({ children, className = "", delay = 0 }) {
 
 function PageShell({ children }) {
   return (
-    <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)]">
+    <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)] overflow-x-hidden">
       <div className="pointer-events-none fixed inset-0 -z-30 bg-[var(--sand)]" />
 
       <div className="pointer-events-none fixed inset-0 -z-20">
@@ -77,7 +87,7 @@ function PageShell({ children }) {
           <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
         </div>
 
-        <div className="relative z-10 overflow-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
+        <div className="relative z-10 overflow-hidden overflow-x-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
           <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(1200px_700px_at_50%_-10%,rgba(255,255,255,0.40),transparent_60%)]" />
           <div className="relative">{children}</div>
         </div>
@@ -101,7 +111,6 @@ function FormCard({ emailHref, email }) {
         e.preventDefault();
         if (state === "sending" || state === "sent") return;
         setState("sending");
-        // UI only — wire to Formspree/Netlify/server later
         setTimeout(() => setState("sent"), 700);
       }}
       className="rounded-[22px] border border-white/12 bg-white/5 backdrop-blur-xl p-5 md:p-6"
@@ -170,19 +179,12 @@ function FormCard({ emailHref, email }) {
           disabled={state !== "idle"}
           className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition disabled:opacity-60 disabled:hover:opacity-60"
         >
-          {state === "idle"
-            ? "Send Message"
-            : state === "sending"
-            ? "Sending…"
-            : "Sent ✓"}
+          {state === "idle" ? "Send Message" : state === "sending" ? "Sending…" : "Sent ✓"}
         </button>
 
         <span className="text-white/55 font-semibold text-sm">
           For attachments/photos, email{" "}
-          <a
-            className="underline decoration-white/30 hover:decoration-white/70"
-            href={emailHref}
-          >
+          <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
             {email}
           </a>
           .
@@ -191,8 +193,7 @@ function FormCard({ emailHref, email }) {
 
       {state === "sent" && (
         <div className="mt-4 rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-sm font-semibold text-white/75">
-          Thanks — we received your message. If it’s urgent, call and we’ll help
-          faster.
+          Thanks — we received your message. If it’s urgent, call and we’ll help faster.
         </div>
       )}
     </form>
@@ -215,14 +216,15 @@ export default function Contact() {
         name: "Anthony Munoz",
         phoneLabel: "(305) 331-5759",
         phoneHref: "tel:3053315759",
+        phoneDigits: "3053315759",
         imgSrc: "/img/Anthony.webp",
-        primary: true,
       },
       {
         role: "Director of Operations",
         name: "Ulises Munoz",
         phoneLabel: "(305) 970-9975",
         phoneHref: "tel:3059709975",
+        phoneDigits: "3059709975",
         imgSrc: "/img/Ulises.webp",
       },
     ],
@@ -231,7 +233,6 @@ export default function Contact() {
 
   const email = "aimconstructionmgt@gmail.com";
   const emailHref = `mailto:${email}?subject=Website%20Inquiry`;
-
   const officeLines = ["7900 Oak Lane, Suite 479", "Miami Lakes, FL 33016"];
 
   const scrollToForm = () => {
@@ -245,23 +246,15 @@ export default function Contact() {
 
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
-        <a
-          href="/"
-          aria-label="Home"
-          className="inline-flex items-center justify-center"
-        >
-          <img
-            src="/img/logo.png"
-            alt="Aim Construction"
-            className="h-16 w-auto opacity-90"
-          />
+        <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
+          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
       <div className="md:hidden">
         <MobileMenu />
       </div>
 
-      {/* HERO (ONE primary CTA) */}
+      {/* HERO */}
       <header className="relative min-h-[68svh] md:min-h-[68vh] bg-black overflow-hidden">
         <div
           className="absolute inset-0 bg-center bg-cover"
@@ -278,30 +271,23 @@ export default function Contact() {
               <FadeIn delay={0.05}>
                 <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
                   Fast response
-                  <span className="ml-3 text-white/50 font-bold">
-                    • usually within 1 business day
-                  </span>
+                  <span className="ml-3 text-white/50 font-bold">• usually within 1 business day</span>
                 </div>
               </FadeIn>
 
               <FadeIn delay={0.12} className="mt-5">
                 <h1 className="text-[clamp(2.4rem,5.2vw,4.4rem)] leading-[0.95] font-extrabold tracking-tight text-white">
-                  Contact{" "}
-                  <span className="text-[var(--brand-orange)]">Us</span>
+                  Contact <span className="text-[var(--brand-orange)]">Us</span>
                 </h1>
               </FadeIn>
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
-                  Share your scope, timeline, and site constraints. We’ll reply
-                  quickly with next steps.
+                  Share your scope, timeline, and site constraints. We’ll reply quickly with next steps.
                 </p>
               </FadeIn>
 
-              <FadeIn
-                delay={0.24}
-                className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3"
-              >
+              <FadeIn delay={0.24} className="mt-8 flex flex-col sm:flex-row sm:items-center gap-3">
                 <button
                   type="button"
                   onClick={scrollToForm}
@@ -309,115 +295,69 @@ export default function Contact() {
                 >
                   Send a Message
                 </button>
-
-                {/* Secondary options as links (not more buttons) */}
-                <div className="flex flex-wrap items-center gap-x-5 gap-y-2 text-sm font-semibold text-white/70">
-                  <a
-                    href={contacts[0].phoneHref}
-                    className="hover:text-white transition"
-                  >
-                    Call: <span className="text-white">{contacts[0].phoneLabel}</span>
-                  </a>
-                  <span className="text-white/35">•</span>
-                  <a href={emailHref} className="hover:text-white transition">
-                    Email: <span className="text-white">{email}</span>
-                  </a>
-                </div>
               </FadeIn>
             </div>
           </Container>
         </div>
-        <HeroBlend height={200} />
+
+        <HeroBlend height={100} />
       </header>
 
       {/* CONTENT */}
       <section className="pt-6">
-        {/* Direct contact + who you'll hear from */}
         <FloatSection tone="light">
-          <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
+          {/* ✅ critical: min-w-0/max-w-full on the layout root */}
+          <div className="grid gap-8 lg:grid-cols-12 lg:items-start min-w-0 max-w-full">
             {/* LEFT */}
-            <div className="lg:col-span-7">
-              <div className="flex flex-wrap items-center gap-3">
+            <div className="lg:col-span-7 min-w-0 max-w-full">
+              <div className="flex flex-wrap items-center gap-3 min-w-0 max-w-full">
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/50">
                   Direct contact
                 </div>
-                <div className="h-[1px] flex-1 bg-black/10" />
-                <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/60 px-3 py-1 text-[11px] font-bold text-black/60">
+                <div className="h-[1px] flex-1 bg-black/10 min-w-0" />
+                <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] font-bold text-black/60">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)]" />
                   Fast replies
                 </div>
               </div>
 
               <h2 className="mt-4 text-[28px] md:text-[36px] font-extrabold tracking-tight text-[var(--ink)]">
-                Reach us in{" "}
+                Reach the right person{" "}
                 <span className="bg-[linear-gradient(90deg,var(--brand-orange),#ffcf7a)] bg-clip-text text-transparent">
-                  one step
+                  instantly
                 </span>
                 .
               </h2>
+
               <p className="mt-2 max-w-[62ch] text-[15px] font-semibold text-black/60 leading-relaxed">
-                Use the form below for most requests. If it’s urgent, call. If you have photos,
-                email is best.
+                Tap a contact card to call or text. For photos/attachments, email is best.
               </p>
 
-              {/* Modern action tiles */}
-              <div className="mt-6 grid gap-4 sm:grid-cols-2">
-                {/* CALL */}
-                <a
-                  href={contacts[0].phoneHref}
-                  className="group relative overflow-hidden rounded-[22px] border border-black/10 bg-white/70 p-5 shadow-[0_14px_50px_rgba(0,0,0,0.10)] backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-[0_22px_70px_rgba(0,0,0,0.14)]"
-                >
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100 [background:radial-gradient(700px_280px_at_20%_0%,rgba(233,151,19,0.18),transparent_55%)]" />
-                  <div className="flex items-start justify-between gap-3">
-                    <div>
-                      <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-black/45">
-                        Call
-                      </div>
-                      <div className="mt-1 text-[18px] md:text-[20px] font-extrabold text-[var(--ink)]">
-                        {contacts[0].phoneLabel}
-                      </div>
-                      <div className="mt-1 text-sm font-semibold text-black/55">
-                        Time-sensitive questions
-                      </div>
-                    </div>
-
-                    <div className="grid place-items-center h-11 w-11 rounded-full border border-black/10 bg-white shadow-sm transition group-hover:border-[var(--brand-orange)]">
-                      <svg width="18" height="18" viewBox="0 0 24 24" className="text-black/65 group-hover:text-[var(--brand-orange)]">
-                        <path
-                          fill="currentColor"
-                          d="M6.62 10.79a15.05 15.05 0 0 0 6.59 6.59l2.2-2.2a1 1 0 0 1 1.02-.24c1.12.37 2.33.57 3.57.57a1 1 0 0 1 1 1V20a1 1 0 0 1-1 1C10.85 21 3 13.15 3 3a1 1 0 0 1 1-1h3.5a1 1 0 0 1 1 1c0 1.24.2 2.45.57 3.57a1 1 0 0 1-.24 1.02l-2.21 2.2Z"
-                        />
-                      </svg>
-                    </div>
-                  </div>
-
-                  <div className="mt-4 h-[1px] bg-black/10" />
-                  <div className="mt-3 text-[12px] font-semibold text-black/55">
-                    Prefer text details? Use the form — we’ll follow up fast.
-                  </div>
-                </a>
-
-                {/* EMAIL */}
+              {/* EMAIL */}
+              <div className="mt-6 grid gap-4 min-w-0 max-w-full">
                 <a
                   href={emailHref}
-                  className="group relative overflow-hidden rounded-[22px] border border-black/10 bg-white/70 p-5 shadow-[0_14px_50px_rgba(0,0,0,0.10)] backdrop-blur-md transition hover:-translate-y-0.5 hover:shadow-[0_22px_70px_rgba(0,0,0,0.14)]"
+                  className="group w-full max-w-full min-w-0 overflow-hidden rounded-[22px] border border-black/10 bg-white p-5 shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:shadow-[0_22px_70px_rgba(0,0,0,0.14)] transition hover:-translate-y-0.5"
                 >
-                  <div className="pointer-events-none absolute inset-0 opacity-0 transition group-hover:opacity-100 [background:radial-gradient(700px_280px_at_20%_0%,rgba(255,255,255,0.35),transparent_55%)]" />
-                  <div className="flex items-start justify-between gap-3">
+                  {/* ✅ grid w/ minmax(0,1fr) ensures left column can shrink */}
+                  <div className="grid grid-cols-[minmax(0,1fr)_auto] items-start gap-4 min-w-0 w-full">
                     <div className="min-w-0">
                       <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-black/45">
                         Email
                       </div>
-                      <div className="mt-1 text-[18px] md:text-[20px] font-extrabold text-[var(--ink)] truncate">
+
+                      {/* ✅ strongest, clean wrap on mobile */}
+                      <div className="mt-1 text-[18px] md:text-[20px] font-extrabold text-[var(--ink)] break-words [overflow-wrap:anywhere]">
                         {email}
                       </div>
+
                       <div className="mt-1 text-sm font-semibold text-black/55">
                         Best for scope + photos
                       </div>
                     </div>
 
-                    <div className="grid place-items-center h-11 w-11 rounded-full border border-black/10 bg-white shadow-sm transition group-hover:border-[var(--brand-orange)]">
-                      <svg width="18" height="18" viewBox="0 0 24 24" className="text-black/65 group-hover:text-[var(--brand-orange)]">
+                    <div className="shrink-0 flex-none grid place-items-center h-11 w-11 rounded-full border border-black/10 bg-[var(--sand)]/40 text-black/65 group-hover:border-[var(--brand-orange)] group-hover:text-[var(--brand-orange)] transition">
+                      <svg width="18" height="18" viewBox="0 0 24 24">
                         <path
                           fill="currentColor"
                           d="M20 4H4a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V6a2 2 0 0 0-2-2Zm0 4-8 5L4 8V6l8 5 8-5v2Z"
@@ -426,58 +366,98 @@ export default function Contact() {
                     </div>
                   </div>
 
-                  <div className="mt-4 h-[1px] bg-black/10" />
-                  <div className="mt-3 text-[12px] font-semibold text-black/55">
+                  <div className="mt-4 text-[12px] font-semibold text-black/55">
                     Include location + timeline for the quickest turnaround.
                   </div>
                 </a>
               </div>
 
-              {/* Modern “tip” bar */}
-              <div className="mt-4 rounded-[18px] border border-black/10 bg-white/60 px-4 py-3 text-[13px] font-semibold text-black/60">
-                Tip: include <span className="text-black/75">location</span>,{" "}
-                <span className="text-black/75">timeline</span>, and{" "}
-                <span className="text-black/75">scope summary</span>.
-              </div>
-
-              {/* WHO YOU'LL HEAR FROM (modern mini profile row) */}
-              <div className="mt-6 rounded-[22px] border border-black/10 bg-white/60 p-4 md:p-5">
-                <div className="flex items-center gap-3">
+              {/* PEOPLE */}
+              <div className="mt-7 min-w-0 max-w-full">
+                <div className="flex items-center gap-3 min-w-0">
                   <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-black/45">
                     Who you’ll hear from
                   </div>
-                  <div className="h-[1px] flex-1 bg-black/10" />
+                  <div className="h-[1px] flex-1 bg-black/10 min-w-0" />
                 </div>
 
-                <div className="mt-4 grid gap-3 sm:grid-cols-2">
+                <div className="mt-4 grid gap-4 md:grid-cols-2 min-w-0 max-w-full">
                   {contacts.map((c) => (
-                    <div
-                      key={c.name}
-                      className="flex items-center gap-4 rounded-[18px] border border-black/10 bg-white p-4 shadow-sm"
-                    >
-                      <div className="relative h-12 w-12 overflow-hidden rounded-full border border-black/10 bg-black/5">
-                        <img
-                          src={c.imgSrc}
-                          alt={c.name}
-                          className="h-full w-full object-cover"
-                          loading="lazy"
-                        />
-                      </div>
+                    <div key={c.name} className="w-full max-w-full min-w-0">
+                      {/* Use an anchor for the whole card so it behaves predictably on mobile */}
+                      <a
+                        href={c.phoneHref}
+                        className="
+                          group block w-full max-w-full min-w-0 text-left
+                          rounded-[22px] border border-black/10 bg-white
+                          shadow-sm hover:shadow-[0_18px_60px_rgba(0,0,0,0.12)]
+                          transition hover:-translate-y-0.5
+                          overflow-hidden
+                        "
+                      >
+                        <div className="h-[6px] w-full bg-[linear-gradient(90deg,var(--brand-orange),rgba(233,151,19,0.10),transparent)]" />
 
-                      <div className="min-w-0">
-                        <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-black/45">
-                          {c.role}
+                        <div className="p-5 sm:p-6 min-w-0">
+                          <div className="flex items-start gap-4 min-w-0">
+                            <div className="relative h-14 w-14 shrink-0 overflow-hidden rounded-full border border-black/10 bg-black/5">
+                              <img
+                                src={c.imgSrc}
+                                alt={c.name}
+                                className="h-full w-full object-cover"
+                                loading="lazy"
+                              />
+                            </div>
+
+                            <div className="min-w-0 flex-1">
+                              <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-black/45">
+                                {c.role}
+                              </div>
+
+                              <div className="mt-1 text-[18px] sm:text-[20px] font-extrabold text-[var(--ink)] leading-tight">
+                                {c.name}
+                              </div>
+
+                              <div className="mt-1 text-[13px] font-semibold text-black/60">
+                                Tap to call or text
+                              </div>
+                            </div>
+
+                            <div className="shrink-0">
+                              <div className="grid place-items-center h-11 w-11 rounded-full border border-black/10 bg-[var(--sand)]/40 text-black/60 group-hover:border-[var(--brand-orange)] group-hover:text-[var(--brand-orange)] transition">
+                                →
+                              </div>
+                            </div>
+                          </div>
+
+                          <div className="mt-4 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between min-w-0">
+                            <div className="text-[13px] font-semibold text-black/60">
+                              <span className="text-black/75">{c.phoneLabel}</span>
+                            </div>
+
+                            {/* keep these wrapped and shrink-safe */}
+                            <div className="flex flex-wrap items-center gap-2 min-w-0">
+                              <span
+                                onClick={(e) => e.preventDefault()}
+                                className="sr-only"
+                              />
+                              <a
+                                href={c.phoneHref}
+                                onClick={(e) => e.stopPropagation()}
+                                className="shrink-0 rounded-full border border-black/10 bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-black/60 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
+                              >
+                                Call
+                              </a>
+                              <a
+                                href={`sms:${c.phoneDigits}`}
+                                onClick={(e) => e.stopPropagation()}
+                                className="shrink-0 rounded-full border border-black/10 bg-white px-4 py-2 text-[11px] font-extrabold uppercase tracking-[0.22em] text-black/60 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
+                              >
+                                Text
+                              </a>
+                            </div>
+                          </div>
                         </div>
-                        <div className="mt-1 text-[16px] font-extrabold text-[var(--ink)] truncate">
-                          {c.name}
-                        </div>
-                        <a
-                          href={c.phoneHref}
-                          className="mt-1 inline-flex text-[13px] font-semibold text-black/60 hover:text-[var(--brand-orange)] transition"
-                        >
-                          {c.phoneLabel}
-                        </a>
-                      </div>
+                      </a>
                     </div>
                   ))}
                 </div>
@@ -485,10 +465,9 @@ export default function Contact() {
             </div>
 
             {/* RIGHT */}
-            <div className="lg:col-span-5">
-              <div className="relative overflow-hidden rounded-[24px] border border-black/10 bg-white/70 p-6 shadow-[0_18px_70px_rgba(0,0,0,0.12)] backdrop-blur-md">
-                {/* subtle glow */}
-                <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full opacity-40 [background:radial-gradient(circle,rgba(233,151,19,0.22),transparent_60%)]" />
+            <div className="lg:col-span-5 grid gap-4 min-w-0 max-w-full">
+              <div className="relative w-full max-w-full overflow-hidden rounded-[24px] border border-black/10 bg-white/80 p-6 shadow-[0_18px_70px_rgba(0,0,0,0.12)] backdrop-blur-md">
+                <div className="pointer-events-none absolute -top-24 -right-24 h-64 w-64 rounded-full opacity-35 [background:radial-gradient(circle,rgba(233,151,19,0.22),transparent_60%)]" />
 
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/50">
                   Office
@@ -512,19 +491,30 @@ export default function Contact() {
                   For attachments/photos, email is usually fastest.
                 </div>
 
-                {/* modern accent line */}
                 <div className="mt-5 h-[2px] w-full rounded-full bg-[linear-gradient(90deg,var(--brand-orange),transparent)]" />
+              </div>
+
+              <div className="w-full max-w-full rounded-[24px] border border-black/10 bg-[var(--ink)] text-white p-6 shadow-[0_18px_70px_rgba(0,0,0,0.12)]">
+                <div className="text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
+                  Helpful details
+                </div>
+                <div className="mt-2 text-white font-extrabold text-[18px] leading-tight">
+                  Faster quotes
+                </div>
+                <div className="mt-2 text-sm font-semibold text-white/70">
+                  Add location, timeline, scope summary, and any constraints.
+                </div>
+                <div className="mt-4 h-[2px] w-full rounded-full bg-[linear-gradient(90deg,var(--brand-orange),transparent)]" />
               </div>
             </div>
           </div>
         </FloatSection>
 
-
-        {/* Form section (single CTA + clean UX) */}
+        {/* Form section */}
         <div id="contact-form">
           <FloatSection tone="dark">
-            <div className="grid gap-8 lg:grid-cols-12 lg:items-start">
-              <div className="lg:col-span-5">
+            <div className="grid gap-8 lg:grid-cols-12 lg:items-start min-w-0 max-w-full">
+              <div className="lg:col-span-5 min-w-0">
                 <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
                   Message
                 </div>
@@ -532,29 +522,20 @@ export default function Contact() {
                   Send us the details.
                 </h2>
                 <p className="mt-3 text-white/75 font-semibold leading-relaxed">
-                  Share the essentials and we’ll follow up with next steps. If
-                  you need to attach photos, email them to{" "}
-                  <a
-                    className="underline decoration-white/30 hover:decoration-white/70"
-                    href={emailHref}
-                  >
+                  Share the essentials and we’ll follow up with next steps. If you need to attach photos,
+                  email them to{" "}
+                  <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
                     {email}
                   </a>
                   .
                 </p>
 
-                {/* Only one fallback option */}
-                <div className="mt-6">
-                  <a
-                    href={contacts[0].phoneHref}
-                    className="inline-flex rounded-full border border-white/18 bg-white/0 px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                  >
-                    Or call {contacts[0].phoneLabel}
-                  </a>
+                <div className="mt-6 text-sm font-semibold text-white/60">
+                  Prefer a call? Tap a contact card above.
                 </div>
               </div>
 
-              <div className="lg:col-span-7">
+              <div className="lg:col-span-7 min-w-0">
                 <FormCard emailHref={emailHref} email={email} />
               </div>
             </div>

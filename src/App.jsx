@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useRef } from "react";
 import Lenis from "@studio-freight/lenis";
 import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
@@ -26,7 +26,13 @@ function Page({ children }) {
 }
 
 export default function App() {
-  // ✅ keep Lenis
+  const location = useLocation();
+
+  // Keep Lenis instance in a ref so we can control it on route changes
+  const lenisRef = useRef(null);
+  const rafRef = useRef(null);
+
+  // ✅ init Lenis once
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.05,
@@ -34,17 +40,30 @@ export default function App() {
       smoothTouch: false,
     });
 
-    let raf;
+    lenisRef.current = lenis;
+
     const loop = (time) => {
       lenis.raf(time);
-      raf = requestAnimationFrame(loop);
+      rafRef.current = requestAnimationFrame(loop);
     };
-    raf = requestAnimationFrame(loop);
+    rafRef.current = requestAnimationFrame(loop);
 
-    return () => cancelAnimationFrame(raf);
+    return () => {
+      if (rafRef.current) cancelAnimationFrame(rafRef.current);
+      lenisRef.current = null;
+    };
   }, []);
 
-  const location = useLocation();
+  // ✅ Scroll to top on every route change
+  useEffect(() => {
+    // If Lenis exists, use it (best with smooth scrolling libs)
+    if (lenisRef.current) {
+      // immediate prevents visible smooth-scroll during navigation
+      lenisRef.current.scrollTo(0, { immediate: true });
+    } else {
+      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
+    }
+  }, [location.pathname]);
 
   return (
     <AnimatePresence mode="wait">
@@ -54,17 +73,13 @@ export default function App() {
         <Route path="/services" element={<Page><Services /></Page>} />
         <Route path="/projects" element={<Page><Projects /></Page>} />
 
-        {/* If your Project page uses a param, keep this: */}
         <Route path="/projects/:slug" element={<Page><Project /></Page>} />
-
-        {/* Optional: if you also want /project (singular) */}
         <Route path="/project" element={<Page><Project /></Page>} />
 
         <Route path="/contact" element={<Page><Contact /></Page>} />
         <Route path="/privacy" element={<Page><Privacy /></Page>} />
         <Route path="/terms" element={<Page><Terms /></Page>} />
 
-        {/* Back-compat: old multi-page urls → new SPA routes */}
         <Route path="/about.html" element={<Navigate to="/about" replace />} />
         <Route path="/services.html" element={<Navigate to="/services" replace />} />
         <Route path="/projects.html" element={<Navigate to="/projects" replace />} />

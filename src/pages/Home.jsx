@@ -426,7 +426,7 @@ function HomeContent() {
                   {
                     img: "/img/service-planning.webp",
                     title: "Underground Utility",
-                    desc: "Ductbank, trenching, encasement, water/sewer install, cable pulls, and open cut scope.",
+                    desc: "Ductbank, trenching, water/sewer install, cable pulls, and open cut scope.",
                   },
                   {
                     img: "/img/service-maintenance.webp",

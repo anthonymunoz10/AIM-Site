@@ -2,6 +2,65 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+function FitTextOneLine({
+  text,
+  min = 14,
+  max = 24,
+  className = "",
+}) {
+  const wrapRef = React.useRef(null);
+  const textRef = React.useRef(null);
+  const [size, setSize] = React.useState(max);
+
+  React.useEffect(() => {
+    const wrap = wrapRef.current;
+    const node = textRef.current;
+    if (!wrap || !node) return;
+
+    const fit = () => {
+      const available = wrap.clientWidth;
+      if (!available) return;
+
+      // start from max each time (important on resize)
+      let s = max;
+      node.style.fontSize = `${s}px`;
+
+      // shrink until it fits or hits min
+      // (loop is tiny; email lengths are short)
+      while (s > min && node.scrollWidth > available) {
+        s -= 1;
+        node.style.fontSize = `${s}px`;
+      }
+
+      setSize(s);
+    };
+
+    fit();
+
+    const ro = new ResizeObserver(fit);
+    ro.observe(wrap);
+
+    return () => ro.disconnect();
+  }, [text, min, max]);
+
+  return (
+    <div ref={wrapRef} className="min-w-0 max-w-full">
+      <div
+        ref={textRef}
+        className={[
+          "max-w-full whitespace-nowrap overflow-hidden text-ellipsis",
+          className,
+        ].join(" ")}
+        style={{ fontSize: size }}
+        title={text}
+      >
+        {text}
+      </div>
+    </div>
+  );
+}
+
+
 export function HeroBlend({
   height = 320,              // taller = smoother
   sand = "var(--sand)",       // page background
@@ -380,7 +439,7 @@ export function Footer() {
             bottom-[calc(env(safe-area-inset-bottom,0px)*-1)]
             translate-y-[14px]
             z-10
-            w-[128vw] text-center
+            w-[140vw] text-center
             text-[clamp(260px,78vw,560px)]
             font-extrabold tracking-tight opacity-[0.10]
             select-none leading-none whitespace-nowrap
@@ -545,16 +604,30 @@ export function Footer() {
               <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(900px_380px_at_20%_0%,rgba(255,255,255,0.10),transparent_60%)]" />
 
               <div className="relative p-6">
-                <div className="flex items-start justify-between gap-4">
-                  <div>
+                <div className="flex items-start justify-between gap-4 min-w-0">
+                  {/* Left side */}
+                  <div className="min-w-0 flex-1">
                     <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-white/60">
                       {pop === "phone" ? "Phone" : "Email"}
                     </div>
-                    <div className="mt-3 text-2xl font-extrabold text-white leading-tight break-words">
-                      {pop === "phone" ? phoneValue : emailValue}
+
+                    <div className="mt-3 min-w-0 max-w-full">
+                      {pop === "phone" ? (
+                        <div className="text-[clamp(18px,5.2vw,24px)] font-extrabold text-white leading-tight whitespace-nowrap overflow-hidden text-ellipsis">
+                          {phoneValue}
+                        </div>
+                      ) : (
+                        <FitTextOneLine
+                          text={emailValue}
+                          min={14}
+                          max={24}
+                          className="font-extrabold text-white leading-tight"
+                        />
+                      )}
                     </div>
                   </div>
 
+                  {/* Close button */}
                   <button
                     type="button"
                     onClick={() => setPop(null)}
@@ -601,7 +674,7 @@ export function Footer() {
                   )}
                 </div>
 
-                <div className="mt-5 text-sm font-semibold text-white/60">
+                <div className="mt-5 text-sm font-semibold text-white/60 hidden md:block">
                   Press <span className="text-white/80">Esc</span> to close.
                 </div>
               </div>

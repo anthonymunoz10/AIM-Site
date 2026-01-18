@@ -195,7 +195,7 @@ export default function Projects() {
             </div>
           </Container>
         </div>
-        <HeroBlend height={200} />
+        <HeroBlend height={100} />
       </header>
 
       {/* FILTERS + GRID */}

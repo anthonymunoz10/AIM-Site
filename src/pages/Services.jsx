@@ -172,7 +172,7 @@ export default function Services() {
             </div>
           </Container>
         </div>
-        <HeroBlend height={200} />
+        <HeroBlend height={100} />
       </header>
 
       {/* CONTENT */}
@@ -249,7 +249,7 @@ export default function Services() {
                       <ul className="mt-3 grid gap-3">
                         {[
                           "Duct bank work",
-                          "Concrete encased",
+                          "Directional drilling",
                           "Open cut trench",
                           "Install water or sewer line",
                           "Pull any cable",

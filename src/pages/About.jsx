@@ -219,40 +219,76 @@ function IntroImageCollage() {
   return (
     <section className="pb-8 pt-6">
       <Container>
-        <div className="grid gap-5 md:grid-cols-12 md:items-stretch">
-          <div className="md:col-span-5 grid gap-5">
-            <motion.div
-              ref={left1}
-              style={{ y: y1 }}
-              className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
-            >
-              <img
-                src="/img/Hero_Comp1.webp"
-                alt="Field work"
-                className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
+        {/* ✅ MOBILE ONLY: move the headline ABOVE images + show only top-view-site.webp */}
+        <div className="md:hidden">
+          <div className="mx-auto max-w-[860px] text-center">
+            <FadeIn>
+              <RevealLines
+                as="h2"
+                className="text-[clamp(1.85rem,6.2vw,2.4rem)] leading-[1.05] font-extrabold text-white"
+                lines={[
+                  "Built for fast, safe execution—",
+                  <span className="text-[var(--brand-orange)]" key="o">
+                    without cutting corners.
+                  </span>,
+                ]}
               />
-            </motion.div>
+            </FadeIn>
 
-            <motion.div
-              ref={left2}
-              style={{ y: y2 }}
-              className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
-            >
-              <img
-                src="/img/hero-bg.avif"
-                alt="Restoration"
-                className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
-              />
-            </motion.div>
+            <FadeIn delay={0.12} className="mt-4">
+              <p className="mx-auto max-w-[66ch] text-white/65 font-semibold">
+                In a fast-moving world, work has to be done quickly and efficiently—without sacrificing safety or
+                finish. We’re based in South Florida and travel where the work demands.
+              </p>
+            </FadeIn>
           </div>
 
-          <div className="md:col-span-7">
-            <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] h-full">
-              <img
-                src="/img/top-view-site.webp"
-                alt="Construction planning"
-                className="h-[280px] sm:h-[360px] md:h-full w-full object-cover"
-              />
+          <div className="mt-6 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)]">
+            <img
+              src="/img/top-view-site.webp"
+              alt="Construction planning"
+              className="h-[280px] w-full object-cover"
+            />
+          </div>
+        </div>
+
+        {/* ✅ DESKTOP/TABLET (md+): keep your current 3-image collage layout */}
+        <div className="hidden md:block">
+          <div className="grid gap-5 md:grid-cols-12 md:items-stretch">
+            <div className="md:col-span-5 grid gap-5">
+              <motion.div
+                ref={left1}
+                style={{ y: y1 }}
+                className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+              >
+                <img
+                  src="/img/Hero_Comp1.webp"
+                  alt="Field work"
+                  className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
+                />
+              </motion.div>
+
+              <motion.div
+                ref={left2}
+                style={{ y: y2 }}
+                className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)]"
+              >
+                <img
+                  src="/img/hero-bg.avif"
+                  alt="Restoration"
+                  className="h-[200px] sm:h-[220px] md:h-[260px] w-full object-cover"
+                />
+              </motion.div>
+            </div>
+
+            <div className="md:col-span-7">
+              <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] h-full">
+                <img
+                  src="/img/top-view-site.webp"
+                  alt="Construction planning"
+                  className="h-[280px] sm:h-[360px] md:h-full w-full object-cover"
+                />
+              </div>
             </div>
           </div>
         </div>
@@ -260,6 +296,7 @@ function IntroImageCollage() {
     </section>
   );
 }
+
 
 function BentoRail() {
   return (
@@ -306,7 +343,7 @@ function BentoBlock() {
   return (
     <section id="background" className="pt-6">
       <Container>
-        <div className="mx-auto max-w-[860px] text-center">
+        <div className="mx-auto max-w-[860px] text-center hidden md:block">
           <FadeIn>
             <RevealLines
               as="h2"
@@ -430,12 +467,16 @@ function ValuesAccordion() {
     []
   );
 
+  const [openIndex, setOpenIndex] = React.useState(0); // open first by default (or null)
+
   return (
     <section className="pt-10">
       <Container>
         <div className="mx-auto max-w-[860px] text-center">
           <FadeIn>
-            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">How We Work</div>
+            <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
+              How We Work
+            </div>
           </FadeIn>
 
           <FadeIn delay={0.08} className="mt-3">
@@ -449,34 +490,70 @@ function ValuesAccordion() {
 
         <div className="mt-10 mx-auto max-w-[920px]">
           <div className="rounded-[26px] overflow-hidden border border-black/10 bg-white shadow-[0_22px_70px_rgba(0,0,0,0.14)]">
-            {values.map((v, i) => (
-              <details key={v.t} className="group border-b border-black/10 last:border-b-0">
-                <summary className="list-none cursor-pointer select-none px-6 md:px-8 py-5 flex items-center justify-between gap-4">
-                  <div className="flex items-center gap-4 min-w-0">
-                    <div className="text-[11px] md:text-xs font-extrabold uppercase tracking-[0.22em] text-black/45 w-10 shrink-0">
-                      {String(i + 1).padStart(2, "0")}
+            {values.map((v, i) => {
+              const isOpen = openIndex === i;
+
+              return (
+                <div
+                  key={v.t}
+                  className="border-b border-black/10 last:border-b-0"
+                >
+                  <button
+                    type="button"
+                    onClick={() => setOpenIndex(isOpen ? null : i)}
+                    className="w-full text-left cursor-pointer select-none px-6 md:px-8 py-5 flex items-center justify-between gap-4"
+                  >
+                    <div className="flex items-center gap-4 min-w-0">
+                      <div className="text-[11px] md:text-xs font-extrabold uppercase tracking-[0.22em] text-black/45 w-10 shrink-0">
+                        {String(i + 1).padStart(2, "0")}
+                      </div>
+                      <div className="text-lg md:text-xl font-extrabold text-[var(--ink)] truncate">
+                        {v.t}
+                      </div>
                     </div>
-                    <div className="text-lg md:text-xl font-extrabold text-[var(--ink)] truncate">
-                      {v.t}
+
+                    <div className="h-9 w-9 shrink-0 rounded-full border border-black/10 bg-[var(--sand)] grid place-items-center">
+                      <span
+                        className={`text-white/70 font-extrabold leading-none transition-transform duration-300 ease-out ${
+                          isOpen ? "rotate-45" : ""
+                        }`}
+                      >
+                        +
+                      </span>
+                    </div>
+                  </button>
+
+                  {/* Smooth open/close */}
+                  <div
+                    className={`
+                      grid transition-[grid-template-rows] duration-300 ease-out
+                      ${isOpen ? "grid-rows-[1fr]" : "grid-rows-[0fr]"}
+                    `}
+                  >
+                    <div className="overflow-hidden">
+                      <div
+                        className={`
+                          px-6 md:px-8 pb-6 -mt-1
+                          transition-all duration-300 ease-out
+                          ${isOpen ? "opacity-100 translate-y-0" : "opacity-0 translate-y-1"}
+                        `}
+                      >
+                        <p className="text-black/65 font-semibold leading-relaxed max-w-[70ch]">
+                          {v.d}
+                        </p>
+                      </div>
                     </div>
                   </div>
-
-                  <div className="h-9 w-9 shrink-0 rounded-full border border-black/10 bg-[var(--sand)] grid place-items-center">
-                    <span className="text-white/70 font-extrabold leading-none group-open:rotate-45 transition">+</span>
-                  </div>
-                </summary>
-
-                <div className="px-6 md:px-8 pb-6 -mt-1">
-                  <p className="text-black/65 font-semibold leading-relaxed max-w-[70ch]">{v.d}</p>
                 </div>
-              </details>
-            ))}
+              );
+            })}
           </div>
         </div>
       </Container>
     </section>
   );
 }
+
 
 function CulturePush() {
   return (
@@ -553,7 +630,7 @@ export default function About() {
 
       {/* Seam blend between hero and first section (doesn't shrink hero) */}
       <div className="relative -mt-[240px] h-[240px] overflow-hidden">
-        <HeroBlend height={240} />
+        <HeroBlend height={100} />
       </div>
 
       {/* NOTE: prevent any stray overflow on mobile */}
