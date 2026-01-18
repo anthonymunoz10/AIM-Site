@@ -168,7 +168,7 @@ function AboutHero() {
 
             <FadeIn delay={0.18} className="mt-4">
               <p className="max-w-[72ch] text-white/72 font-semibold leading-relaxed">
-                AIM Construction Management is a licensed general contractor founded on decades of underground utility
+                AIM Construction Management is a licensed General Contractor and licensed Underground Utility Contractor founded on decades of underground utility
                 and electrical experience—executing fiber, electrical, water & sewer, and ductbank infrastructure with
                 safety-first operations and clean restoration.
               </p>
