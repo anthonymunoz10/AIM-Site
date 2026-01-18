@@ -248,8 +248,7 @@ export default function Services() {
                       </div>
                       <ul className="mt-3 grid gap-3">
                         {[
-                          "Duct bank work",
-                          "Directional drilling",
+                          "Ductbank work",
                           "Open cut trench",
                           "Install water or sewer line",
                           "Pull any cable",
