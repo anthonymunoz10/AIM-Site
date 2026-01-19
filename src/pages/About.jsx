@@ -430,7 +430,7 @@ function BentoBlock() {
               </div>
 
               <div className="mt-6 text-white/75 font-semibold">
-                From utility install to final restoration, we keep production moving while protecting safety and finish.
+                From utility installation through final restoration, we maintain momentum while prioritizing safety and quality results.
               </div>
             </div>
           </div>
@@ -449,7 +449,7 @@ function ValuesAccordion() {
       },
       {
         t: "Speed + Precision",
-        d: "Field-proven production with the equipment and crew to keep work moving—without sacrificing finish.",
+        d: "Field-proven production with the equipment and crew to keep work moving—without sacrificing completion schedule.",
       },
       {
         t: "Clean Restoration",

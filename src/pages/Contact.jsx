@@ -59,6 +59,96 @@ function FadeIn({ children, className = "", delay = 0 }) {
   );
 }
 
+function AutoFitText({
+  text,
+  className = "",
+  minPx = 10,
+  maxPx = 20,
+  precision = 0.25,
+  title = "",
+}) {
+  const wrapRef = useRef(null);
+  const textRef = useRef(null);
+  const rafRef = useRef(0);
+  const [truncated, setTruncated] = useState(false);
+
+  useEffect(() => {
+    const wrap = wrapRef.current;
+    const el = textRef.current;
+    if (!wrap || !el) return;
+
+    const fit = () => {
+      cancelAnimationFrame(rafRef.current);
+
+      rafRef.current = requestAnimationFrame(() => {
+        const available = wrap.clientWidth;
+        if (!available) return;
+
+        let lo = minPx;
+        let hi = maxPx;
+
+        const setSize = (px) => {
+          el.style.fontSize = `${px}px`;
+        };
+
+        // Start at max
+        setSize(hi);
+
+        // If fits at max, done
+        if (el.scrollWidth <= available) {
+          setTruncated(false);
+          return;
+        }
+
+        // Binary search
+        while (hi - lo > precision) {
+          const mid = (lo + hi) / 2;
+          setSize(mid);
+          if (el.scrollWidth <= available) lo = mid;
+          else hi = mid;
+        }
+
+        setSize(lo);
+
+        // If still too wide even at min, we must truncate
+        setTruncated(el.scrollWidth > available + 1);
+      });
+    };
+
+    fit();
+
+    // Re-fit after fonts load (important on mobile)
+    const fontReady = document.fonts?.ready;
+    if (fontReady) fontReady.then(fit).catch(() => {});
+
+    const ro = new ResizeObserver(fit);
+    ro.observe(wrap);
+
+    return () => {
+      cancelAnimationFrame(rafRef.current);
+      ro.disconnect();
+    };
+  }, [text, minPx, maxPx, precision]);
+
+  return (
+    <div ref={wrapRef} className="min-w-0 w-full">
+      <span
+        ref={textRef}
+        title={title || text}
+        className={[
+          "block min-w-0 whitespace-nowrap",
+          truncated ? "overflow-hidden text-ellipsis" : "overflow-visible",
+          className,
+        ].join(" ")}
+      >
+        {text}
+      </span>
+    </div>
+  );
+}
+
+
+
 /* ---------------------------------------------
    Page shell (same sand + curved shell)
 ---------------------------------------------- */
@@ -410,9 +500,15 @@ export default function Contact() {
                       </div>
 
                       {/* ✅ strongest, clean wrap on mobile */}
-                      <div className="mt-1 text-[18px] md:text-[20px] font-extrabold text-[var(--ink)] break-words [overflow-wrap:anywhere]">
-                        {email}
-                      </div>
+                      <AutoFitText
+                        text={email}
+                        title={email}
+                        minPx={10}     // allows shrinking more so it can fully fit
+                        maxPx={20}
+                        className="mt-1 font-extrabold text-[var(--ink)]"
+                      />
+
+
 
                       <div className="mt-1 text-sm font-semibold text-black/55">
                         Best for scope + photos
@@ -447,15 +543,24 @@ export default function Contact() {
                 <div className="mt-4 grid gap-4 md:grid-cols-2 min-w-0 max-w-full">
                   {contacts.map((c) => (
                     <div key={c.name} className="w-full max-w-full min-w-0">
-                      {/* Use an anchor for the whole card so it behaves predictably on mobile */}
-                      <a
-                        href={c.phoneHref}
+                      {/* Whole card clickable (no nested <a> issues) */}
+                      <div
+                        role="link"
+                        tabIndex={0}
+                        onClick={() => (window.location.href = c.phoneHref)}
+                        onKeyDown={(e) => {
+                          if (e.key === "Enter" || e.key === " ") {
+                            e.preventDefault();
+                            window.location.href = c.phoneHref;
+                          }
+                        }}
                         className="
                           group block w-full max-w-full min-w-0 text-left
                           rounded-[22px] border border-black/10 bg-white
                           shadow-sm hover:shadow-[0_18px_60px_rgba(0,0,0,0.12)]
                           transition hover:-translate-y-0.5
-                          overflow-hidden
+                          overflow-hidden cursor-pointer
+                          focus:outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]
                         "
                       >
                         <div className="h-[6px] w-full bg-[linear-gradient(90deg,var(--brand-orange),rgba(233,151,19,0.10),transparent)]" />
@@ -520,7 +625,7 @@ export default function Contact() {
                             </div>
                           </div>
                         </div>
-                      </a>
+                      </div>
                     </div>
                   ))}
                 </div>

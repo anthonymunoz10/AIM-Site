@@ -150,7 +150,7 @@ export default function Services() {
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="text-white/72 font-semibold leading-relaxed">
-                  Directional drilling • Duct bank • Concrete • Asphalt
+                  Directional drilling • Ductbank • Concrete • Asphalt
                 </p>
               </FadeIn>
 
