@@ -191,6 +191,9 @@ function PageShell({ children }) {
 /* ---------------------------------------------
    Form (clean submit UX - UI only)
 ---------------------------------------------- */
+function encode(data) {
+  return new URLSearchParams(data).toString();
+}
 
 function FormCard({ emailHref, email, sent = false }) {
   const [state, setState] = useState(sent ? "sent" : "idle");
@@ -199,20 +202,40 @@ function FormCard({ emailHref, email, sent = false }) {
     <form
       name="contact"
       method="POST"
-      action="/contact?sent=1"
       data-netlify="true"
-      netlify-honeypot="bot-field"
-      onSubmit={(e) => {
-        if (state === "sending" || state === "sent") {
-          e.preventDefault();
-          return;
-        }
+      data-netlify-honeypot="bot-field"
+      onSubmit={async (e) => {
+        e.preventDefault();
+        if (state !== "idle") return;
+
         setState("sending");
-        // Let Netlify submit normally.
-        // We’ll still show UI feedback; page may navigate if you don't use AJAX.
+
+        const form = e.currentTarget;
+        const formData = new FormData(form);
+
+        try {
+          const res = await fetch("/", {
+            method: "POST",
+            headers: { "Content-Type": "application/x-www-form-urlencoded" },
+            body: encode(Object.fromEntries(formData)),
+          });
+
+          if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
+
+          setState("sent");
+          form.reset();
+
+          // optional: keep your sent behavior + scroll logic
+          window.history.replaceState({}, "", "/contact?sent=1");
+        } catch (err) {
+          console.error(err);
+          setState("idle");
+          alert("Couldn’t send message. Please try again.");
+        }
       }}
       className="rounded-[22px] border border-white/12 bg-white/5 backdrop-blur-xl p-5 md:p-6"
     >
+
       <input type="hidden" name="form-name" value="contact" />
       <p className="hidden">
         <label>
