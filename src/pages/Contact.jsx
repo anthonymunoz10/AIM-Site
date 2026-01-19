@@ -320,25 +320,22 @@ function NetlifyFormDetector() {
     <form
       name="contact"
       method="POST"
-      action="/contact?sent=1"
       data-netlify="true"
-      netlify-honeypot="bot-field"
+      data-netlify-honeypot="bot-field"
       hidden
     >
       <input type="hidden" name="form-name" value="contact" />
-      <p className="hidden">
-        <label>
-          Don’t fill this out: <input type="text" name="bot-field" />
-        </label>
-      </p>
+      <input name="bot-field" />
       <input type="text" name="name" />
       <input type="email" name="email" />
       <input type="tel" name="phone" />
       <input type="text" name="location" />
       <textarea name="message" />
+      <button type="submit">Send</button>
     </form>
   );
 }
+
 
 
 /* ---------------------------------------------
