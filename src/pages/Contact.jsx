@@ -102,19 +102,34 @@ function PageShell({ children }) {
    Form (clean submit UX - UI only)
 ---------------------------------------------- */
 
-function FormCard({ emailHref, email }) {
-  const [state, setState] = useState("idle"); // idle | sending | sent
+function FormCard({ emailHref, email, sent = false }) {
+  const [state, setState] = useState(sent ? "sent" : "idle");
 
   return (
     <form
+      name="contact"
+      method="POST"
+      action="/contact?sent=1"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
       onSubmit={(e) => {
-        e.preventDefault();
-        if (state === "sending" || state === "sent") return;
+        if (state === "sending" || state === "sent") {
+          e.preventDefault();
+          return;
+        }
         setState("sending");
-        setTimeout(() => setState("sent"), 700);
+        // Let Netlify submit normally.
+        // We’ll still show UI feedback; page may navigate if you don't use AJAX.
       }}
       className="rounded-[22px] border border-white/12 bg-white/5 backdrop-blur-xl p-5 md:p-6"
     >
+      <input type="hidden" name="form-name" value="contact" />
+      <p className="hidden">
+        <label>
+          Don’t fill this out: <input type="text" name="bot-field" />
+        </label>
+      </p>
+
       <div className="grid gap-4 md:grid-cols-2">
         <div>
           <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
@@ -122,9 +137,11 @@ function FormCard({ emailHref, email }) {
           </label>
           <input
             required
+            name="name"
             className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
             placeholder="Your name"
           />
+
         </div>
 
         <div>
@@ -133,10 +150,12 @@ function FormCard({ emailHref, email }) {
           </label>
           <input
             required
+            name="email"
             type="email"
             className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
             placeholder="you@email.com"
           />
+
         </div>
 
         <div className="md:col-span-2">
@@ -144,10 +163,12 @@ function FormCard({ emailHref, email }) {
             Phone (optional)
           </label>
           <input
+            name="phone"
             type="tel"
             className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
             placeholder="(###) ###-####"
           />
+
         </div>
 
         <div className="md:col-span-2">
@@ -155,9 +176,11 @@ function FormCard({ emailHref, email }) {
             Project location (optional)
           </label>
           <input
+            name="location"
             className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
             placeholder="City, State"
           />
+
         </div>
 
         <div className="md:col-span-2">
@@ -166,10 +189,12 @@ function FormCard({ emailHref, email }) {
           </label>
           <textarea
             required
+            name="message"
             rows={5}
             className="mt-2 w-full resize-none rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
             placeholder="Scope, timeline, constraints, and what you need from us…"
           />
+
         </div>
       </div>
 
@@ -200,6 +225,32 @@ function FormCard({ emailHref, email }) {
   );
 }
 
+function NetlifyFormDetector() {
+  return (
+    <form
+      name="contact"
+      method="POST"
+      action="/contact?sent=1"
+      data-netlify="true"
+      netlify-honeypot="bot-field"
+      hidden
+    >
+      <input type="hidden" name="form-name" value="contact" />
+      <p className="hidden">
+        <label>
+          Don’t fill this out: <input type="text" name="bot-field" />
+        </label>
+      </p>
+      <input type="text" name="name" />
+      <input type="email" name="email" />
+      <input type="tel" name="phone" />
+      <input type="text" name="location" />
+      <textarea name="message" />
+    </form>
+  );
+}
+
+
 /* ---------------------------------------------
    Main Page
 ---------------------------------------------- */
@@ -208,6 +259,15 @@ export default function Contact() {
   useEffect(() => {
     document.title = "Contact | AIM Construction Management";
   }, []);
+
+  const sent =
+    new URLSearchParams(window.location.search).get("sent") === "1";
+
+  useEffect(() => {
+    if (!sent) return;
+    const el = document.querySelector("#contact-form");
+    el?.scrollIntoView({ behavior: "smooth", block: "start" });
+  }, [sent]);
 
   const contacts = useMemo(
     () => [
@@ -235,6 +295,7 @@ export default function Contact() {
   const emailHref = `mailto:${email}?subject=Website%20Inquiry`;
   const officeLines = ["7900 Oak Lane, Suite 479", "Miami Lakes, FL 33016"];
 
+
   const scrollToForm = () => {
     const el = document.querySelector("#contact-form");
     el?.scrollIntoView({ behavior: "smooth", block: "start" });
@@ -243,6 +304,8 @@ export default function Contact() {
   return (
     <PageShell>
       <Nav />
+      <NetlifyFormDetector />
+
 
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
@@ -536,7 +599,7 @@ export default function Contact() {
               </div>
 
               <div className="lg:col-span-7 min-w-0">
-                <FormCard emailHref={emailHref} email={email} />
+                <FormCard emailHref={emailHref} email={email} sent={sent} />
               </div>
             </div>
           </FloatSection>
