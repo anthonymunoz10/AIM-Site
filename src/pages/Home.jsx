@@ -1,4 +1,4 @@
-import React, { useMemo, useRef } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
@@ -60,7 +60,7 @@ function Hero() {
     target: heroRef,
     offset: ["start start", "end start"],
   });
-
+  const [ready, setReady] = React.useState(false);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.35]);
 
@@ -71,18 +71,31 @@ function Hero() {
     >
       {/* Background video layer */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
+        {/* Poster layer (shows instantly) */}
+        <div
+          className={`absolute inset-0 transition-opacity duration-700 ${ready ? "opacity-0" : "opacity-100"}`}
+          style={{
+            backgroundImage: "url('/img/hero-poster.webp')",
+            backgroundSize: "cover",
+            backgroundPosition: "center",
+          }}
+        />
+
         <video
-          className="h-full w-full object-cover"
+          className={`h-full w-full object-cover transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
           autoPlay
           muted
           loop
           playsInline
-          preload="auto"
+          preload="metadata"
           poster="/img/hero-poster.webp"
+          onCanPlay={() => setReady(true)}
         >
           <source src="/video/hero-vid.webm" type="video/webm" />
-          <source src="/video/hero-vid.mp4" type="video/mp4" />
+          <source src="/video/hero-vid.web.mp4" type="video/mp4" />
         </video>
+
+
 
         {/* Base darkening */}
         <div className="absolute inset-0 bg-black/55" />
