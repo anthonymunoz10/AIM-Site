@@ -1,6 +1,7 @@
 // src/pages/Services.jsx
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useHead } from "@unhead/react";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 
 /* ---------------------------------------------
@@ -103,9 +104,29 @@ function scrollToId(id) {
 ---------------------------------------------- */
 
 export default function Services() {
-  useEffect(() => {
-    document.title = "Services | AIM Construction Management";
-  }, []);
+  const title = "Services | AIM Construction Management";
+
+  const description =
+    "Explore AIM Construction Management services including directional drilling, underground utility, ductbank, and concrete/asphalt restoration across Florida and beyond.";
+
+  const canonicalUrl = "https://aimconstructionmgt.com/services";
+  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+
+  useHead({
+    title,
+    meta: [
+      { name: "description", content: description },
+
+      // Open Graph
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      { property: "og:image", content: ogImage },
+    ],
+    link: [{ rel: "canonical", href: canonicalUrl }],
+  });
+
 
   return (
     <PageShell>
@@ -282,13 +303,13 @@ export default function Services() {
 
                     <div className="mt-10 flex flex-wrap gap-3">
                       <a
-                        href="/contact.html"
+                        href="/contact"
                         className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                       >
                         Request a Quote
                       </a>
                       <a
-                        href="/projects.html"
+                        href="/projects"
                         className="rounded-full border border-black/15 bg-white px-7 py-3 font-bold uppercase tracking-wider text-sm text-black/70 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                       >
                         View Projects
@@ -379,13 +400,13 @@ export default function Services() {
             <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">
               <a
                 className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                href="/contact.html"
+                href="/contact"
               >
                 Request a Quote
               </a>
               <a
                 className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                href="/projects.html"
+                href="/projects"
               >
                 View Projects
               </a>

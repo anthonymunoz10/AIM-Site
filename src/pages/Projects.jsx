@@ -1,5 +1,6 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useHead } from "@unhead/react";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { PROJECTS } from "../data/projects";
 
@@ -96,9 +97,29 @@ export default function Projects() {
   const [category, setCategory] = useState("All");
   const [year, setYear] = useState("All");
 
-  useEffect(() => {
-    document.title = "Projects | AIM Construction Management";
-  }, []);
+  const title = "Projects | AIM Construction Management";
+
+  const description =
+    "Explore AIM Construction Management project highlights including underground utility, directional drilling, and restoration work across Florida and beyond.";
+
+  const canonicalUrl = "https://aimconstructionmgt.com/projects";
+  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+
+  useHead({
+    title,
+    meta: [
+      { name: "description", content: description },
+
+      // Open Graph
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      { property: "og:image", content: ogImage },
+    ],
+    link: [{ rel: "canonical", href: canonicalUrl }],
+  });
+
 
   const categories = useMemo(() => {
     const set = new Set(PROJECTS.map((p) => p.category));
@@ -186,7 +207,7 @@ export default function Projects() {
                   Browse Projects
                 </button>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
                 >
                   Request a Quote
@@ -263,7 +284,7 @@ export default function Projects() {
               </div>
 
               <a
-                href="/contact.html"
+                href="/contact"
                 className="rounded-full bg-[var(--brand-orange)] px-6 py-2.5 font-extrabold uppercase tracking-wider text-xs text-white hover:opacity-90 transition"
               >
                 Request a Quote
@@ -274,7 +295,7 @@ export default function Projects() {
               {filtered.map((p) => (
                 <a
                   key={p.id}
-                  href={`/project.html?id=${p.id}`}
+                  href={`/project?id=${p.id}`}
                   className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
                 >
                   <div className="relative h-56 overflow-hidden">
@@ -368,13 +389,13 @@ export default function Projects() {
             <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">
               <a
                 className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                href="/contact.html"
+                href="/contact"
               >
                 Request a Quote
               </a>
               <a
                 className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                href="/services.html"
+                href="/services"
               >
                 View Services
               </a>

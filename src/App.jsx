@@ -18,7 +18,6 @@ import Terms from "./pages/Terms.jsx";
 function Page({ children }) {
   return (
     <motion.div
-      // ✅ IMPORTANT: framer-motion projection warnings happen if parent is "static"
       style={{ position: "relative" }}
       initial={{ opacity: 0, y: 8 }}
       animate={{ opacity: 1, y: 0 }}
@@ -30,8 +29,26 @@ function Page({ children }) {
   );
 }
 
+// ✅ Make scroll-to-top callable from anywhere (Footer included)
+function hardScrollTop() {
+  try {
+    // if Lenis is active, this is the real scroll controller
+    if (window.__lenis && typeof window.__lenis.scrollTo === "function") {
+      window.__lenis.scrollTo(0, { immediate: true });
+    }
+  } catch {}
+
+  // always also reset native scroll
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
 export default function App() {
   const location = useLocation();
+
+  const lenisRef = useRef(null);
+  const rafRef = useRef(null);
 
   // ✅ Loader shows only once per tab session
   const [bootDone, setBootDone] = useState(() => {
@@ -40,20 +57,21 @@ export default function App() {
 
   useEffect(() => {
     if (bootDone) return;
-
     const t = setTimeout(() => {
       sessionStorage.setItem("bootDone", "1");
       setBootDone(true);
     }, 750);
-
     return () => clearTimeout(t);
   }, [bootDone]);
 
-  // ✅ Keep Lenis instance in a ref so we can control it on route changes
-  const lenisRef = useRef(null);
-  const rafRef = useRef(null);
+  // ✅ Disable browser’s scroll restoration (prevents “kept scroll”)
+  useEffect(() => {
+    if ("scrollRestoration" in window.history) {
+      window.history.scrollRestoration = "manual";
+    }
+  }, []);
 
-  // ✅ init Lenis once
+  // ✅ Init Lenis once
   useEffect(() => {
     const lenis = new Lenis({
       duration: 1.05,
@@ -62,6 +80,7 @@ export default function App() {
     });
 
     lenisRef.current = lenis;
+    window.__lenis = lenis; // ✅ expose globally for Footer
 
     const loop = (time) => {
       lenis.raf(time);
@@ -73,102 +92,54 @@ export default function App() {
     return () => {
       if (rafRef.current) cancelAnimationFrame(rafRef.current);
       lenisRef.current = null;
+      window.__lenis = null;
     };
   }, []);
 
-  // ✅ Scroll to top on every route change
+  // ✅ Always go top AFTER route changes (double-RAF beats layout/animation timing)
   useEffect(() => {
-    if (lenisRef.current) {
-      // immediate prevents visible smooth-scroll during navigation
-      lenisRef.current.scrollTo(0, { immediate: true });
-    } else {
-      window.scrollTo({ top: 0, left: 0, behavior: "auto" });
-    }
+    requestAnimationFrame(() => {
+      requestAnimationFrame(() => {
+        hardScrollTop();
+      });
+    });
   }, [location.pathname]);
+
+  // ✅ Fix “mobile <-> desktop” devtools switch causing weird scroll offsets
+  useEffect(() => {
+    const mql = window.matchMedia("(min-width: 768px)");
+    const onChange = () => {
+      // when breakpoint flips, layout height changes → reset scroll
+      requestAnimationFrame(() => hardScrollTop());
+    };
+
+    // modern + fallback
+    if (mql.addEventListener) mql.addEventListener("change", onChange);
+    else mql.addListener(onChange);
+
+    return () => {
+      if (mql.removeEventListener) mql.removeEventListener("change", onChange);
+      else mql.removeListener(onChange);
+    };
+  }, []);
 
   return (
     <>
-      {/* ✅ Loader overlay */}
       <AppLoader done={bootDone} />
 
-      <AnimatePresence mode="wait">
+      <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
-          <Route
-            path="/"
-            element={
-              <Page>
-                <Home />
-              </Page>
-            }
-          />
-          <Route
-            path="/about"
-            element={
-              <Page>
-                <About />
-              </Page>
-            }
-          />
-          <Route
-            path="/services"
-            element={
-              <Page>
-                <Services />
-              </Page>
-            }
-          />
-          <Route
-            path="/projects"
-            element={
-              <Page>
-                <Projects />
-              </Page>
-            }
-          />
+          <Route path="/" element={<Page><Home /></Page>} />
+          <Route path="/about" element={<Page><About /></Page>} />
+          <Route path="/services" element={<Page><Services /></Page>} />
+          <Route path="/projects" element={<Page><Projects /></Page>} />
+          <Route path="/projects/:slug" element={<Page><Project /></Page>} />
+          <Route path="/project" element={<Page><Project /></Page>} />
+          <Route path="/contact" element={<Page><Contact /></Page>} />
+          <Route path="/privacy" element={<Page><Privacy /></Page>} />
+          <Route path="/terms" element={<Page><Terms /></Page>} />
 
-          <Route
-            path="/projects/:slug"
-            element={
-              <Page>
-                <Project />
-              </Page>
-            }
-          />
-          <Route
-            path="/project"
-            element={
-              <Page>
-                <Project />
-              </Page>
-            }
-          />
-
-          <Route
-            path="/contact"
-            element={
-              <Page>
-                <Contact />
-              </Page>
-            }
-          />
-          <Route
-            path="/privacy"
-            element={
-              <Page>
-                <Privacy />
-              </Page>
-            }
-          />
-          <Route
-            path="/terms"
-            element={
-              <Page>
-                <Terms />
-              </Page>
-            }
-          />
-
-          {/* Back-compat: old multi-page urls → new SPA routes */}
+          {/* old urls */}
           <Route path="/about.html" element={<Navigate to="/about" replace />} />
           <Route path="/services.html" element={<Navigate to="/services" replace />} />
           <Route path="/projects.html" element={<Navigate to="/projects" replace />} />

@@ -1,7 +1,9 @@
 // src/pages/Privacy.jsx
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
+import { useHead } from "@unhead/react";
 import { motion, useInView } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import { Link } from "react-router-dom";
 
 /* ---------------------------------------------
    Small primitives (match your site vibe)
@@ -32,8 +34,9 @@ function FloatSection({ children, tone = "light" }) {
   );
 }
 
-function FadeIn({ children, className = "", delay = 0 }) {
+function FadeIn({ children, className = "", delay = 0, alwaysShow = false }) {
   const ref = useRef(null);
+  // Only use the intersection observer if alwaysShow is false
   const inView = useInView(ref, { once: true, margin: "-10% 0px -10% 0px" });
 
   return (
@@ -41,7 +44,8 @@ function FadeIn({ children, className = "", delay = 0 }) {
       ref={ref}
       className={className}
       initial={{ opacity: 0, y: 14 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
+      // If alwaysShow is true, animate immediately. Otherwise, wait for inView.
+      animate={(alwaysShow || inView) ? { opacity: 1, y: 0 } : {}}
       transition={{ duration: 0.7, ease: [0.22, 1, 0.36, 1], delay }}
     >
       {children}
@@ -77,7 +81,7 @@ function PageShell({ children }) {
           <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
         </div>
 
-        <div className="relative z-10 overflow-hidden rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
+        <div className="relative z-10  rounded-b-[56px] bg-[var(--sand)] shadow-[0_70px_180px_rgba(0,0,0,0.35)]">
           <div className="pointer-events-none absolute inset-0 opacity-[0.55] [background:radial-gradient(1200px_700px_at_50%_-10%,rgba(255,255,255,0.40),transparent_60%)]" />
           <div className="relative">{children}</div>
         </div>
@@ -93,9 +97,28 @@ function PageShell({ children }) {
 ---------------------------------------------- */
 
 export default function Privacy() {
-  useEffect(() => {
-    document.title = "Privacy Policy | AIM Construction Management";
-  }, []);
+  useHead({
+    title: "Privacy Policy | AIM Construction Management",
+    meta: [
+      {
+        name: "description",
+        content:
+          "Privacy policy for AIM Construction Management. We only collect what we need to respond to inquiries and operate the website.",
+      },
+
+      // Open Graph
+      { property: "og:title", content: "Privacy Policy | AIM Construction Management" },
+      {
+        property: "og:description",
+        content:
+          "We only collect what we need to respond to inquiries and operate the website.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://aimconstructionmgt.com/privacy" },
+    ],
+    link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/privacy" }],
+  });
+
 
   return (
     <PageShell>
@@ -103,9 +126,10 @@ export default function Privacy() {
 
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
-        <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
+        <Link to="/" aria-label="Home" className="inline-flex items-center justify-center">
           <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
-        </a>
+        </Link>
+
       </div>
       <div className="md:hidden">
         <MobileMenu />
@@ -122,23 +146,24 @@ export default function Privacy() {
         <div className="absolute inset-0 [background:radial-gradient(1200px_700px_at_50%_35%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.62)_70%,rgba(0,0,0,0.90)_100%)]" />
         <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
 
-        <div className="relative z-10 pt-40 pb-14 md:pt-44">
+        <div className="relative z-10 pt-60 pb-14 md:pt-44">
+
           <Container>
             <div className="max-w-[920px]">
-              <FadeIn delay={0.05}>
+              <FadeIn delay={0.05} alwaysShow>
                 <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
                   Policy
                   <span className="ml-3 text-white/50 font-bold">• last updated: {new Date().getFullYear()}</span>
                 </div>
               </FadeIn>
 
-              <FadeIn delay={0.12} className="mt-5">
+              <FadeIn delay={0.12} className="mt-5" alwaysShow>
                 <h1 className="text-[clamp(2.2rem,5.2vw,4.0rem)] leading-[0.95] font-extrabold tracking-tight text-white">
                   Privacy <span className="text-[var(--brand-orange)]">Policy</span>
                 </h1>
               </FadeIn>
 
-              <FadeIn delay={0.18} className="mt-4">
+              <FadeIn delay={0.18} className="mt-4" alwaysShow>
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
                   We keep this simple: we only collect what we need to respond to your inquiry and run the website.
                 </p>
@@ -206,18 +231,20 @@ export default function Privacy() {
               </p>
 
               <div className="mt-4 flex flex-wrap gap-3">
-                <a
-                  href="/contact.html"
+                <Link
+                  to="/contact"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   Contact
-                </a>
-                <a
-                  href="/terms.html"
+                </Link>
+
+                <Link
+                  to="/terms"
                   className="rounded-full border border-black/15 bg-white px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-black/70 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                 >
                   Terms of Use
-                </a>
+                </Link>
+
               </div>
             </div>
           </div>

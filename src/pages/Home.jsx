@@ -1,6 +1,8 @@
 import React, { useMemo, useRef, useState } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import { useHead } from "@unhead/react";
+
 
 /** Floating rounded section wrapper */
 function FloatSection({ children, tone = "light" }) {
@@ -166,13 +168,13 @@ function Hero() {
                 className="mt-6 flex flex-wrap justify-center gap-3"
               >
                 <a
-                  href="/projects.html"
+                  href="/projects"
                   className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   See Our Work
                 </a>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full border border-white/20 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
                 >
                   Contact Us
@@ -219,13 +221,13 @@ function Hero() {
                 className="mt-7 flex flex-wrap gap-3"
               >
                 <a
-                  href="/projects.html"
+                  href="/projects"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   See Our Work
                 </a>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full border border-white/20 bg-white/0 px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
                 >
                   Contact Us
@@ -268,7 +270,7 @@ function QuickActions() {
       right: "aimconstructionmgt@gmail.com",
       href: "mailto:aimconstructionmgt@gmail.com?subject=Website%20Inquiry",
     },
-    { left: "Quote", right: "Request a Quote →", href: "/contact.html" },
+    { left: "Quote", right: "Request a Quote →", href: "/contact" },
   ];
 
   return (
@@ -397,7 +399,7 @@ function HomeContent() {
 
                   <div className="mt-6">
                     <a
-                      href="/about.html"
+                      href="/about"
                       className="inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                     >
                       Learn More
@@ -472,13 +474,13 @@ function HomeContent() {
 
               <div className="mt-8 flex flex-wrap justify-center gap-3">
                 <a
-                  href="/services.html"
+                  href="/services"
                   className="rounded-full border border-black/15 bg-white px-6 py-3 font-bold uppercase tracking-wider text-sm text-brand-ink hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                 >
                   Browse Services
                 </a>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   Request a Quote
@@ -532,9 +534,9 @@ function HomeContent() {
 
               <div className="mt-8 grid gap-5 md:grid-cols-3">
                 {[
-                  { img: "/img/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project.html?id=virginia-key-phase3" },
-                  { img: "/img/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project.html?id=miami-beach-ductbank" },
-                  { img: "/img/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project.html?id=port-of-miami" },
+                  { img: "/img/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project?id=virginia-key-phase3" },
+                  { img: "/img/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project?id=miami-beach-ductbank" },
+                  { img: "/img/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project?id=port-of-miami" },
                 ].map((x) => (
                   <a
                     key={x.title}
@@ -559,7 +561,7 @@ function HomeContent() {
 
               <div className="mt-8 text-center">
                 <a
-                  href="/projects.html"
+                  href="/projects"
                   className="inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   View Full Portfolio
@@ -576,5 +578,29 @@ function HomeContent() {
 }
 
 export default function Home() {
+  useHead({
+    title: "AIM Construction Management | Home",
+    meta: [
+      {
+        name: "description",
+        content:
+          "AIM Construction Management delivers safety-first underground utility, directional drilling (2”–24”), and concrete/asphalt restoration across Florida and beyond.",
+      },
+
+      // Open Graph
+      { property: "og:title", content: "AIM Construction Management" },
+      {
+        property: "og:description",
+        content:
+          "Safety-first crews delivering underground utility, directional drilling, and restoration—fast, dependable execution.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://aimconstructionmgt.com/" },
+      { property: "og:image", content: "https://aimconstructionmgt.com/img/hero-poster.webp" },
+    ],
+    link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/" }],
+  });
+
   return <HomeContent />;
 }
+

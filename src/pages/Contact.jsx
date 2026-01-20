@@ -1,6 +1,7 @@
 // src/pages/Contact.jsx
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
+import { useHead } from "@unhead/react";
 import {
   MobileMenu,
   Nav,
@@ -366,9 +367,32 @@ function NetlifyFormDetector() {
 ---------------------------------------------- */
 
 export default function Contact() {
-  useEffect(() => {
-    document.title = "Contact | AIM Construction Management";
-  }, []);
+
+useHead({
+  title: "Contact | AIM Construction Management",
+  meta: [
+    {
+      name: "description",
+      content:
+        "Contact AIM Construction Management for underground utility, directional drilling, and restoration. Share your scope, timeline, and site constraints for a fast response.",
+    },
+
+    // Open Graph
+    { property: "og:title", content: "Contact | AIM Construction Management" },
+    {
+      property: "og:description",
+      content:
+        "Reach the right person quickly—send scope details for underground utility, drilling, and restoration work.",
+    },
+    { property: "og:type", content: "website" },
+    { property: "og:url", content: "https://aimconstructionmgt.com/contact" },
+
+    // Optional but recommended (use a real image you have)
+    { property: "og:image", content: "https://aimconstructionmgt.com/img/hero-poster.webp" },
+  ],
+  link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/contact" }],
+});
+
 
   const sent =
     new URLSearchParams(window.location.search).get("sent") === "1";

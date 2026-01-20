@@ -2,9 +2,51 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <link rel="icon" href="/public/favicon.ico" sizes="any">
-    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover" />
-    <title>AIM Construction Management | Home</title>
+
+    <!-- ✅ Correct favicon path for Vite -->
+    <link rel="icon" href="/favicon.ico" sizes="any" />
+
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+
+    <!-- ✅ Title/description for HOME (SPA will override per route later) -->
+    <title>AIM Construction Management | Underground Utility & Directional Drilling</title>
+    <meta
+      name="description"
+      content="Safety-first crews delivering fast, dependable underground utility, directional drilling, and restoration work across Florida and beyond."
+    />
+
+    <!-- ✅ Canonical (domain swapped) -->
+    <link rel="canonical" href="https://aimconstructionmgt.com/" />
+
+    <!-- ✅ Open Graph -->
+    <meta property="og:title" content="AIM Construction Management" />
+    <meta
+      property="og:description"
+      content="Underground utility, directional drilling, and restoration across Florida and beyond."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://aimconstructionmgt.com/" />
+    <meta property="og:image" content="https://aimconstructionmgt.com/img/og-cover.png" />
+
+    <!-- ✅ Performance: preload your hero poster if it exists -->
+    <link rel="preload" as="image" href="/img/hero-poster.webp" fetchpriority="high" />
+
+    <!-- ✅ Structured data -->
+    <script type="application/ld+json">
+      {
+        "@context": "https://schema.org",
+        "@type": "GeneralContractor",
+        "name": "AIM Construction Management",
+        "url": "https://aimconstructionmgt.com/",
+        "telephone": "+1-305-331-5759",
+        "email": "aimconstructionmgt@gmail.com",
+        "areaServed": "Florida",
+        "description": "Underground utility, directional drilling, and restoration services."
+      }
+    </script>
   </head>
   <body>
     <div id="root"></div>

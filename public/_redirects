@@ -1,1 +1,9 @@
-/*    /index.html   200
+# Force www -> non-www
+https://www.aimconstructionmgt.com/* https://aimconstructionmgt.com/:splat 301!
+
+# Optional: force netlify subdomain to custom
+https://aim-website.netlify.app/* https://aimconstructionmgt.com/:splat 301!
+
+# SPA fallback (CRITICAL)
+# Serve index.html for all routes so React Router works
+/* /index.html 200

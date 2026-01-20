@@ -1,7 +1,9 @@
 // src/pages/About.jsx
-import React, { useEffect, useMemo, useRef } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, useInView, useScroll, useTransform } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import { useHead } from "@unhead/react";
+import { Link } from "react-router-dom";
 
 /* ---------------------------------------------
    Shared primitives (matches Home/Projects)
@@ -182,7 +184,7 @@ function AboutHero() {
                 Our Background
               </a>
               <a
-                href="/projects.html"
+                href="/projects"
                 className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
               >
                 See Work
@@ -607,9 +609,27 @@ function CulturePush() {
 ---------------------------------------------- */
 
 export default function About() {
-  useEffect(() => {
-    document.title = "Who We Are | AIM Construction Management";
-  }, []);
+  useHead({
+    title: "Who We Are | AIM Construction Management",
+    meta: [
+      {
+        name: "description",
+        content:
+          "Learn about AIM Construction Management—licensed underground utility and general contractor delivering safety-first operations, clean restoration, and dependable execution.",
+      },
+
+      // Open Graph
+      { property: "og:title", content: "Who We Are | AIM Construction Management" },
+      {
+        property: "og:description",
+        content:
+          "Licensed underground utility and general contractor built on decades of experience—focused on safety-first operations and clean restoration.",
+      },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: "https://aimconstructionmgt.com/about" },
+    ],
+    link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/about" }],
+  });
 
   return (
     <PageShell>
@@ -660,13 +680,13 @@ export default function About() {
             <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">
               <a
                 className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                href="/contact.html"
+                href="/contact"
               >
                 Request a Quote
               </a>
               <a
                 className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                href="/projects.html"
+                href="/projects"
               >
                 See Our Work
               </a>

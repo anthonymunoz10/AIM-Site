@@ -2,6 +2,7 @@ import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { PROJECTS } from "../data/projects";
+import { useHead } from "@unhead/react";
 
 /* ---------------------------------------------
    Small primitives (match Home/About vibe)
@@ -240,16 +241,44 @@ export default function Project() {
 
   const fallbackTitle = projectId ? prettyFromId(projectId) : "Project";
 
+  const title = project?.title || fallbackTitle;
+
+  const description =
+    project?.summary ||
+    "AIM Construction Management delivers safety-first underground utility, directional drilling, and restoration work across Florida and beyond.";
+
+  const ogImageRaw = project?.heroImage || project?.img || "/img/projects-bg.jpg";
+  const ogImage = String(ogImageRaw).startsWith("http")
+    ? ogImageRaw
+    : `https://aimconstructionmgt.com${ogImageRaw}`;
+
+  const canonicalUrl = projectId
+    ? `https://aimconstructionmgt.com/project?id=${encodeURIComponent(projectId)}`
+    : "https://aimconstructionmgt.com/project";
+
+  useHead({
+    title: `${title} | AIM Construction Management`,
+    meta: [
+      { name: "description", content: description },
+
+      // Open Graph
+      { property: "og:title", content: `${title} | AIM Construction Management` },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      { property: "og:image", content: ogImage },
+    ],
+    link: [{ rel: "canonical", href: canonicalUrl }],
+  });
+
+
   useEffect(() => {
     const onPop = () => setProjectId(getQueryParam("id"));
     window.addEventListener("popstate", onPop);
     return () => window.removeEventListener("popstate", onPop);
   }, []);
 
-  useEffect(() => {
-    const title = project?.title || fallbackTitle;
-    document.title = `${title} | AIM Construction Management`;
-  }, [project, fallbackTitle]);
+
 
   // Build gallery automatically from your file naming scheme
   useEffect(() => {
@@ -373,13 +402,13 @@ export default function Project() {
 
               <FadeIn delay={0.24} className="mt-8 flex flex-wrap gap-3">
                 <a
-                  href="/projects.html"
+                  href="/projects"
                   className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
                 >
                   Back to Projects
                 </a>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   Request a Quote
@@ -465,13 +494,13 @@ export default function Project() {
 
               <div className="mt-6 flex flex-wrap gap-3">
                 <a
-                  href="/services.html"
+                  href="/services"
                   className="rounded-full border border-black/15 bg-white px-6 py-3 font-bold uppercase tracking-wider text-sm text-[var(--ink)] hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                 >
                   View Services
                 </a>
                 <a
-                  href="/contact.html"
+                  href="/contact"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   Get Pricing
@@ -501,7 +530,7 @@ export default function Project() {
               </div>
 
               <a
-                href="/projects.html"
+                href="/projects"
                 className="rounded-full border border-white/18 bg-white/0 px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
               >
                 Back to Projects
@@ -546,13 +575,13 @@ export default function Project() {
                 </div>
                 <div className="md:col-span-4 md:justify-self-end flex flex-wrap gap-3">
                   <a
-                    href="/contact.html"
+                    href="/contact"
                     className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                   >
                     Request a Quote
                   </a>
                   <a
-                    href="/services.html"
+                    href="/services"
                     className="rounded-full border border-white/18 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
                   >
                     View Services

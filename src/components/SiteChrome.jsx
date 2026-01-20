@@ -2,6 +2,25 @@ import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
 
+function FooterNavLink({ to, className, children }) {
+  const handleClick = () => {
+    // ✅ FORCE scroll BEFORE navigation so the new route doesn’t inherit “bottom”
+    try {
+      if (window.__lenis?.scrollTo) window.__lenis.scrollTo(0, { immediate: true });
+    } catch {}
+    window.scrollTo(0, 0);
+    document.documentElement.scrollTop = 0;
+    document.body.scrollTop = 0;
+  };
+
+  return (
+    <Link to={to} onClick={handleClick} className={className}>
+      {children}
+    </Link>
+  );
+}
+
+
 function FitTextOneLine({
   text,
   min = 14,
@@ -417,7 +436,7 @@ export function Footer() {
     <footer
       id="site-footer"
       className="
-        relative overflow-visible bg-[var(--brand-orange)] text-black
+        relative z-0 overflow-visible bg-[var(--brand-orange)] text-black
         -mt-[22vh] pt-[26vh]
         min-h-[100svh] md:min-h-[88vh]
         pb-[max(env(safe-area-inset-bottom),24px)] md:pb-[18vh]
@@ -510,10 +529,10 @@ export function Footer() {
 
                 <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
 
-                  <Link className={footerLink} to="/services">Services</Link>
-                  <Link className={footerLink} to="/about">Company</Link>
-                  <Link className={footerLink} to="/projects">Projects</Link>
-                  <Link className={footerLink} to="/contact">Work with us</Link>
+                  <FooterNavLink className={footerLink} to="/services">Services</FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/about">Company</FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/projects">Projects</FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/contact">Work with us</FooterNavLink>
 
                 </div>
 
@@ -576,8 +595,13 @@ export function Footer() {
                 <div>© {year} AIM Construction Management. All rights reserved.</div>
                 <div className="flex items-center justify-center gap-4">
 
-                  <Link className="hover:underline underline-offset-4" to="/privacy">Privacy</Link>
-                  <Link className="hover:underline underline-offset-4" to="/terms">Terms</Link>
+                  <FooterNavLink className="hover:underline underline-offset-4" to="/privacy">
+                    Privacy
+                  </FooterNavLink>
+                  <FooterNavLink className="hover:underline underline-offset-4" to="/terms">
+                    Terms
+                  </FooterNavLink>
+
 
                 </div>
               </div>

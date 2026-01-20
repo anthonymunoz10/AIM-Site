@@ -1,7 +1,9 @@
 // src/pages/Terms.jsx
 import React, { useEffect, useRef } from "react";
 import { motion, useInView } from "framer-motion";
+import { useHead } from "@unhead/react";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import { Link } from "react-router-dom";
 
 function FloatSection({ children, tone = "light" }) {
   const shell =
@@ -81,9 +83,29 @@ function PageShell({ children }) {
 }
 
 export default function Terms() {
-  useEffect(() => {
-    document.title = "Terms of Use | AIM Construction Management";
-  }, []);
+  const title = "Terms of Use | AIM Construction Management";
+
+  const description =
+    "Read the terms of use for AIM Construction Management’s website, including acceptable use, content ownership, and third-party links.";
+
+  const canonicalUrl = "https://aimconstructionmgt.com/terms";
+  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+
+  useHead({
+    title,
+    meta: [
+      { name: "description", content: description },
+
+      // Open Graph
+      { property: "og:title", content: title },
+      { property: "og:description", content: description },
+      { property: "og:type", content: "website" },
+      { property: "og:url", content: canonicalUrl },
+      { property: "og:image", content: ogImage },
+    ],
+    link: [{ rel: "canonical", href: canonicalUrl }],
+  });
+
 
   return (
     <PageShell>
@@ -110,7 +132,7 @@ export default function Terms() {
         <div className="absolute inset-0 [background:radial-gradient(1200px_700px_at_50%_35%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.62)_70%,rgba(0,0,0,0.90)_100%)]" />
         <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
 
-        <div className="relative z-10 pt-40 pb-14 md:pt-44">
+        <div className="relative z-10 pt-60 pb-14 md:pt-44">
           <Container>
             <div className="max-w-[920px]">
               <FadeIn delay={0.05}>
@@ -187,18 +209,19 @@ export default function Terms() {
               </p>
 
               <div className="mt-4 flex flex-wrap gap-3">
-                <a
-                  href="/privacy.html"
+                <Link
+                  to="/privacy"
                   className="rounded-full border border-black/15 bg-white px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-black/70 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                 >
                   Privacy Policy
-                </a>
-                <a
-                  href="/contact.html"
+                </Link>
+
+                <Link
+                  to="/contact"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
                   Contact
-                </a>
+                </Link>
               </div>
             </div>
           </div>
