@@ -32,11 +32,12 @@ function Page({ children }) {
 // ✅ Make scroll-to-top callable from anywhere (Footer included)
 function hardScrollTop() {
   try {
-    // if Lenis is active, this is the real scroll controller
     if (window.__lenis && typeof window.__lenis.scrollTo === "function") {
       window.__lenis.scrollTo(0, { immediate: true });
     }
-  } catch {}
+  } catch (err) {
+    if (import.meta.env.DEV) console.warn("hardScrollTop failed:", err);
+  }
 
   // always also reset native scroll
   window.scrollTo(0, 0);

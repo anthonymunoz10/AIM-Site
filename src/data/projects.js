@@ -2,6 +2,17 @@
 
 export const PROJECTS = [
   {
+    id: "port-everglades-2025",
+    title: 'Port Everglades 36" Concrete Drainage Installation',
+    location: "Port Everglades, FL",
+    year: "2025",
+    category: "Infrastructure",
+    img: "/img/port-everglades-2025.webp",
+    galleryBase: "/img/port-everglades-2025",
+    summary:
+      '36" concrete drainage installation at Port Everglades, including excavation, placement, and restoration.',
+  },
+  {
     id: "virginia-key-phase3",
     title: 'WWTP Virginia Key Ductbank & MHs 9-6" 3-2" Phase 3',
     location: "Virginia Key, FL",
