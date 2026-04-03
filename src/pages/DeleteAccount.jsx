@@ -1,4 +1,4 @@
-// src/pages/Privacy.jsx
+// src/pages/DeleteAccount.jsx
 import React, { useRef } from "react";
 import { useHead } from "@unhead/react";
 import { motion, useInView } from "framer-motion";
@@ -10,10 +10,6 @@ import {
   HeroBlend,
 } from "../components/SiteChrome";
 import { Link } from "react-router-dom";
-
-/* ---------------------------------------------
-   Small primitives (match your site vibe)
----------------------------------------------- */
 
 function FloatSection({ children, tone = "light" }) {
   const shell =
@@ -57,10 +53,6 @@ function FadeIn({ children, className = "", delay = 0, alwaysShow = false }) {
   );
 }
 
-/* ---------------------------------------------
-   Page shell
----------------------------------------------- */
-
 function PageShell({ children }) {
   return (
     <main className="full-viewport safe-bottom relative bg-[var(--sand)] text-[var(--ink)]">
@@ -96,33 +88,35 @@ function PageShell({ children }) {
   );
 }
 
-/* ---------------------------------------------
-   Page
----------------------------------------------- */
-
-export default function Privacy() {
+export default function DeleteAccount() {
   useHead({
-    title: "Privacy Policy | AIM Project Management",
+    title: "Delete Account | AIM Project Management",
     meta: [
       {
         name: "description",
         content:
-          "Privacy Policy for AIM Project Management covering website usage, account information, project data, uploaded files, and app-related services.",
+          "How to request deletion of your AIM Project Management account and associated data.",
       },
       {
         property: "og:title",
-        content: "Privacy Policy | AIM Project Management",
+        content: "Delete Account | AIM Project Management",
       },
       {
         property: "og:description",
         content:
-          "Privacy Policy for AIM Project Management covering website and app data collection, usage, security, and deletion requests.",
+          "Learn how to request deletion of your AIM Project Management account and associated data.",
       },
       { property: "og:type", content: "website" },
-      { property: "og:url", content: "https://aimconstructionmgt.com/privacy" },
+      {
+        property: "og:url",
+        content: "https://aimconstructionmgt.com/delete-account",
+      },
     ],
     link: [
-      { rel: "canonical", href: "https://aimconstructionmgt.com/privacy" },
+      {
+        rel: "canonical",
+        href: "https://aimconstructionmgt.com/delete-account",
+      },
     ],
   });
 
@@ -163,25 +157,24 @@ export default function Privacy() {
             <div className="max-w-[920px]">
               <FadeIn delay={0.05} alwaysShow>
                 <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
-                  Policy
+                  Account
                   <span className="ml-3 text-white/50 font-bold">
-                    • last updated: {new Date().getFullYear()}
+                    • deletion request
                   </span>
                 </div>
               </FadeIn>
 
               <FadeIn delay={0.12} className="mt-5" alwaysShow>
                 <h1 className="text-[clamp(2.2rem,5.2vw,4.0rem)] leading-[0.95] font-extrabold tracking-tight text-white">
-                  Privacy{" "}
-                  <span className="text-[var(--brand-orange)]">Policy</span>
+                  Delete{" "}
+                  <span className="text-[var(--brand-orange)]">Account</span>
                 </h1>
               </FadeIn>
 
               <FadeIn delay={0.18} className="mt-4" alwaysShow>
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
-                  AIM Project Management collects only the information needed to
-                  operate the website, provide app functionality, support
-                  collaboration, and manage user accounts securely.
+                  You can request deletion of your AIM Project Management
+                  account and associated data at any time.
                 </p>
               </FadeIn>
             </div>
@@ -196,133 +189,77 @@ export default function Privacy() {
           <div className="grid gap-6">
             <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Information we collect
+                Option 1
               </div>
-
-              <div className="mt-3 grid gap-3 text-black/70 font-semibold leading-relaxed">
-                <div>
-                  <span className="font-extrabold text-black/85">
-                    Account information:
-                  </span>{" "}
-                  name, email address, login details, and profile information.
-                </div>
-                <div>
-                  <span className="font-extrabold text-black/85">
-                    Project data:
-                  </span>{" "}
-                  project names, tasks, notes, updates, schedules, and
-                  team-related activity.
-                </div>
-                <div>
-                  <span className="font-extrabold text-black/85">
-                    Files and attachments:
-                  </span>{" "}
-                  photos, documents, and other files uploaded through the app.
-                </div>
-                <div>
-                  <span className="font-extrabold text-black/85">
-                    Website inquiries:
-                  </span>{" "}
-                  name, email, phone, company, project details, and any message
-                  you send us.
-                </div>
-                <div>
-                  <span className="font-extrabold text-black/85">
-                    Basic technical data:
-                  </span>{" "}
-                  device, browser, and usage information where needed for
-                  functionality, analytics, security, or performance monitoring.
-                </div>
+              <div className="mt-3 text-black/85 font-extrabold">
+                Request deletion in the app
               </div>
+              <ol className="mt-3 list-decimal pl-5 text-black/70 font-semibold leading-relaxed grid gap-2">
+                <li>Open the AIM Project Management app</li>
+                <li>Sign in to your account</li>
+                <li>Go to Settings</li>
+                <li>Select Delete Account</li>
+                <li>Follow the confirmation steps</li>
+              </ol>
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-[var(--sand)]/10 p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                How we use it
+                Option 2
               </div>
+              <div className="mt-3 text-black/85 font-extrabold">
+                Request deletion by email
+              </div>
+              <p className="mt-3 text-black/70 font-semibold leading-relaxed">
+                Email{" "}
+                <a
+                  className="font-extrabold text-[var(--brand-orange)] hover:opacity-90"
+                  href="mailto:support@aimconstructionmgt.com?subject=Delete%20Account%20Request"
+                >
+                  support@aimconstructionmgt.com
+                </a>{" "}
+                from the email associated with your account and request
+                deletion.
+              </p>
+            </div>
 
-              <ul className="mt-3 grid gap-2 text-black/70 font-semibold leading-relaxed list-disc pl-5">
-                <li>Provide and improve website and app functionality</li>
-                <li>Manage accounts, authentication, and user access</li>
+            <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
+              <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
+                What will be deleted
+              </div>
+              <ul className="mt-3 list-disc pl-5 text-black/70 font-semibold leading-relaxed grid gap-2">
+                <li>Name and profile information</li>
+                <li>Email address and account details</li>
                 <li>
-                  Enable project collaboration between managers and supervisors
+                  Tasks, notes, and activity data associated with your account
                 </li>
                 <li>
-                  Store and organize tasks, notes, files, and project updates
+                  Uploaded files and attachments associated with your account
                 </li>
-                <li>
-                  Respond to support requests, quote requests, and general
-                  inquiries
-                </li>
-                <li>Protect platform security and prevent misuse</li>
+                <li>Project associations where applicable</li>
               </ul>
             </div>
 
-            <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
-              <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Data sharing
-              </div>
-              <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                We do not sell personal information. We may share data only with
-                trusted service providers when necessary to operate the website
-                and app, such as hosting, authentication, file storage,
-                analytics, email delivery, or security services, and when
-                required by law.
-              </p>
-            </div>
-
             <div className="rounded-2xl border border-black/10 bg-[var(--sand)]/10 p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Cookies, analytics, and third-party services
+                Temporary retention
               </div>
               <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                Our website and app may use third-party services such as Google
-                Sign-In, Apple Sign-In, hosting providers, analytics tools, file
-                storage services, or embedded media. These services may collect
-                data according to their own privacy policies.
+                Certain information may be retained for a limited period where
+                necessary for legal compliance, fraud prevention, dispute
+                resolution, security, or enforcement of our agreements.
               </p>
             </div>
 
             <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Data security
+                Questions
               </div>
               <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                We use reasonable administrative, technical, and organizational
-                safeguards to protect personal information. Data is encrypted in
-                transit where applicable, and access is limited to authorized
-                users and service providers.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-black/10 bg-[var(--sand)]/10 p-5 md:p-6">
-              <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Data retention and deletion
-              </div>
-              <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                We retain data only as long as reasonably necessary to provide
-                services, comply with legal obligations, resolve disputes, and
-                protect the security of the platform. Users may request deletion
-                of their account and associated data through our{" "}
-                <Link
-                  to="/delete-account"
-                  className="font-extrabold text-[var(--brand-orange)] hover:opacity-90"
-                >
-                  Delete Account
-                </Link>{" "}
-                page.
-              </p>
-            </div>
-
-            <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
-              <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
-                Contact us
-              </div>
-              <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                Questions about privacy? Email{" "}
+                For questions about account deletion, contact{" "}
                 <a
                   className="font-extrabold text-[var(--brand-orange)] hover:opacity-90"
-                  href="mailto:support@aimconstructionmgt.com?subject=Privacy%20Question"
+                  href="mailto:support@aimconstructionmgt.com?subject=Account%20Deletion%20Question"
                 >
                   support@aimconstructionmgt.com
                 </a>
@@ -331,17 +268,17 @@ export default function Privacy() {
 
               <div className="mt-4 flex flex-wrap gap-3">
                 <Link
-                  to="/contact"
+                  to="/privacy"
                   className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
                 >
-                  Contact
+                  Privacy Policy
                 </Link>
 
                 <Link
-                  to="/terms"
+                  to="/contact"
                   className="rounded-full border border-black/15 bg-white px-6 py-3 font-extrabold uppercase tracking-wider text-sm text-black/70 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"
                 >
-                  Terms of Use
+                  Contact
                 </Link>
               </div>
             </div>

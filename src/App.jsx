@@ -14,6 +14,7 @@ import Project from "./pages/Project.jsx";
 import Contact from "./pages/Contact.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
+import DeleteAccount from "./pages/DeleteAccount.jsx";
 
 function Page({ children }) {
   return (
@@ -130,24 +131,109 @@ export default function App() {
 
       <AnimatePresence mode="wait" initial={false}>
         <Routes location={location} key={location.pathname}>
-          <Route path="/" element={<Page><Home /></Page>} />
-          <Route path="/about" element={<Page><About /></Page>} />
-          <Route path="/services" element={<Page><Services /></Page>} />
-          <Route path="/projects" element={<Page><Projects /></Page>} />
-          <Route path="/projects/:slug" element={<Page><Project /></Page>} />
-          <Route path="/project" element={<Page><Project /></Page>} />
-          <Route path="/contact" element={<Page><Contact /></Page>} />
-          <Route path="/privacy" element={<Page><Privacy /></Page>} />
-          <Route path="/terms" element={<Page><Terms /></Page>} />
+          <Route
+            path="/"
+            element={
+              <Page>
+                <Home />
+              </Page>
+            }
+          />
+          <Route
+            path="/about"
+            element={
+              <Page>
+                <About />
+              </Page>
+            }
+          />
+          <Route
+            path="/services"
+            element={
+              <Page>
+                <Services />
+              </Page>
+            }
+          />
+          <Route
+            path="/projects"
+            element={
+              <Page>
+                <Projects />
+              </Page>
+            }
+          />
+          <Route
+            path="/projects/:slug"
+            element={
+              <Page>
+                <Project />
+              </Page>
+            }
+          />
+          <Route
+            path="/project"
+            element={
+              <Page>
+                <Project />
+              </Page>
+            }
+          />
+          <Route
+            path="/contact"
+            element={
+              <Page>
+                <Contact />
+              </Page>
+            }
+          />
+          <Route
+            path="/privacy"
+            element={
+              <Page>
+                <Privacy />
+              </Page>
+            }
+          />
+          <Route
+            path="/terms"
+            element={
+              <Page>
+                <Terms />
+              </Page>
+            }
+          />
+          <Route path="/delete-account" element={<DeleteAccount />} />
 
           {/* old urls */}
-          <Route path="/about.html" element={<Navigate to="/about" replace />} />
-          <Route path="/services.html" element={<Navigate to="/services" replace />} />
-          <Route path="/projects.html" element={<Navigate to="/projects" replace />} />
-          <Route path="/project.html" element={<Navigate to="/project" replace />} />
-          <Route path="/contact.html" element={<Navigate to="/contact" replace />} />
-          <Route path="/privacy.html" element={<Navigate to="/privacy" replace />} />
-          <Route path="/terms.html" element={<Navigate to="/terms" replace />} />
+          <Route
+            path="/about.html"
+            element={<Navigate to="/about" replace />}
+          />
+          <Route
+            path="/services.html"
+            element={<Navigate to="/services" replace />}
+          />
+          <Route
+            path="/projects.html"
+            element={<Navigate to="/projects" replace />}
+          />
+          <Route
+            path="/project.html"
+            element={<Navigate to="/project" replace />}
+          />
+          <Route
+            path="/contact.html"
+            element={<Navigate to="/contact" replace />}
+          />
+          <Route
+            path="/privacy.html"
+            element={<Navigate to="/privacy" replace />}
+          />
+          <Route
+            path="/terms.html"
+            element={<Navigate to="/terms" replace />}
+          />
 
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
