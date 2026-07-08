@@ -260,6 +260,40 @@ export default function Privacy() {
 
             <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
               <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
+                SMS consent and messaging
+              </div>
+
+              <div className="mt-3 grid gap-3 text-black/70 font-semibold leading-relaxed">
+                <p>
+                  AIM Project Management may send transactional SMS messages for
+                  account setup, project invitations, verification codes, and
+                  project access notifications.
+                </p>
+
+                <p>
+                  SMS messages are sent only when an authorized company
+                  administrator, manager, or project supervisor enters a
+                  recipient’s phone number in the AIM application and confirms
+                  that the recipient has consented to receive work-related SMS
+                  messages for project onboarding or account access.
+                </p>
+
+                <p>
+                  Message frequency varies based on project activity and account
+                  access needs. Message and data rates may apply. Reply STOP to
+                  opt out. Reply HELP for help.
+                </p>
+
+                <p>
+                  AIM Project Management does not sell, rent, or share mobile
+                  phone numbers or SMS consent information with third parties or
+                  affiliates for marketing or promotional purposes.
+                </p>
+              </div>
+            </div>
+
+            <div className="rounded-2xl border border-black/10 bg-white/70 p-5 md:p-6">
+              <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/50">
                 Data sharing
               </div>
               <p className="mt-3 text-black/70 font-semibold leading-relaxed">
