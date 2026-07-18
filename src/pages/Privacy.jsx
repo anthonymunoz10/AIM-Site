@@ -271,11 +271,11 @@ export default function Privacy() {
                 </p>
 
                 <p>
-                  SMS messages are sent only when an authorized company
-                  administrator, manager, or project supervisor enters a
-                  recipient’s phone number in the AIM application and confirms
-                  that the recipient has consented to receive work-related SMS
-                  messages for project onboarding or account access.
+                  SMS messages are sent only after the recipient provides or
+                  confirms their own mobile phone number and voluntarily agrees
+                  to receive transactional text messages through the AIM account
+                  onboarding or invitation process. The SMS consent option is
+                  unchecked by default.
                 </p>
 
                 <p>
@@ -285,9 +285,10 @@ export default function Privacy() {
                 </p>
 
                 <p>
-                  AIM Project Management does not sell, rent, or share mobile
-                  phone numbers or SMS consent information with third parties or
-                  affiliates for marketing or promotional purposes.
+                  Mobile information, text-messaging originator opt-in data, and
+                  SMS consent will not be sold, rented, shared, or transferred
+                  to third parties, affiliates, or lead generators for marketing
+                  or promotional purposes.
                 </p>
               </div>
             </div>

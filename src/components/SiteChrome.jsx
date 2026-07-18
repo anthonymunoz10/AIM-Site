@@ -6,7 +6,8 @@ function FooterNavLink({ to, className, children }) {
   const handleClick = () => {
     // ✅ FORCE scroll BEFORE navigation so the new route doesn’t inherit “bottom”
     try {
-      if (window.__lenis?.scrollTo) window.__lenis.scrollTo(0, { immediate: true });
+      if (window.__lenis?.scrollTo)
+        window.__lenis.scrollTo(0, { immediate: true });
     } catch {}
     window.scrollTo(0, 0);
     document.documentElement.scrollTop = 0;
@@ -20,13 +21,7 @@ function FooterNavLink({ to, className, children }) {
   );
 }
 
-
-function FitTextOneLine({
-  text,
-  min = 14,
-  max = 24,
-  className = "",
-}) {
+function FitTextOneLine({ text, min = 14, max = 24, className = "" }) {
   const wrapRef = React.useRef(null);
   const textRef = React.useRef(null);
   const [size, setSize] = React.useState(max);
@@ -79,11 +74,10 @@ function FitTextOneLine({
   );
 }
 
-
 export function HeroBlend({
-  height = 320,              // taller = smoother
-  sand = "var(--sand)",       // page background
-  sand2 = "var(--sand-2)",    // subtle mid
+  height = 320, // taller = smoother
+  sand = "var(--sand)", // page background
+  sand2 = "var(--sand-2)", // subtle mid
   className = "",
 }) {
   return (
@@ -129,7 +123,9 @@ export function HeroBlend({
       {/* Phase 3: tiny seam killer at the very bottom */}
       <div
         className="absolute inset-x-0 bottom-0 h-8"
-        style={{ background: `linear-gradient(to bottom, rgba(0,0,0,0), ${sand})` }}
+        style={{
+          background: `linear-gradient(to bottom, rgba(0,0,0,0), ${sand})`,
+        }}
       />
 
       {/* Banding killer (optional but recommended) */}
@@ -137,8 +133,6 @@ export function HeroBlend({
     </div>
   );
 }
-
-
 
 export const Container = ({ children }) => (
   <div className="mx-auto w-[92%] max-w-[1200px]">{children}</div>
@@ -222,7 +216,9 @@ export function MobileMenu() {
       <div
         className={[
           "fixed inset-0 z-[60] transition-opacity duration-300",
-          open ? "opacity-100 pointer-events-auto" : "opacity-0 pointer-events-none",
+          open
+            ? "opacity-100 pointer-events-auto"
+            : "opacity-0 pointer-events-none",
         ].join(" ")}
         onClick={() => setOpen(false)}
         aria-hidden={!open}
@@ -256,7 +252,6 @@ export function MobileMenu() {
         }}
         style={{ paddingTop: "max(env(safe-area-inset-top),14px)" }}
       >
-
         <div className="mx-auto w-[92%] max-w-[1200px]">
           <div
             ref={sheetRef}
@@ -271,7 +266,11 @@ export function MobileMenu() {
                 className="flex items-center"
                 aria-label="Home"
               >
-                <img src="/img/logo.png" alt="Aim Construction" className="h-10 w-auto" />
+                <img
+                  src="/img/logo.png"
+                  alt="Aim Construction"
+                  className="h-10 w-auto"
+                />
               </Link>
 
               <Link
@@ -295,7 +294,9 @@ export function MobileMenu() {
                     <span className="text-white/90 font-extrabold uppercase tracking-[0.14em] text-base">
                       {l.label}
                     </span>
-                    <span className="text-white/35 group-hover:text-[var(--brand-orange)] transition">→</span>
+                    <span className="text-white/35 group-hover:text-[var(--brand-orange)] transition">
+                      →
+                    </span>
                   </Link>
                 ))}
               </nav>
@@ -320,7 +321,6 @@ export function MobileMenu() {
     </div>
   );
 }
-
 
 /* ----------------------------
    DESKTOP NAV
@@ -350,16 +350,35 @@ export function Nav() {
           >
             <div className="flex items-center justify-between px-6 py-4">
               <Link to="/" className="flex items-center gap-3">
-
-                <img src="/img/logo.png" alt="Aim Construction" className="h-11 w-auto" />
+                <img
+                  src="/img/logo.png"
+                  alt="Aim Construction"
+                  className="h-11 w-auto"
+                />
               </Link>
 
               <div className="flex items-center gap-8 text-xs uppercase tracking-[0.18em] font-semibold text-white/85">
-                <Link className="hover:text-[var(--brand-orange)]" to="/about">Who We Are</Link>
-                <Link className="hover:text-[var(--brand-orange)]" to="/services">Services</Link>
-                <Link className="hover:text-[var(--brand-orange)]" to="/projects">Projects</Link>
-                <Link className="hover:text-[var(--brand-orange)]" to="/contact">Contact</Link>
-
+                <Link className="hover:text-[var(--brand-orange)]" to="/about">
+                  Who We Are
+                </Link>
+                <Link
+                  className="hover:text-[var(--brand-orange)]"
+                  to="/services"
+                >
+                  Services
+                </Link>
+                <Link
+                  className="hover:text-[var(--brand-orange)]"
+                  to="/projects"
+                >
+                  Projects
+                </Link>
+                <Link
+                  className="hover:text-[var(--brand-orange)]"
+                  to="/contact"
+                >
+                  Contact
+                </Link>
               </div>
 
               <Link
@@ -368,8 +387,6 @@ export function Nav() {
               >
                 Request a Quote
               </Link>
-
-
             </div>
           </div>
         </div>
@@ -449,11 +466,11 @@ export function Footer() {
       <div className="pointer-events-none absolute inset-0 opacity-[0.35] [background:radial-gradient(900px_420px_at_20%_10%,rgba(0,0,0,0.22),transparent_60%),radial-gradient(900px_420px_at_80%_30%,rgba(255,255,255,0.14),transparent_60%)]" />
 
       {/* BIG watermark text */}
-<>
-      {/* ✅ Mobile watermark (locks to safe-area bottom edge) */}
-      <div className="pointer-events-none absolute inset-0 md:hidden">
-        <div
-          className="
+      <>
+        {/* ✅ Mobile watermark (locks to safe-area bottom edge) */}
+        <div className="pointer-events-none absolute inset-0 md:hidden">
+          <div
+            className="
             absolute left-1/2 -translate-x-1/2
             bottom-[calc(env(safe-area-inset-bottom,0px)*-1)]
             translate-y-[14px]
@@ -464,16 +481,15 @@ export function Footer() {
             select-none leading-none whitespace-nowrap
             scale-x-[1.06]
           "
-        >
-          AIM
+          >
+            AIM
+          </div>
         </div>
-      </div>
 
-
-      {/* ✅ Desktop watermark (keep EXACTLY how it looks now) */}
-      <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
-        <div
-          className="
+        {/* ✅ Desktop watermark (keep EXACTLY how it looks now) */}
+        <div className="pointer-events-none absolute inset-0 overflow-hidden hidden md:block">
+          <div
+            className="
             absolute
             right-[max(2vw,16px)]
             bottom-[max(env(safe-area-inset-bottom),0px)]
@@ -482,18 +498,16 @@ export function Footer() {
             font-extrabold tracking-tight opacity-[0.10]
             select-none leading-none whitespace-nowrap
           "
-        >
-          AIM
+          >
+            AIM
+          </div>
         </div>
-      </div>
-    </>
-
+      </>
 
       <Container>
         <div className="relative grid gap-8 md:grid-cols-12 text-black/85 text-center md:text-left">
           {/* Left */}
           <div className="md:col-span-5 flex flex-col items-center md:items-start">
-
             <img
               src="/img/logo.png"
               alt="Aim Construction"
@@ -505,19 +519,17 @@ export function Footer() {
             />
 
             <p className="mt-6 max-w-[46ch] text-[16px] md:text-[17px] text-black/75 font-semibold leading-relaxed">
-              Safety-first operations and dependable delivery for underground utility, directional drilling, and
-              restoration work.
+              Safety-first operations and dependable delivery for underground
+              utility, directional drilling, and restoration work.
             </p>
 
             <div className="mt-8 h-1 w-28 rounded-full bg-black/25 mx-auto md:mx-0" />
-
           </div>
 
           {/* Right */}
           <div className="md:col-span-7 md:col-start-6">
             {/* 3 columns on desktop: | Navigate | Connect + Top button | */}
             <div className="grid gap-8 sm:grid-cols-2 md:grid-cols-[1fr_1fr_auto] items-start justify-items-center md:justify-items-stretch">
-
               {/* Navigate column (with left divider + mid divider) */}
               <div className="relative pl-0 md:pl-6">
                 {/* left divider (to the left of Navigate) */}
@@ -528,12 +540,18 @@ export function Footer() {
                 </div>
 
                 <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
-
-                  <FooterNavLink className={footerLink} to="/services">Services</FooterNavLink>
-                  <FooterNavLink className={footerLink} to="/about">Company</FooterNavLink>
-                  <FooterNavLink className={footerLink} to="/projects">Projects</FooterNavLink>
-                  <FooterNavLink className={footerLink} to="/contact">Work with us</FooterNavLink>
-
+                  <FooterNavLink className={footerLink} to="/services">
+                    Services
+                  </FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/about">
+                    Company
+                  </FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/projects">
+                    Projects
+                  </FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/contact">
+                    Work with us
+                  </FooterNavLink>
                 </div>
 
                 {/* divider between Navigate and Connect (sits on Navigate's right edge) */}
@@ -542,18 +560,24 @@ export function Footer() {
 
               {/* Connect column */}
               <div className="relative pl-0 md:pl-6">
-
                 <div className="text-xs uppercase tracking-[0.22em] font-extrabold text-black/60">
                   Connect
                 </div>
 
                 <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
-
-                  <button type="button" onClick={() => setPop("phone")} className={footerLink}>
+                  <button
+                    type="button"
+                    onClick={() => setPop("phone")}
+                    className={footerLink}
+                  >
                     Phone
                   </button>
 
-                  <button type="button" onClick={() => setPop("email")} className={footerLink}>
+                  <button
+                    type="button"
+                    onClick={() => setPop("email")}
+                    className={footerLink}
+                  >
                     Email
                   </button>
                 </div>
@@ -561,7 +585,6 @@ export function Footer() {
 
               {/* Back to top button (to the right of Connect links) */}
               <div className="justify-self-center sm:justify-self-end md:pt-[28px]">
-
                 <button
                   type="button"
                   onClick={scrollToTop}
@@ -571,7 +594,9 @@ export function Footer() {
                   <span className="h-10 w-10 rounded-full border border-black/20 bg-black/5 backdrop-blur grid place-items-center">
                     ↑
                   </span>
-                  <span className="uppercase tracking-[0.22em] text-xs font-extrabold">Top</span>
+                  <span className="uppercase tracking-[0.22em] text-xs font-extrabold">
+                    Top
+                  </span>
                 </button>
               </div>
             </div>
@@ -587,22 +612,33 @@ export function Footer() {
             md:pb-[max(env(safe-area-inset-bottom),2.5vh)]
           "
         >
-
           <div className="border-t border-black/15 pt-5 text-sm font-semibold text-black/65">
             <Container>
               <div className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-between md:text-left">
-
-                <div>© {year} AIM Construction Management. All rights reserved.</div>
-                <div className="flex items-center justify-center gap-4">
-
-                  <FooterNavLink className="hover:underline underline-offset-4" to="/privacy">
+                <div>
+                  © {year} AIM Construction Management. All rights reserved.
+                </div>
+                <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
+                  <FooterNavLink
+                    className="hover:underline underline-offset-4"
+                    to="/privacy"
+                  >
                     Privacy
                   </FooterNavLink>
-                  <FooterNavLink className="hover:underline underline-offset-4" to="/terms">
+
+                  <FooterNavLink
+                    className="hover:underline underline-offset-4"
+                    to="/terms"
+                  >
                     Terms
                   </FooterNavLink>
 
-
+                  <FooterNavLink
+                    className="hover:underline underline-offset-4"
+                    to="/sms-opt-in"
+                  >
+                    SMS Opt-In
+                  </FooterNavLink>
                 </div>
               </div>
             </Container>
@@ -706,7 +742,6 @@ export function Footer() {
           </div>
         </div>
       )}
-
     </footer>
   );
 }

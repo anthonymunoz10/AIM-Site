@@ -15,6 +15,7 @@ import Contact from "./pages/Contact.jsx";
 import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import DeleteAccount from "./pages/DeleteAccount.jsx";
+import SmsOptIn from "./pages/SmsOptIn.jsx";
 
 function Page({ children }) {
   return (
@@ -196,6 +197,14 @@ export default function App() {
             }
           />
           <Route
+            path="/sms-opt-in"
+            element={
+              <Page>
+                <SmsOptIn />
+              </Page>
+            }
+          />
+          <Route
             path="/terms"
             element={
               <Page>
@@ -234,7 +243,10 @@ export default function App() {
             path="/terms.html"
             element={<Navigate to="/terms" replace />}
           />
-
+          <Route
+            path="/sms-opt-in.html"
+            element={<Navigate to="/sms-opt-in" replace />}
+          />
           <Route path="*" element={<Navigate to="/" replace />} />
         </Routes>
       </AnimatePresence>
