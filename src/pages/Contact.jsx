@@ -190,53 +190,135 @@ function PageShell({ children }) {
 }
 
 /* ---------------------------------------------
-   Form (clean submit UX - UI only)
+   Form: Commercial / Residential, project type, photo
 ---------------------------------------------- */
-function encode(data) {
-  return new URLSearchParams(data).toString();
+
+const PROJECT_TYPES = {
+  commercial: [
+    "Directional drilling",
+    "Ductbank",
+    "Water / sewer",
+    "Excavation / trenching",
+    "Concrete / asphalt restoration",
+    "Other",
+  ],
+  residential: [
+    "Kitchen",
+    "Bathroom",
+    "Flooring",
+    "Painting / drywall",
+    "Roofing",
+    "Plumbing / drainage",
+    "HVAC",
+    "Electrical",
+    "Remodel / addition",
+    "Other",
+  ],
+};
+
+const fieldCls =
+  "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3.5 text-[16px] font-semibold text-white placeholder:text-white/30 outline-none transition focus:border-[var(--brand-orange)] focus:bg-white/[0.09]";
+const labelCls = "block text-[13px] font-bold text-white/70";
+
+function SideCard({ value, title, sub, checked, onChange }) {
+  return (
+    <label
+      className={[
+        "relative flex cursor-pointer flex-col rounded-2xl border p-4 transition",
+        checked
+          ? "border-[var(--brand-orange)] bg-[rgba(240,138,0,0.12)]"
+          : "border-white/10 bg-white/[0.04] hover:border-white/25",
+      ].join(" ")}
+    >
+      <input
+        type="radio"
+        name="side"
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        className="sr-only"
+      />
+      <span className="flex items-center justify-between gap-3">
+        <span className="text-[16px] font-extrabold text-white">{title}</span>
+        <span
+          className={[
+            "grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition",
+            checked ? "border-[var(--brand-orange)]" : "border-white/30",
+          ].join(" ")}
+        >
+          {checked && <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-orange)]" />}
+        </span>
+      </span>
+      <span className="mt-1 text-[13px] font-semibold text-white/55">{sub}</span>
+    </label>
+  );
 }
 
 function FormCard({ emailHref, email, sent = false }) {
   const [state, setState] = useState(sent ? "sent" : "idle");
+  const [side, setSide] = useState("residential");
+  const [type, setType] = useState("");
+  const [fileName, setFileName] = useState("");
+
+  if (state === "sent") {
+    return (
+      <div className="rounded-[22px] border border-white/12 bg-white/5 p-8 text-center">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--brand-orange)] text-2xl font-extrabold text-white">
+          ✓
+        </div>
+        <h3 className="mt-5 text-2xl font-extrabold text-white">Request received</h3>
+        <p className="mx-auto mt-2 max-w-[40ch] font-semibold text-white/70">
+          Thanks, we’ll reach out within one business day. Need it sooner? Give us a call.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <a
+            href="tel:3053315759"
+            className="rounded-full bg-[var(--brand-orange)] px-7 py-3 text-sm font-bold uppercase tracking-wider text-white hover:opacity-90 transition"
+          >
+            Call (305) 331-5759
+          </a>
+          <button
+            type="button"
+            onClick={() => {
+              setState("idle");
+              window.history.replaceState({}, "", "/contact");
+            }}
+            className="rounded-full border border-white/18 px-7 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 transition"
+          >
+            Send another
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form
       name="contact"
       method="POST"
+      encType="multipart/form-data"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
       onSubmit={async (e) => {
         e.preventDefault();
         if (state !== "idle") return;
-
         setState("sending");
 
         const form = e.currentTarget;
-        const formData = new FormData(form);
-
         try {
-          const res = await fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode(Object.fromEntries(formData)),
-          });
-
+          // multipart so the optional photo uploads with the rest
+          const res = await fetch("/", { method: "POST", body: new FormData(form) });
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
-
           setState("sent");
-          form.reset();
-
-          // optional: keep your sent behavior + scroll logic
           window.history.replaceState({}, "", "/contact?sent=1");
         } catch (err) {
           console.error(err);
           setState("idle");
-          alert("Couldn’t send message. Please try again.");
+          alert("Couldn’t send your message. Please try again or call (305) 331-5759.");
         }
       }}
-      className="rounded-[22px] border border-white/12 bg-white/5 backdrop-blur-xl p-5 md:p-6"
+      className="rounded-[22px] border border-white/12 bg-white/[0.03] p-5 md:p-7"
     >
-
       <input type="hidden" name="form-name" value="contact" />
       <p className="hidden">
         <label>
@@ -244,106 +326,169 @@ function FormCard({ emailHref, email, sent = false }) {
         </label>
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Name <span className="text-white/30">*</span>
+      {/* 1. What kind of work */}
+      <div className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        1 · What do you need?
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <SideCard
+          value="residential"
+          title="Residential"
+          sub="Remodels, roofing, home services"
+          checked={side === "residential"}
+          onChange={() => {
+            setSide("residential");
+            setType("");
+          }}
+        />
+        <SideCard
+          value="commercial"
+          title="Commercial & Utility"
+          sub="Drilling, ductbank, water/sewer"
+          checked={side === "commercial"}
+          onChange={() => {
+            setSide("commercial");
+            setType("");
+          }}
+        />
+      </div>
+
+      <div className="mt-5 text-[13px] font-bold text-white/70">Type of project</div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {PROJECT_TYPES[side].map((t) => (
+          <label
+            key={t}
+            className={[
+              "cursor-pointer rounded-full border px-4 py-2 text-[13px] font-bold transition",
+              type === t
+                ? "border-[var(--brand-orange)] bg-[var(--brand-orange)] text-white"
+                : "border-white/12 bg-white/[0.04] text-white/75 hover:border-white/30",
+            ].join(" ")}
+          >
+            <input
+              type="radio"
+              name="project-type"
+              value={t}
+              checked={type === t}
+              onChange={() => setType(t)}
+              className="sr-only"
+            />
+            {t}
           </label>
+        ))}
+      </div>
+
+      {/* 2. Contact info */}
+      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        2 · Your info
+      </div>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label className={labelCls}>Name *</label>
+          <input required name="name" autoComplete="name" className={fieldCls} placeholder="Full name" />
+        </div>
+        <div>
+          <label className={labelCls}>Phone *</label>
           <input
             required
-            name="name"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="Your name"
+            name="phone"
+            type="tel"
+            autoComplete="tel"
+            className={fieldCls}
+            placeholder="(305) 555-0123"
           />
-
         </div>
-
         <div>
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Email <span className="text-white/30">*</span>
-          </label>
+          <label className={labelCls}>Email *</label>
           <input
             required
             name="email"
             type="email"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
+            autoComplete="email"
+            className={fieldCls}
             placeholder="you@email.com"
           />
-
         </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Phone (optional)
-          </label>
-          <input
-            name="phone"
-            type="tel"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="(###) ###-####"
-          />
-
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Project location (optional)
+        <div>
+          <label className={labelCls}>
+            {side === "residential" ? "Address or ZIP" : "Project location"}
           </label>
           <input
             name="location"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="City, State"
+            className={fieldCls}
+            placeholder={side === "residential" ? "Street or ZIP code" : "City, State"}
           />
-
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Message <span className="text-white/30">*</span>
-          </label>
-          <textarea
-            required
-            name="message"
-            rows={5}
-            className="mt-2 w-full resize-none rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="Scope, timeline, constraints, and what you need from us…"
-          />
-
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <button
-          type="submit"
-          disabled={state !== "idle"}
-          className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition disabled:opacity-60 disabled:hover:opacity-60"
-        >
-          {state === "idle" ? "Send Message" : state === "sending" ? "Sending…" : "Sent ✓"}
-        </button>
+      {/* 3. Details */}
+      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        3 · Project details
+      </div>
+      <div className="mt-3">
+        <label className={labelCls}>Tell us about the job *</label>
+        <textarea
+          required
+          name="message"
+          rows={5}
+          className={`${fieldCls} resize-none`}
+          placeholder={
+            side === "residential"
+              ? "What do you want done? Rough size, materials, anything we should know…"
+              : "Scope, footage, timeline, site constraints…"
+          }
+        />
+      </div>
 
-        <span className="text-white/55 font-semibold text-sm">
-          For attachments/photos, email{" "}
-          <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
-            {email}
-          </a>
-          .
+      <label className="mt-4 flex cursor-pointer items-center gap-4 rounded-xl border border-dashed border-white/20 bg-white/[0.03] px-4 py-4 transition hover:border-[var(--brand-orange)]">
+        <span className="grid h-11 w-11 shrink-0 place-items-center rounded-full bg-white/10 text-white/80">
+          <svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true">
+            <path
+              fill="currentColor"
+              d="M9 3 7.2 5H4a2 2 0 0 0-2 2v11a2 2 0 0 0 2 2h16a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-3.2L15 3H9Zm3 5a5 5 0 1 1 0 10 5 5 0 0 1 0-10Zm0 2a3 3 0 1 0 0 6 3 3 0 0 0 0-6Z"
+            />
+          </svg>
         </span>
-      </div>
+        <span className="min-w-0">
+          <span className="block text-[14px] font-extrabold text-white">
+            {fileName ? "Photo attached" : "Add a photo (optional)"}
+          </span>
+          <span className="block truncate text-[13px] font-semibold text-white/50">
+            {fileName || "Plans, site photos, or the problem area"}
+          </span>
+        </span>
+        <input
+          name="photo"
+          type="file"
+          accept="image/*,application/pdf"
+          className="sr-only"
+          onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+        />
+      </label>
 
-      {state === "sent" && (
-        <div className="mt-4 rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-sm font-semibold text-white/75">
-          Thanks — we received your message. If it’s urgent, call and we’ll help faster.
-        </div>
-      )}
+      <button
+        type="submit"
+        disabled={state !== "idle"}
+        className="mt-6 w-full rounded-full bg-[var(--brand-orange)] px-7 py-4 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_40px_rgba(240,138,0,0.35)] hover:opacity-90 transition disabled:opacity-60"
+      >
+        {state === "sending" ? "Sending…" : "Send Request"}
+      </button>
+
+      <p className="mt-4 text-center text-[13px] font-semibold text-white/45">
+        We reply within one business day. Prefer email?{" "}
+        <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
+          {email}
+        </a>
+      </p>
     </form>
   );
 }
-
 function NetlifyFormDetector() {
   return (
     <form
       name="contact"
       method="POST"
+      encType="multipart/form-data"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
       hidden
@@ -355,6 +500,9 @@ function NetlifyFormDetector() {
       <input type="tel" name="phone" />
       <input type="text" name="location" />
       <textarea name="message" />
+      <input type="text" name="side" />
+      <input type="text" name="project-type" />
+      <input type="file" name="photo" />
       <button type="submit">Send</button>
     </form>
   );
@@ -734,12 +882,8 @@ useHead({
                   Send us the details.
                 </h2>
                 <p className="mt-3 text-white/75 font-semibold leading-relaxed">
-                  Share the essentials and we’ll follow up with next steps. If you need to attach photos,
-                  email them to{" "}
-                  <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
-                    {email}
-                  </a>
-                  .
+                  Pick the type of work, add your info, and attach a photo if you have one.
+                  We’ll follow up within one business day.
                 </p>
 
                 <div className="mt-6 text-sm font-semibold text-white/60">
