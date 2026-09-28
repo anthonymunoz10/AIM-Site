@@ -49,6 +49,19 @@
     </script>
   </head>
   <body>
+    <!-- Netlify form detection (the real forms are rendered by React) -->
+    <form name="residential-quote" data-netlify="true" data-netlify-honeypot="bot-field" enctype="multipart/form-data" hidden>
+      <input name="bot-field" />
+      <input name="name" />
+      <input name="phone" />
+      <input name="email" />
+      <input name="address" />
+      <select name="project-type"></select>
+      <select name="timeline"></select>
+      <textarea name="message"></textarea>
+      <input name="photo" type="file" />
+    </form>
+
     <div id="root"></div>
     <script type="module" src="/src/main.jsx"></script>
   </body>
