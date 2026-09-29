@@ -515,13 +515,13 @@ function FormCard({ emailHref, email, sent = false }) {
                 >
                   {isPdf ? "PDF" : "Image"}
                 </span>
-                <span className="min-w-0 flex-1 truncate text-[14px] font-semibold text-white/85">
+                <span className="min-w-0 flex-1 whitespace-normal [overflow-wrap:anywhere] text-[14px] font-semibold text-white/85">
                   {file.name}
                 </span>
                 <span className="hidden shrink-0 text-[12px] font-semibold text-white/40 sm:inline">
-                  {file.size < 1048576
-                    ? `${Math.max(1, Math.round(file.size / 1024))} KB`
-                    : `${(file.size / 1048576).toFixed(1)} MB`}
+                  {file.size < 1000000
+                    ? `${Math.max(1, Math.round(file.size / 1000))} KB`
+                    : `${(file.size / 1000000).toFixed(1)} MB`}
                 </span>
                 <button
                   type="button"

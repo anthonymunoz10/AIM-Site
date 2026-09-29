@@ -567,7 +567,7 @@ export default function Project() {
                     Ready to move?
                   </div>
                   <div className="mt-2 text-2xl md:text-3xl font-extrabold text-white leading-tight">
-                    Send scope + photos — we’ll respond fast.
+                    Send scope + photos and we’ll review your project.
                   </div>
                   <div className="mt-2 text-white/75 font-semibold">
                     Underground utility, directional drilling, and restoration across Florida and beyond.

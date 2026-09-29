@@ -394,7 +394,7 @@ export default function Services() {
                 Need underground utility or restoration handled right?
               </h2>
               <p className="mt-2 text-white/75 font-semibold">
-                Send scope + photos and we’ll review quickly.
+                Send scope + photos and we’ll review your project.
               </p>
             </div>
             <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">

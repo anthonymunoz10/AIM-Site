@@ -564,7 +564,7 @@ function HomeContent() {
 
               <div className="mt-8 grid gap-5 md:grid-cols-4">
                 {[
-                  { n: "01", t: "Scope Review", d: "We review plans, photos, constraints, and schedule needs—fast and clear." },
+                  { n: "01", t: "Scope Review", d: "We review plans, photos, constraints, and schedule needs in detail." },
                   { n: "02", t: "Plan + Mobilize", d: "Right equipment, right crew, right safety approach—no surprises." },
                   { n: "03", t: "Build + Restore", d: "Execute the scope, then restore concrete/asphalt to spec and expectations." },
                   { n: "04", t: "Closeout", d: "Clean finish, documented progress, and responsive communication." },
