@@ -219,6 +219,7 @@ const PROJECT_TYPES = {
 const fieldCls =
   "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3.5 text-[16px] font-semibold text-white placeholder:text-white/30 outline-none transition focus:border-[var(--brand-orange)] focus:bg-white/[0.09]";
 const labelCls = "block text-[13px] font-bold text-white/70";
+const selectCls = fieldCls.replace("bg-white/[0.06]", "bg-[#1b1f24]").replace("focus:bg-white/[0.09]", "");
 
 function SideCard({ value, title, sub, checked, onChange }) {
   return (
@@ -258,7 +259,8 @@ function FormCard({ emailHref, email, sent = false }) {
   const [state, setState] = useState(sent ? "sent" : "idle");
   const [side, setSide] = useState("residential");
   const [type, setType] = useState("");
-  const [fileName, setFileName] = useState("");
+  const [files, setFiles] = useState([]);
+  const [fileError, setFileError] = useState("");
 
   if (state === "sent") {
     return (
@@ -268,7 +270,7 @@ function FormCard({ emailHref, email, sent = false }) {
         </div>
         <h3 className="mt-5 text-2xl font-extrabold text-white">Request received</h3>
         <p className="mx-auto mt-2 max-w-[40ch] font-semibold text-white/70">
-          Thanks, we’ll reach out within one business day. Need it sooner? Give us a call.
+          Thanks for contacting AIM. We’ll review your project details and contact you at the number you provided. You can also call us below.
         </p>
         <div className="mt-6 flex flex-wrap justify-center gap-3">
           <a
@@ -281,6 +283,9 @@ function FormCard({ emailHref, email, sent = false }) {
             type="button"
             onClick={() => {
               setState("idle");
+              setFiles([]);
+              setFileError("");
+              setType("");
               window.history.replaceState({}, "", "/contact");
             }}
             className="rounded-full border border-white/18 px-7 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 transition"
@@ -301,13 +306,15 @@ function FormCard({ emailHref, email, sent = false }) {
       data-netlify-honeypot="bot-field"
       onSubmit={async (e) => {
         e.preventDefault();
-        if (state !== "idle") return;
+        if (state !== "idle" || fileError) return;
         setState("sending");
 
         const form = e.currentTarget;
         try {
           // multipart so the optional photo uploads with the rest
-          const res = await fetch("/", { method: "POST", body: new FormData(form) });
+          const data = new FormData(form);
+          files.forEach((file, index) => data.set(index === 0 ? "photo" : `photo-${index + 1}`, file));
+          const res = await fetch("/", { method: "POST", body: data });
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
           setState("sent");
           window.history.replaceState({}, "", "/contact?sent=1");
@@ -379,19 +386,19 @@ function FormCard({ emailHref, email, sent = false }) {
       </div>
 
       {/* 2. Contact info */}
-      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
         2 · Your info
       </div>
       <div className="mt-3 grid gap-4 sm:grid-cols-2">
         <div>
-          <label className={labelCls}>Name *</label>
-          <input required name="name" autoComplete="name" className={fieldCls} placeholder="Full name" />
+          <label htmlFor="contact-name" className={labelCls}>Name *</label>
+          <input required id="contact-name" name="name" autoComplete="name" className={fieldCls} placeholder="Full name" />
         </div>
         <div>
-          <label className={labelCls}>Phone *</label>
+          <label htmlFor="contact-phone" className={labelCls}>Phone *</label>
           <input
             required
-            name="phone"
+            id="contact-phone" name="phone"
             type="tel"
             autoComplete="tel"
             className={fieldCls}
@@ -399,10 +406,9 @@ function FormCard({ emailHref, email, sent = false }) {
           />
         </div>
         <div>
-          <label className={labelCls}>Email *</label>
+          <label htmlFor="contact-email" className={labelCls}>Email (optional)</label>
           <input
-            required
-            name="email"
+            id="contact-email" name="email"
             type="email"
             autoComplete="email"
             className={fieldCls}
@@ -410,11 +416,11 @@ function FormCard({ emailHref, email, sent = false }) {
           />
         </div>
         <div>
-          <label className={labelCls}>
+          <label htmlFor="contact-location" className={labelCls}>
             {side === "residential" ? "Address or ZIP" : "Project location"}
           </label>
           <input
-            name="location"
+            id="contact-location" name="location"
             className={fieldCls}
             placeholder={side === "residential" ? "Street or ZIP code" : "City, State"}
           />
@@ -422,15 +428,25 @@ function FormCard({ emailHref, email, sent = false }) {
       </div>
 
       {/* 3. Details */}
-      <div className="mt-8 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
         3 · Project details
       </div>
       <div className="mt-3">
-        <label className={labelCls}>Tell us about the job *</label>
+        <label htmlFor="contact-timeline" className={labelCls}>When do you need it? (optional)</label>
+        <select id="contact-timeline" name="timeline" defaultValue="" className={selectCls}>
+          <option value="">Select timing</option>
+          <option>As soon as possible</option>
+          <option>Within a month</option>
+          <option>In 1–3 months</option>
+          <option>Just planning / flexible</option>
+        </select>
+      </div>
+      <div className="mt-3">
+        <label htmlFor="contact-message" className={labelCls}>Tell us about the job *</label>
         <textarea
           required
-          name="message"
-          rows={5}
+          id="contact-message" name="message"
+          rows={4}
           className={`${fieldCls} resize-none`}
           placeholder={
             side === "residential"
@@ -451,31 +467,104 @@ function FormCard({ emailHref, email, sent = false }) {
         </span>
         <span className="min-w-0">
           <span className="block text-[14px] font-extrabold text-white">
-            {fileName ? "Photo attached" : "Add a photo (optional)"}
+            {files.length ? `Add more files (${files.length} of 5)` : "Add photos or plans (optional)"}
           </span>
-          <span className="block truncate text-[13px] font-semibold text-white/50">
-            {fileName || "Plans, site photos, or the problem area"}
+          <span className="block text-[13px] font-semibold text-white/50">
+            Up to 5 images or PDFs · 7 MB total
           </span>
         </span>
         <input
-          name="photo"
+          multiple
           type="file"
           accept="image/*,application/pdf"
           className="sr-only"
-          onChange={(e) => setFileName(e.target.files?.[0]?.name || "")}
+          onChange={(e) => {
+            const next = [...files, ...Array.from(e.target.files || [])];
+            e.target.value = "";
+            if (next.length > 5) {
+              setFileError("You can attach up to 5 files. Remove a file before adding more.");
+              return;
+            }
+            if (next.some((file) => !file.type.startsWith("image/") && file.type !== "application/pdf" && !/\.(pdf|heic|heif)$/i.test(file.name))) {
+              setFileError("Please choose images or PDF plans.");
+              return;
+            }
+            if (next.reduce((total, file) => total + file.size, 0) > 7000000) {
+              setFileError("Files must total 7 MB or less. Choose smaller files or email larger plans.");
+              return;
+            }
+            setFiles(next);
+            setFileError("");
+          }}
         />
       </label>
+      {files.length > 0 && (
+        <ul className="mt-3 grid gap-2">
+          {files.map((file, index) => {
+            const isPdf = file.type === "application/pdf" || /\.pdf$/i.test(file.name);
+            return (
+              <li
+                key={`${file.name}-${index}`}
+                className="flex items-center gap-3 rounded-xl border border-white/10 bg-white/[0.04] py-1 pl-3 pr-1"
+              >
+                <span
+                  className={[
+                    "shrink-0 rounded-md px-1.5 py-1 text-[10px] font-extrabold uppercase tracking-wider text-white",
+                    isPdf ? "bg-[#B23B2E]" : "bg-[#3A5A8C]",
+                  ].join(" ")}
+                >
+                  {isPdf ? "PDF" : "Image"}
+                </span>
+                <span className="min-w-0 flex-1 truncate text-[14px] font-semibold text-white/85">
+                  {file.name}
+                </span>
+                <span className="hidden shrink-0 text-[12px] font-semibold text-white/40 sm:inline">
+                  {file.size < 1048576
+                    ? `${Math.max(1, Math.round(file.size / 1024))} KB`
+                    : `${(file.size / 1048576).toFixed(1)} MB`}
+                </span>
+                <button
+                  type="button"
+                  aria-label={`Remove ${file.name}`}
+                  onClick={() => {
+                    setFiles(files.filter((_, i) => i !== index));
+                    setFileError("");
+                  }}
+                  className="grid h-11 w-11 shrink-0 place-items-center rounded-full text-white/60 hover:bg-white/10 hover:text-white transition"
+                >
+                  ✕
+                </button>
+              </li>
+            );
+          })}
+        </ul>
+      )}
+      {fileError && (
+        <div
+          role="alert"
+          className="mt-3 flex flex-wrap items-center gap-x-3 rounded-xl border border-[rgba(240,138,0,0.45)] bg-[rgba(240,138,0,0.10)] px-4 py-3 text-[14px] font-semibold text-orange-100"
+        >
+          <span className="min-w-0 flex-1">{fileError}</span>
+          <button
+            type="button"
+            className="min-h-11 font-extrabold underline decoration-white/40"
+            onClick={() => setFileError("")}
+          >
+            OK
+          </button>
+        </div>
+      )}
 
       <button
         type="submit"
-        disabled={state !== "idle"}
+        disabled={state !== "idle" || Boolean(fileError)}
         className="mt-6 w-full rounded-full bg-[var(--brand-orange)] px-7 py-4 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_40px_rgba(240,138,0,0.35)] hover:opacity-90 transition disabled:opacity-60"
       >
-        {state === "sending" ? "Sending…" : "Send Request"}
+        {state === "sending" ? "Sending…" : "Request an estimate"}
       </button>
 
       <p className="mt-4 text-center text-[13px] font-semibold text-white/45">
-        We reply within one business day. Prefer email?{" "}
+        Prefer email?{" "}
         <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
           {email}
         </a>
@@ -502,7 +591,12 @@ function NetlifyFormDetector() {
       <textarea name="message" />
       <input type="text" name="side" />
       <input type="text" name="project-type" />
+      <input name="timeline" />
       <input type="file" name="photo" />
+      <input type="file" name="photo-2" />
+      <input type="file" name="photo-3" />
+      <input type="file" name="photo-4" />
+      <input type="file" name="photo-5" />
       <button type="submit">Send</button>
     </form>
   );
@@ -522,7 +616,7 @@ useHead({
     {
       name: "description",
       content:
-        "Contact AIM Construction Management for underground utility, directional drilling, and restoration. Share your scope, timeline, and site constraints for a fast response.",
+        "Contact AIM Construction Management for underground utility, directional drilling, and restoration. Share your scope, timeline, and site constraints so we can review your project.",
     },
 
     // Open Graph
@@ -530,7 +624,7 @@ useHead({
     {
       property: "og:description",
       content:
-        "Reach the right person quickly—send scope details for underground utility, drilling, and restoration work.",
+        "Reach the right person—send scope details for underground utility, drilling, and restoration work.",
     },
     { property: "og:type", content: "website" },
     { property: "og:url", content: "https://aimconstructionmgt.com/contact" },
@@ -615,8 +709,7 @@ useHead({
             <div className="max-w-[920px]">
               <FadeIn delay={0.05}>
                 <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
-                  Fast response
-                  <span className="ml-3 text-white/50 font-bold">• usually within 1 business day</span>
+                  Get in touch
                 </div>
               </FadeIn>
 
@@ -628,7 +721,7 @@ useHead({
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
-                  Share your scope, timeline, and site constraints. We’ll reply quickly with next steps.
+                  Share your scope, timeline, and site constraints. We’ll follow up with next steps.
                 </p>
               </FadeIn>
 
@@ -662,20 +755,20 @@ useHead({
                 <div className="h-[1px] flex-1 bg-black/10 min-w-0" />
                 <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] font-bold text-black/60">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)]" />
-                  Fast replies
+                  Call or text
                 </div>
               </div>
 
               <h2 className="mt-4 text-[28px] md:text-[36px] font-extrabold tracking-tight text-[var(--ink)]">
                 Reach the right person{" "}
                 <span className="bg-[linear-gradient(90deg,var(--brand-orange),#ffcf7a)] bg-clip-text text-transparent">
-                  instantly
+                  directly
                 </span>
                 .
               </h2>
 
               <p className="mt-2 max-w-[62ch] text-[15px] font-semibold text-black/60 leading-relaxed">
-                Tap a contact card to call or text. For photos/attachments, email is best.
+                Tap a contact card to call or text. Photos and plans can go in the form below.
               </p>
 
               {/* EMAIL */}
@@ -703,7 +796,7 @@ useHead({
 
 
                       <div className="mt-1 text-sm font-semibold text-black/55">
-                        Best for scope + photos
+                        Good for large plans or files
                       </div>
                     </div>
 
@@ -718,7 +811,7 @@ useHead({
                   </div>
 
                   <div className="mt-4 text-[12px] font-semibold text-black/55">
-                    Include location + timeline for the quickest turnaround.
+                    Include location and timeline with your request.
                   </div>
                 </a>
               </div>
@@ -848,7 +941,7 @@ useHead({
                 </div>
 
                 <div className="mt-4 text-[13px] font-semibold text-black/60">
-                  For attachments/photos, email is usually fastest.
+                  Photos and plans can be attached in the form below, or emailed if they’re large.
                 </div>
 
                 <div className="mt-5 h-[2px] w-full rounded-full bg-[linear-gradient(90deg,var(--brand-orange),transparent)]" />
@@ -859,7 +952,7 @@ useHead({
                   Helpful details
                 </div>
                 <div className="mt-2 text-white font-extrabold text-[18px] leading-tight">
-                  Faster quotes
+                  Better estimates
                 </div>
                 <div className="mt-2 text-sm font-semibold text-white/70">
                   Add location, timeline, scope summary, and any constraints.
@@ -882,13 +975,8 @@ useHead({
                   Send us the details.
                 </h2>
                 <p className="mt-3 text-white/75 font-semibold leading-relaxed">
-                  Pick the type of work, add your info, and attach a photo if you have one.
-                  We’ll follow up within one business day.
+                  Tell us what you need. Add photos or plans if you have them.
                 </p>
-
-                <div className="mt-6 text-sm font-semibold text-white/60">
-                  Prefer a call? Tap a contact card above.
-                </div>
               </div>
 
               <div className="lg:col-span-7 min-w-0">

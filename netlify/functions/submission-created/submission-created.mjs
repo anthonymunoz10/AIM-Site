@@ -1,4 +1,4 @@
-// netlify/functions/submission-created.mjs
+// netlify/functions/submission-created/submission-created.mjs
 //
 // Netlify runs this automatically every time a website form is submitted
 // (the file name "submission-created" is what hooks it to that event).
@@ -11,10 +11,13 @@
 //   LEAD_NOTIFY_TO      where to send leads (defaults to GMAIL_USER)
 
 import nodemailer from "nodemailer";
+import { LOGO_PNG_BASE64, LOGO_WIDTH, LOGO_HEIGHT } from "./email-logo.mjs";
 
 const ORANGE = "#F08A00";
 const INK = "#0B0F14";
 const SITE = "https://aimconstructionmgt.com";
+const LOGO_CID = "aim-logo@aimconstructionmgt.com";
+const FILE_FIELDS = ["photo", "photo-2", "photo-3", "photo-4", "photo-5"];
 
 const esc = (v) =>
   String(v ?? "")
@@ -32,11 +35,28 @@ function prettyPhone(v) {
   return String(v ?? "");
 }
 
-// Netlify stores an uploaded file either as a URL string or as {url, filename}.
+// Netlify stores an uploaded file either as a URL string or as
+// {url, filename, type, size}. Only http(s) URLs are ever put in the email.
 function fileUrl(v) {
-  if (!v) return "";
-  if (typeof v === "string") return /^https?:\/\//.test(v) ? v : "";
-  return v.url || "";
+  const url = typeof v === "string" ? v : v?.url;
+  return typeof url === "string" && /^https?:\/\//i.test(url) ? url : "";
+}
+
+function toAttachment(v) {
+  const url = fileUrl(v);
+  if (!url) return null;
+  let name = typeof v === "object" && v?.filename ? String(v.filename) : "";
+  if (!name) {
+    try {
+      name = decodeURIComponent(new URL(url).pathname.split("/").pop() || "");
+    } catch {
+      name = "";
+    }
+  }
+  const mime = typeof v === "object" && v?.type ? String(v.type) : "";
+  const isPdf = mime === "application/pdf" || /\.pdf$/i.test(name);
+  const isImage = mime.startsWith("image/") || /\.(jpe?g|png|gif|webp|heic|heif)$/i.test(name);
+  return { url, name, kind: isPdf ? "PDF" : isImage ? "Image" : "File" };
 }
 
 /** Normalize either form (contact / residential-quote) into one lead shape. */
@@ -55,7 +75,7 @@ export function toLead(formName, data = {}) {
     projectType: (data["project-type"] || "").trim(),
     timeline: (data.timeline || "").trim(),
     message: (data.message || "").trim(),
-    photo: fileUrl(data.photo),
+    attachments: FILE_FIELDS.map((key) => toAttachment(data[key])).filter(Boolean),
   };
 }
 
@@ -105,10 +125,23 @@ export function renderLeadEmail(lead, receivedAt = new Date()) {
     row("Timeline", esc(lead.timeline)),
   ].join("");
 
-  const photo = lead.photo
+  const attachments = lead.attachments || [];
+  const attachmentRows = attachments
+    .map((a, i) => {
+      const label = a.name || `Attachment ${i + 1}`;
+      return `<tr><td style="padding:0 0 8px;">
+        <a href="${esc(a.url)}" style="display:block;border:1px solid #e3e6ea;border-radius:10px;padding:12px 14px;text-decoration:none;">
+          <span style="display:inline-block;min-width:44px;text-align:center;background:${a.kind === "PDF" ? "#B23B2E" : "#3A5A8C"};color:#ffffff;border-radius:6px;padding:4px 6px;font:700 10px/1 Arial,Helvetica,sans-serif;letter-spacing:.1em;text-transform:uppercase;vertical-align:middle;">${esc(a.kind)}</span>
+          <span style="padding-left:10px;font:600 14px/1.4 Arial,Helvetica,sans-serif;color:${INK};vertical-align:middle;word-break:break-all;">${esc(label)}</span>
+          <span style="float:right;font:700 12px/22px Arial,Helvetica,sans-serif;color:${ORANGE};">Open &rarr;</span>
+        </a>
+      </td></tr>`;
+    })
+    .join("");
+  const photo = attachments.length
     ? `<tr><td style="padding:22px 28px 0;">
-        <div style="font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a9099;padding-bottom:8px;">Photo</div>
-        <a href="${esc(lead.photo)}"><img src="${esc(lead.photo)}" alt="Photo from customer" width="484" style="display:block;width:100%;max-width:484px;height:auto;border-radius:12px;border:1px solid #eef0f3;" /></a>
+        <div style="font:700 11px/1.4 Arial,Helvetica,sans-serif;letter-spacing:.14em;text-transform:uppercase;color:#8a9099;padding-bottom:8px;">Photos &amp; plans (${attachments.length})</div>
+        <table role="presentation" width="100%" cellpadding="0" cellspacing="0">${attachmentRows}</table>
       </td></tr>`
     : "";
 
@@ -124,7 +157,7 @@ export function renderLeadEmail(lead, receivedAt = new Date()) {
 
         <tr><td style="background:${INK};padding:20px 28px;">
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0"><tr>
-            <td><a href="${SITE}"><img src="${SITE}/img/logo.png" alt="AIM Construction" height="36" style="display:block;height:36px;width:auto;border:0;color:#ffffff;font:800 18px Arial,Helvetica,sans-serif;" /></a></td>
+            <td><a href="${SITE}" style="text-decoration:none;"><img src="cid:${LOGO_CID}" alt="AIM Construction" width="${LOGO_WIDTH}" height="${LOGO_HEIGHT}" style="display:block;width:${LOGO_WIDTH}px;height:${LOGO_HEIGHT}px;border:0;color:#ffffff;font:800 18px Arial,Helvetica,sans-serif;text-decoration:none;" /></a></td>
             <td align="right"><span style="display:inline-block;background:${sideColor};color:#ffffff;border-radius:999px;padding:6px 12px;font:700 11px/1 Arial,Helvetica,sans-serif;letter-spacing:.14em;text-transform:uppercase;">${esc(lead.side)}</span></td>
           </tr></table>
         </td></tr>
@@ -168,7 +201,7 @@ export function renderLeadEmail(lead, receivedAt = new Date()) {
     lead.where && `Location: ${lead.where}`,
     lead.timeline && `Timeline: ${lead.timeline}`,
     lead.message && `\n${lead.message}`,
-    lead.photo && `\nPhoto: ${lead.photo}`,
+    ...attachments.map((a, i) => `${a.kind} ${i + 1}: ${a.name ? a.name + " - " : ""}${a.url}`),
   ]
     .filter(Boolean)
     .join("\n");
@@ -216,6 +249,15 @@ export const handler = async (event) => {
     subject,
     text,
     html,
+    attachments: [
+      {
+        filename: "aim-logo.png",
+        content: Buffer.from(LOGO_PNG_BASE64, "base64"),
+        contentType: "image/png",
+        cid: LOGO_CID,
+        contentDisposition: "inline",
+      },
+    ],
   });
 
   return { statusCode: 200, body: "Sent" };
