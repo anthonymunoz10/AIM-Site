@@ -408,7 +408,7 @@ function HomeContent() {
                 </div>
 
                 <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.18)]">
-                  <img
+                  <img loading="lazy" decoding="async"
                     src="/img/about-image.webp"
                     alt="Construction planning"
                     className="h-full w-full object-cover"
@@ -459,7 +459,7 @@ function HomeContent() {
                     className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white"
                   >
                     <div className="h-52">
-                      <img src={c.img} alt={c.title} className="h-full w-full object-cover" />
+                      <img loading="lazy" decoding="async" src={c.img} alt={c.title} className="h-full w-full object-cover" />
                     </div>
                     <div className="p-6">
                       <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">
@@ -544,7 +544,7 @@ function HomeContent() {
                     className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
                   >
                     <div className="h-56 overflow-hidden">
-                      <img
+                      <img loading="lazy" decoding="async"
                         src={x.img}
                         alt={x.title}
                         className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"

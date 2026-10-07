@@ -304,7 +304,7 @@ function BentoRail() {
   return (
     <div className="relative overflow-hidden rounded-2xl border border-black/10 bg-white w-full max-w-full">
       <div className="h-40 overflow-hidden">
-        <img src="/img/bw-exca.webp" alt="AIM" className="h-full w-full object-cover" />
+        <img loading="lazy" decoding="async" src="/img/bw-exca.webp" alt="AIM" className="h-full w-full object-cover" />
       </div>
 
       <div className="border-t border-black/10 bg-[var(--ink)] py-3 overflow-hidden">
@@ -401,7 +401,7 @@ function BentoBlock() {
           {/* Image */}
           <div className="md:col-span-7 rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white w-full min-w-0">
             <div className="h-[260px] sm:h-[320px] md:h-full overflow-hidden">
-              <img
+              <img loading="lazy" decoding="async"
                 src="/img/3d-view-camera-shutter.webp"
                 alt="AIM work"
                 className="h-full w-full object-cover"
@@ -591,7 +591,7 @@ function CulturePush() {
 
           <div className="md:col-span-7">
             <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.14)] bg-white">
-              <img
+              <img loading="lazy" decoding="async"
                 src="/img/working-site.webp"
                 alt="Directional drilling"
                 className="h-[300px] sm:h-[340px] md:h-[440px] w-full object-cover"
