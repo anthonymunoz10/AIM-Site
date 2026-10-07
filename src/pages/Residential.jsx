@@ -9,6 +9,7 @@ import {
   Container,
   HeroBlend,
 } from "../components/SiteChrome";
+import { compressImage } from "../lib/compressImage.js";
 import { LICENSES } from "../data/licenses.js";
 
 /* ---------------------------------------------
@@ -213,6 +214,11 @@ function QuoteForm() {
 
         const form = e.currentTarget;
         const formData = new FormData(form);
+        const photo = formData.get("photo");
+        if (photo && photo.size) {
+          // shrink phone photos so they fit Netlify's upload limit
+          formData.set("photo", await compressImage(photo).catch(() => photo));
+        }
 
         try {
           // multipart body so the optional photo uploads too

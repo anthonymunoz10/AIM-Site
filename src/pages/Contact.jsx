@@ -2,6 +2,7 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
+import { compressImage, isImageFile } from "../lib/compressImage.js";
 import {
   MobileMenu,
   Nav,
@@ -261,6 +262,7 @@ function FormCard({ emailHref, email, sent = false }) {
   const [type, setType] = useState("");
   const [files, setFiles] = useState([]);
   const [fileError, setFileError] = useState("");
+  const [compressing, setCompressing] = useState(false);
 
   if (state === "sent") {
     return (
@@ -306,7 +308,7 @@ function FormCard({ emailHref, email, sent = false }) {
       data-netlify-honeypot="bot-field"
       onSubmit={async (e) => {
         e.preventDefault();
-        if (state !== "idle" || fileError) return;
+        if (state !== "idle" || fileError || compressing) return;
         setState("sending");
 
         const form = e.currentTarget;
@@ -470,7 +472,7 @@ function FormCard({ emailHref, email, sent = false }) {
             {files.length ? `Add more files (${files.length} of 5)` : "Add photos or plans (optional)"}
           </span>
           <span className="block text-[13px] font-semibold text-white/50">
-            Up to 5 images or PDFs · 7 MB total
+            {compressing ? "Preparing photos…" : "Up to 5 photos or PDFs · large photos are resized automatically"}
           </span>
         </span>
         <input
@@ -478,23 +480,29 @@ function FormCard({ emailHref, email, sent = false }) {
           type="file"
           accept="image/*,application/pdf"
           className="sr-only"
-          onChange={(e) => {
-            const next = [...files, ...Array.from(e.target.files || [])];
+          onChange={async (e) => {
+            const picked = Array.from(e.target.files || []);
             e.target.value = "";
-            if (next.length > 5) {
+            if (!picked.length) return;
+            if (files.length + picked.length > 5) {
               setFileError("You can attach up to 5 files. Remove a file before adding more.");
               return;
             }
-            if (next.some((file) => !file.type.startsWith("image/") && file.type !== "application/pdf" && !/\.(pdf|heic|heif)$/i.test(file.name))) {
-              setFileError("Please choose images or PDF plans.");
+            if (picked.some((file) => !isImageFile(file) && file.type !== "application/pdf" && !/\.pdf$/i.test(file.name))) {
+              setFileError("Please choose photos or PDF plans.");
               return;
             }
+            setFileError("");
+            setCompressing(true);
+            // shrink phone photos in the browser so they fit the upload limit
+            const ready = await Promise.all(picked.map((file) => compressImage(file).catch(() => file)));
+            setCompressing(false);
+            const next = [...files, ...ready];
             if (next.reduce((total, file) => total + file.size, 0) > 7000000) {
-              setFileError("Files must total 7 MB or less. Choose smaller files or email larger plans.");
+              setFileError("These files are too large to send together (usually large PDFs). Remove one, or email big plans to aimconstructionmgt@gmail.com.");
               return;
             }
             setFiles(next);
-            setFileError("");
           }}
         />
       </label>
@@ -557,10 +565,10 @@ function FormCard({ emailHref, email, sent = false }) {
 
       <button
         type="submit"
-        disabled={state !== "idle" || Boolean(fileError)}
+        disabled={state !== "idle" || Boolean(fileError) || compressing}
         className="mt-6 w-full rounded-full bg-[var(--brand-orange)] px-7 py-4 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_40px_rgba(240,138,0,0.35)] hover:opacity-90 transition disabled:opacity-60"
       >
-        {state === "sending" ? "Sending…" : "Request an estimate"}
+        {state === "sending" ? "Sending…" : compressing ? "Preparing photos…" : "Request an estimate"}
       </button>
 
       <p className="mt-4 text-center text-[13px] font-semibold text-white/45">
