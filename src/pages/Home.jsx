@@ -69,7 +69,7 @@ function Hero() {
   return (
     <header
       ref={heroRef}
-      className="hero-round relative min-h-[100svh] bg-[var(--black)] overflow-hidden"
+      className="hero-round relative min-h-[100svh] bg-black overflow-hidden"
     >
       {/* Background video layer */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
