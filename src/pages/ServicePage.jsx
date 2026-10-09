@@ -10,6 +10,7 @@ import { useLocation, Link } from "react-router-dom";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { SERVICE_PAGES, getServicePage } from "../data/servicePages.js";
 import { LICENSES } from "../data/licenses.js";
+import { PROJECTS } from "../data/projects.js";
 
 const SITE = "https://aimconstructionmgt.com";
 
@@ -85,7 +86,7 @@ function structuredData(page) {
       provider: { "@id": SITE + "/#business" },
       areaServed:
         page.side === "commercial"
-          ? ["Miami-Dade County, FL", "Broward County, FL", "Palm Beach County, FL", "Florida"]
+          ? ["Florida"]
           : ["Miami Lakes, FL", "South Florida"],
     },
     {
@@ -138,6 +139,9 @@ export default function ServicePage() {
   if (!page) return null;
 
   const residential = page.side === "residential";
+  const projects = (page.projects || [])
+    .map((id) => PROJECTS.find((pr) => pr.id === id))
+    .filter(Boolean);
   const siblings = SERVICE_PAGES.filter((p) => p.side === page.side && p.slug !== page.slug);
   const cta = residential
     ? { href: "/residential#estimate", label: "Request an estimate" }
@@ -253,6 +257,45 @@ export default function ServicePage() {
             {LICENSES.map((l) => `${l.label} ${l.number}`).join(" • ")}
           </p>
         </FloatSection>
+
+        {/* Real projects from the Projects page */}
+        {projects.length > 0 && (
+          <FloatSection tone="light">
+            <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--ink)]">
+              Recent <span className="text-[var(--brand-orange)]">projects</span>
+            </h2>
+            <div className="mt-5 grid gap-4 sm:grid-cols-2 lg:grid-cols-3">
+              {projects.map((pr) => (
+                <a
+                  key={pr.id}
+                  href={`/project?id=${pr.id}`}
+                  className="group block rounded-[22px] overflow-hidden border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
+                >
+                  <div className="aspect-[16/10] bg-[var(--ink)] overflow-hidden">
+                    <img
+                      src={pr.img}
+                      alt={pr.title}
+                      loading="lazy"
+                      className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                    />
+                  </div>
+                  <div className="p-4">
+                    <div className="font-extrabold text-[var(--ink)] leading-snug">{pr.title}</div>
+                    <div className="mt-1 text-sm font-semibold text-black/55">
+                      {pr.location} • {pr.year}
+                    </div>
+                  </div>
+                </a>
+              ))}
+            </div>
+            <a
+              href="/projects"
+              className="mt-5 inline-flex text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] hover:opacity-80 transition"
+            >
+              See all projects →
+            </a>
+          </FloatSection>
+        )}
 
         {/* FAQ */}
         <FloatSection tone="light">

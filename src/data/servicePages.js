@@ -8,7 +8,7 @@
 // add response-time promises.
 
 export const SERVICE_AREA_COMMERCIAL =
-  "Based in Miami Lakes, working across Florida, from Palm Beach and Broward down through Miami-Dade and the Florida Keys, with completed projects in Virginia, North Carolina, South Carolina and Georgia.";
+  "Based in Miami Lakes and working across Florida, with directional drilling jobs from the Panhandle, Orlando, Tampa and Fort Myers down through Palm Beach, Broward, Miami-Dade and the Florida Keys, plus completed projects in Virginia, North Carolina, South Carolina and Georgia.";
 
 export const SERVICE_AREA_RESIDENTIAL =
   "Based in Miami Lakes and serving homeowners across South Florida.";
@@ -17,17 +17,18 @@ export const SERVICE_PAGES = [
   /* ---------------- COMMERCIAL ---------------- */
   {
     slug: "directional-drilling",
+    projects: ["savannah-fiber"],
     side: "commercial",
     path: "/services/directional-drilling",
     nav: "Directional Drilling",
-    title: "Directional Drilling (HDD) Contractor in South Florida",
-    metaTitle: "Directional Drilling Contractor in Miami & South Florida | AIM Construction",
+    title: "Directional Drilling (HDD) Contractor in Florida",
+    metaTitle: "Directional Drilling (HDD) Contractor in Miami & Across Florida | AIM Construction",
     metaDescription:
-      "Horizontal directional drilling (HDD) from 2″ to 24″ for water, sewer, force main, electrical and telecom. Florida-certified underground utility contractor based in Miami Lakes.",
+      "Horizontal directional drilling (HDD) from 2″ to 24″ for water, sewer, force main, electrical and telecom. Florida-certified underground utility contractor based in Miami Lakes, drilling statewide.",
     image: "/img/projects-bg.jpg",
     kicker: "Commercial",
     intro:
-      "AIM Construction Management performs horizontal directional drilling (HDD) for utilities, general contractors and agencies. We bore from 2″ to 24″ to install water, sewer, force main, electrical and telecom lines under roads, driveways and sensitive areas with minimal surface disruption.",
+      "AIM Construction Management performs horizontal directional drilling (HDD) for utilities, general contractors, public agencies and private customers. We bore from 2″ to 24″ to install water, sewer, force main, electrical and telecom lines under roads, driveways and sensitive areas with minimal surface disruption.",
     bullets: [
       "Bores from 2″ to 24″",
       "Water main, force main and sewer crossings",
@@ -38,7 +39,7 @@ export const SERVICE_PAGES = [
     ],
     why: [
       "Florida Certified Underground Utility Contractor (CUC1226535)",
-      "Numerous jobs across Florida, from Orlando to the Florida Keys",
+      "Jobs across Florida: the Panhandle, Orlando, Tampa, Fort Myers and South Florida",
       "Completed projects in Virginia, North Carolina, South Carolina and Georgia",
       "Concrete and asphalt restoration handled in-house",
     ],
@@ -53,12 +54,13 @@ export const SERVICE_PAGES = [
       },
       {
         q: "Who does AIM drill for?",
-        a: "General contractors, electrical contractors, utilities and public agencies. Send plans or a scope and we will review it and price it.",
+        a: "General contractors, electrical contractors, utilities, public agencies and private customers. Send plans or a scope and we will review it and price it.",
       },
     ],
   },
   {
     slug: "water-sewer",
+    projects: ["miami-shores-force-main", "port-everglades-2025"],
     side: "commercial",
     path: "/services/water-sewer",
     nav: "Water & Sewer",
@@ -101,6 +103,7 @@ export const SERVICE_PAGES = [
   },
   {
     slug: "ductbank",
+    projects: ["port-of-miami", "virginia-key-phase3", "ft-lauderdale-police", "fpl-turkey-point", "miami-beach-ductbank", "team-fishel-fpl"],
     side: "commercial",
     path: "/services/ductbank",
     nav: "Ductbank",
@@ -143,6 +146,7 @@ export const SERVICE_PAGES = [
   },
   {
     slug: "restoration",
+    projects: ["port-everglades-2025"],
     side: "commercial",
     path: "/services/restoration",
     nav: "Restoration",

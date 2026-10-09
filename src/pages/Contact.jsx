@@ -4,6 +4,7 @@ import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
 import FileAttachments from "../components/FileAttachments.jsx";
 import { appendFiles } from "../lib/attachments.js";
+import { trackLead } from "../lib/analytics.js";
 import {
   MobileMenu,
   Nav,
@@ -320,6 +321,7 @@ function FormCard({ emailHref, email, sent = false }) {
           const res = await fetch("/", { method: "POST", body: data });
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
           setState("sent");
+          trackLead("contact"); // counted only after Netlify accepted it
           window.history.replaceState({}, "", "/contact?sent=1");
         } catch (err) {
           console.error(err);

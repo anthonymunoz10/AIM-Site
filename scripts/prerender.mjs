@@ -27,6 +27,7 @@ const ROUTES = [
   "/privacy",
   "/terms",
   "/sms-opt-in",
+  "/delete-account",
   ...SERVICE_PAGES.map((p) => p.path),
 ];
 
@@ -35,13 +36,16 @@ if (!template.includes("<!--seo-->") || !template.includes('<div id="root"></div
   throw new Error("prerender: index.html is missing the <!--seo--> markers or the empty #root");
 }
 
-// keep text and alt text, drop anything that would download
+// keep text and alt text, drop anything that would download or define a form
 function stripMedia(html) {
   return html
     .replace(/<(img|source|video|iframe)\b([^>]*?)\s(src|srcset|poster)="[^"]*"/g, "<$1$2")
     .replace(/<(img|source|video|iframe)\b([^>]*?)\s(src|srcset|poster)="[^"]*"/g, "<$1$2")
     .replace(/<(img|source|video|iframe)\b([^>]*?)\s(src|srcset|poster)="[^"]*"/g, "<$1$2")
-    .replace(/background-image:\s*url\([^)]*\);?/g, "");
+    .replace(/background-image:\s*url\([^)]*\);?/g, "")
+    // forms are defined once, in index.html; keep Netlify from seeing copies
+    .replace(/<form([^>]*?)\s(data-netlify|data-netlify-honeypot)="[^"]*"/g, "<form$1")
+    .replace(/<form([^>]*?)\s(data-netlify|data-netlify-honeypot)="[^"]*"/g, "<form$1");
 }
 
 let ok = 0;

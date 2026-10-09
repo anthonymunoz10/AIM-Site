@@ -106,7 +106,7 @@ function scrollToId(id) {
 ---------------------------------------------- */
 
 export default function Services() {
-  const title = "Services | AIM Construction Management";
+  const title = "Commercial Underground Utility & Directional Drilling Services | AIM Construction";
 
   const description =
     "AIM Construction Management: water main, sanitary sewer and force main, ductbank, directional drilling (2\u201d\u201324\u201d), and concrete/asphalt restoration across Florida and beyond.";
@@ -273,7 +273,7 @@ export default function Services() {
                         {[
                           `Bore from 2” to 24”`,
                           `Completed projects in Virginia, North Carolina, South Carolina, and Georgia`,
-                          `Numerous jobs across Florida — from Orlando to the Florida Keys`,
+                          `Numerous jobs across Florida — the Panhandle, Orlando, Tampa, Fort Myers and South Florida down to the Keys`,
                         ].map((t) => (
                           <li
                             key={t}

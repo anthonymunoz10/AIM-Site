@@ -7,6 +7,7 @@ import AppRoutes from "./AppRoutes.jsx";
 
 import AppLoader from "./components/AppLoader.jsx";
 import { applyTheme, THEME_EVENT } from "./lib/theme.js";
+import { initAnalytics, trackPageView } from "./lib/analytics.js";
 
 
 // ✅ Make scroll-to-top callable from anywhere (Footer included)
@@ -41,6 +42,13 @@ export default function App() {
       mql?.removeEventListener?.("change", onDevice);
     };
   }, [location.pathname]);
+
+  // ✅ Analytics (inactive unless VITE_GA_ID is set): one page_view per page change
+  useEffect(() => {
+    initAnalytics();
+    const t = setTimeout(() => trackPageView(location.pathname + location.search), 300);
+    return () => clearTimeout(t);
+  }, [location.pathname, location.search]);
 
   const lenisRef = useRef(null);
   const rafRef = useRef(null);
