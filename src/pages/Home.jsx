@@ -639,7 +639,7 @@ function HomeContent() {
 
 export default function Home() {
   useHead({
-    title: "AIM Construction Management | Home",
+    title: "AIM Construction Management | Underground Utility & Home Remodeling in South Florida",
     meta: [
       {
         name: "description",

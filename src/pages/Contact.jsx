@@ -550,7 +550,7 @@ useHead({
 
 
   const sent =
-    new URLSearchParams(window.location.search).get("sent") === "1";
+    typeof window !== "undefined" && new URLSearchParams(window.location.search).get("sent") === "1";
 
   useEffect(() => {
     if (!sent) return;

@@ -2,6 +2,7 @@
 import React, { useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
+import { Link } from "react-router-dom";
 import {
   MobileMenu,
   Nav,
@@ -105,11 +106,13 @@ const SERVICES = [
   {
     key: "kitchens",
     title: "Kitchens",
+    page: "/residential/kitchen-remodeling",
     desc: "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances.",
   },
   {
     key: "bathrooms",
     title: "Bathrooms",
+    page: "/residential/bathroom-remodeling",
     desc: "Bathroom remodels from tub-to-shower conversions to complete gut renovations.",
   },
   {
@@ -125,11 +128,13 @@ const SERVICES = [
   {
     key: "remodels",
     title: "Remodels & Additions",
+    page: "/residential/home-remodeling",
     desc: "Whole-home renovations, room additions, and structural changes, permitted and inspected.",
   },
   {
     key: "roofing",
     title: "Roofing",
+    page: "/residential/roofing",
     desc: "Roof replacements and repairs: shingle, tile, metal and flat roofs.",
     trade: true,
   },
@@ -490,6 +495,14 @@ export default function Residential() {
                 <div className="h-[4px] w-12 rounded-full bg-[var(--brand-orange)]" />
                 <h3 className="mt-4 text-xl font-extrabold text-[var(--ink)]">{s.title}</h3>
                 <p className="mt-2 text-black/65 font-semibold leading-relaxed">{s.desc}</p>
+                {s.page && (
+                  <Link
+                    to={s.page}
+                    className="mt-4 inline-flex text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] hover:opacity-80 transition"
+                  >
+                    Learn more →
+                  </Link>
+                )}
               </div>
             ))}
           </div>

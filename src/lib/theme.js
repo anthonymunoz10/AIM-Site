@@ -9,8 +9,11 @@ export const LIGHT_READY_PATHS = ["/", "/services"];
 const KEY = "aim-theme";
 export const THEME_EVENT = "aim-theme-change";
 
+// service detail pages (/services/..., /residential/...) are built light-ready
+const LIGHT_READY_PATTERN = /^\/(services|residential)\/[a-z-]+\/?$/;
+
 export function isLightReady(pathname) {
-  return LIGHT_READY_PATHS.includes(pathname);
+  return LIGHT_READY_PATHS.includes(pathname) || LIGHT_READY_PATTERN.test(pathname);
 }
 
 export function getPreferredTheme() {

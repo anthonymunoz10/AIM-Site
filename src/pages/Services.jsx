@@ -2,7 +2,9 @@
 import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
+import { Link } from "react-router-dom";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
+import { SERVICE_PAGES } from "../data/servicePages.js";
 
 /* ---------------------------------------------
    Small primitives (match Home/About/Projects vibe)
@@ -218,6 +220,27 @@ export default function Services() {
             ))}
           </div>
         </FloatSection>
+
+        {/* Service detail pages */}
+        <div className="pb-6">
+          <Container>
+            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
+              {SERVICE_PAGES.filter((p) => p.side === "commercial").map((p) => (
+                <Link
+                  key={p.slug}
+                  to={p.path}
+                  className="group rounded-[22px] border border-black/10 bg-white p-5 shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
+                >
+                  <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
+                  <div className="mt-3 text-lg font-extrabold text-[var(--ink)]">{p.nav}</div>
+                  <div className="mt-1 text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] group-hover:opacity-80">
+                    Learn more →
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </Container>
+        </div>
 
         {/* Split grid: LEFT services, RIGHT equipment */}
         <div className="pb-6">

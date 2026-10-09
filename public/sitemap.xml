@@ -1,10 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
-  <url><loc>https://aimconstructionmgt.com/</loc></url>
-  <url><loc>https://aimconstructionmgt.com/about.html</loc></url>
-  <url><loc>https://aimconstructionmgt.com/services.html</loc></url>
-  <url><loc>https://aimconstructionmgt.com/projects.html</loc></url>
-  <url><loc>https://aimconstructionmgt.com/contact.html</loc></url>
-  <url><loc>https://aimconstructionmgt.com/privacy.html</loc></url>
-  <url><loc>https://aimconstructionmgt.com/terms.html</loc></url>
+  <url><loc>https://aimconstructionmgt.com/</loc><lastmod>2026-10-09</lastmod><priority>1.0</priority></url>
+  <url><loc>https://aimconstructionmgt.com/services</loc><lastmod>2026-10-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://aimconstructionmgt.com/residential</loc><lastmod>2026-10-09</lastmod><priority>0.9</priority></url>
+  <url><loc>https://aimconstructionmgt.com/services/directional-drilling</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/services/water-sewer</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/services/ductbank</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/services/restoration</loc><lastmod>2026-10-09</lastmod><priority>0.7</priority></url>
+  <url><loc>https://aimconstructionmgt.com/residential/kitchen-remodeling</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/residential/bathroom-remodeling</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/residential/roofing</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/residential/home-remodeling</loc><lastmod>2026-10-09</lastmod><priority>0.8</priority></url>
+  <url><loc>https://aimconstructionmgt.com/projects</loc><lastmod>2026-10-09</lastmod><priority>0.7</priority></url>
+  <url><loc>https://aimconstructionmgt.com/about</loc><lastmod>2026-10-09</lastmod><priority>0.7</priority></url>
+  <url><loc>https://aimconstructionmgt.com/contact</loc><lastmod>2026-10-09</lastmod><priority>0.7</priority></url>
+  <url><loc>https://aimconstructionmgt.com/privacy</loc><lastmod>2026-10-09</lastmod><priority>0.2</priority></url>
+  <url><loc>https://aimconstructionmgt.com/terms</loc><lastmod>2026-10-09</lastmod><priority>0.2</priority></url>
 </urlset>
