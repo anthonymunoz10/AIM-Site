@@ -9,9 +9,10 @@ html, body {
 }
 
 :root{
-  --ink: #0B0F14;             /* near-black */
-  --sand: #0F141A;            /* dark asphalt */
-  --sand-2: #141B23;          /* slightly lighter asphalt */
+  /* warm charcoal palette (inspired by Claude's dark UI) */
+  --ink: #1F1E1D;             /* deep warm charcoal: cards */
+  --sand: #262624;            /* warm charcoal: page */
+  --sand-2: #30302E;          /* slightly lighter charcoal */
   --brand-orange: #F08A00;    /* safety orange */
   --steel: rgba(255,255,255,0.10);
   --muted: rgba(255,255,255,0.70);
@@ -35,7 +36,7 @@ html, body {
 
 body {
   font-family: "Inter Variable", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, Arial, "Apple Color Emoji", "Segoe UI Emoji";
-  color: rgba(255,255,255,0.88); background: var(--sand);
+  color: rgba(250,249,245,0.9); background: var(--sand);
   
 }
 
@@ -108,4 +109,68 @@ button, a { -webkit-tap-highlight-color: transparent; }
 h1, h2, h3 {
   font-family: "Barlow", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   font-weight: 800;
+}
+
+/* ---------------------------------------------------------------
+   LIGHT MODE (pages listed in src/lib/theme.js)
+   Photo banners and the orange footer stay as they are; the page
+   background turns warm ivory and dark cards become off-white cards.
+---------------------------------------------------------------- */
+/* Warm ivory palette (inspired by Claude's light UI) */
+:root[data-theme="light"] {
+  --sand: #faf9f5;
+  --sand-2: #f0eee6;
+  --lt-card: #fffefb;
+  --lt-text: #141413;
+  --lt-muted: rgba(20, 20, 19, 0.6);
+  --lt-strong: rgba(20, 20, 19, 0.84);
+  --lt-line: rgba(31, 30, 29, 0.12);
+  color-scheme: light;
+}
+:root[data-theme="light"] body {
+  color: var(--lt-text);
+}
+
+:root[data-theme="light"] .dark-surface {
+  background: var(--lt-card) !important;
+  color: var(--lt-text);
+  border-color: var(--lt-line) !important;
+  box-shadow: 0 1px 2px rgba(31, 30, 29, 0.04), 0 18px 50px rgba(31, 30, 29, 0.07) !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="light"] .dark-surface .text-white:not([class*="brand-orange"]) {
+  color: var(--lt-text);
+}
+:root[data-theme="light"] .dark-surface [class*="text-white/"] {
+  color: var(--lt-muted);
+}
+:root[data-theme="light"] .dark-surface [class*="text-white/8"],
+:root[data-theme="light"] .dark-surface [class*="text-white/9"] {
+  color: var(--lt-strong);
+}
+:root[data-theme="light"] .dark-surface [class*="bg-white/"] {
+  background-color: rgba(240, 238, 230, 0.6);
+}
+:root[data-theme="light"] .dark-surface [class*="border-white/"] {
+  border-color: var(--lt-line);
+}
+
+/* regular white cards pick up the same warm tone */
+:root[data-theme="light"] main .bg-white {
+  background-color: var(--lt-card);
+  border-color: var(--lt-line);
+}
+:root[data-theme="light"] main.text-\[var\(--ink\)\],
+:root[data-theme="light"] main .text-\[var\(--ink\)\],
+:root[data-theme="light"] main .text-brand-ink {
+  color: var(--lt-text);
+}
+
+/* banners sit on the light page like a card: rounded bottom, no fade */
+:root[data-theme="light"] .hero-round {
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+:root[data-theme="light"] .hero-round .hero-blend {
+  display: none;
 }

@@ -5,6 +5,7 @@ import { Routes, Route, Navigate, useLocation } from "react-router-dom";
 import { AnimatePresence, motion } from "framer-motion";
 
 import AppLoader from "./components/AppLoader.jsx";
+import { applyTheme, THEME_EVENT } from "./lib/theme.js";
 
 import Home from "./pages/Home.jsx";
 import About from "./pages/About.jsx";
@@ -50,6 +51,20 @@ function hardScrollTop() {
 
 export default function App() {
   const location = useLocation();
+
+  // ✅ Light / dark mode: follow saved choice or device setting, per page
+  useEffect(() => {
+    applyTheme(location.pathname);
+    const onPref = (e) => applyTheme(location.pathname, e.detail);
+    const mql = window.matchMedia ? window.matchMedia("(prefers-color-scheme: light)") : null;
+    const onDevice = () => applyTheme(location.pathname);
+    window.addEventListener(THEME_EVENT, onPref);
+    mql?.addEventListener?.("change", onDevice);
+    return () => {
+      window.removeEventListener(THEME_EVENT, onPref);
+      mql?.removeEventListener?.("change", onDevice);
+    };
+  }, [location.pathname]);
 
   const lenisRef = useRef(null);
   const rafRef = useRef(null);
