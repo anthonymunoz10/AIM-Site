@@ -13,6 +13,7 @@ import {
 import FileAttachments from "../components/FileAttachments.jsx";
 import { appendFiles } from "../lib/attachments.js";
 import { LICENSES } from "../data/licenses.js";
+import { trackLead } from "../lib/analytics.js";
 
 /* ---------------------------------------------
    Small primitives (match the rest of the site)
@@ -230,6 +231,7 @@ function QuoteForm() {
           const res = await fetch("/", { method: "POST", body: formData });
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
           setState("sent");
+          trackLead("residential-quote"); // counted only after Netlify accepted it
           form.reset();
           setFiles([]);
         } catch (err) {
