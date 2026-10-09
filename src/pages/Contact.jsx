@@ -610,7 +610,7 @@ useHead({
       <header className="relative min-h-[68svh] md:min-h-[68vh] bg-black overflow-hidden">
         <div
           className="absolute inset-0 bg-center bg-cover"
-          style={{ backgroundImage: "url('/img/projects-bg.jpg')" }}
+          style={{ backgroundImage: "url('/img/working-site.webp')" }}
         />
         <div className="absolute inset-0 bg-black/60" />
         <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_18%_18%,rgba(233,151,19,0.28),transparent_60%)]" />

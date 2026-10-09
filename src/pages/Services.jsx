@@ -1,5 +1,5 @@
 // src/pages/Services.jsx
-import React, { useEffect, useRef } from "react";
+import React, { useRef } from "react";
 import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
@@ -107,7 +107,7 @@ export default function Services() {
   const title = "Services | AIM Construction Management";
 
   const description =
-    "Explore AIM Construction Management services including directional drilling, underground utility, ductbank, and concrete/asphalt restoration across Florida and beyond.";
+    "AIM Construction Management: water main, sanitary sewer and force main, ductbank, directional drilling (2\u201d\u201324\u201d), and concrete/asphalt restoration across Florida and beyond.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/services";
   const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
@@ -164,14 +164,14 @@ export default function Services() {
 
               <FadeIn delay={0.12} className="mt-5">
                 <h1 className="text-[clamp(2.2rem,5.2vw,4.2rem)] leading-[0.95] font-extrabold tracking-tight text-white">
-                  Underground Utility{" "}
-                  <span className="text-[var(--brand-orange)]">&amp; Restoration</span>
+                  Underground Utilities{" "}
+                  <span className="text-[var(--brand-orange)]">&amp; Directional Drilling</span>
                 </h1>
               </FadeIn>
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="text-white/72 font-semibold leading-relaxed">
-                  Directional drilling • Ductbank • Concrete • Asphalt
+                  Water &amp; sewer • Force main • Ductbank • Directional drilling • Restoration
                 </p>
               </FadeIn>
 
@@ -269,10 +269,12 @@ export default function Services() {
                       </div>
                       <ul className="mt-3 grid gap-3">
                         {[
-                          "Ductbank work",
-                          "Open cut trench",
-                          "Install water or sewer line",
-                          "Pull any cable",
+                          "Water main installation",
+                          "Sanitary sewer & force main",
+                          "Ductbank (electrical & telecom)",
+                          "Open cut trench & excavation",
+                          "Utility structures & manholes",
+                          "Cable pulling",
                         ].map((t) => (
                           <li
                             key={t}
