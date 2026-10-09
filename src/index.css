@@ -68,3 +68,38 @@ button, a { -webkit-tap-highlight-color: transparent; }
     pointer-events: none;
   }
 }
+
+/* ---------------------------------------------------------------
+   Apple-style continuous corners ("squircle").
+   Browsers that support corner-shape (Chrome, Edge, Android) get the
+   smoother curve, with each radius bumped ~25% so corners read the
+   same size. Other browsers keep the regular rounded corners.
+---------------------------------------------------------------- */
+@supports (corner-shape: superellipse(1.5)) {
+  :root {
+    --radius: 0.3125rem;
+    --radius-md: 0.5rem;
+    --radius-xl: 0.9375rem;
+    --radius-2xl: 1.25rem;
+  }
+
+  *,
+  *::before,
+  *::after {
+    corner-shape: superellipse(1.5);
+  }
+
+  /* pills and circles keep perfectly round ends, like Apple's buttons */
+  .rounded-full {
+    corner-shape: round;
+  }
+
+  .rounded-\[18px\] { border-radius: 22px; }
+  .rounded-\[22px\] { border-radius: 28px; }
+  .rounded-\[24px\] { border-radius: 30px; }
+  .rounded-\[26px\] { border-radius: 32px; }
+  .rounded-b-\[56px\] {
+    border-bottom-left-radius: 64px;
+    border-bottom-right-radius: 64px;
+  }
+}
