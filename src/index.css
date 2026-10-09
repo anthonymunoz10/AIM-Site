@@ -109,3 +109,50 @@ h1, h2, h3 {
   font-family: "Barlow", "Inter Variable", ui-sans-serif, system-ui, sans-serif;
   font-weight: 800;
 }
+
+/* ---------------------------------------------------------------
+   LIGHT MODE (pages listed in src/lib/theme.js)
+   Photo banners and the orange footer stay as they are; the page
+   background turns light and dark cards become white cards.
+---------------------------------------------------------------- */
+:root[data-theme="light"] {
+  --sand: #f2f3f5;
+  --sand-2: #e7e9ec;
+  color-scheme: light;
+}
+:root[data-theme="light"] body {
+  color: #1b1f24;
+}
+
+:root[data-theme="light"] .dark-surface {
+  background: #ffffff !important;
+  color: #0b0f14;
+  border-color: rgba(11, 15, 20, 0.1) !important;
+  box-shadow: 0 18px 60px rgba(15, 20, 26, 0.08) !important;
+  backdrop-filter: none !important;
+}
+:root[data-theme="light"] .dark-surface .text-white:not([class*="brand-orange"]) {
+  color: #0b0f14;
+}
+:root[data-theme="light"] .dark-surface [class*="text-white/"] {
+  color: rgba(11, 15, 20, 0.62);
+}
+:root[data-theme="light"] .dark-surface [class*="text-white/8"],
+:root[data-theme="light"] .dark-surface [class*="text-white/9"] {
+  color: rgba(11, 15, 20, 0.85);
+}
+:root[data-theme="light"] .dark-surface [class*="bg-white/"] {
+  background-color: rgba(11, 15, 20, 0.035);
+}
+:root[data-theme="light"] .dark-surface [class*="border-white/"] {
+  border-color: rgba(11, 15, 20, 0.1);
+}
+
+/* banners sit on the light page like a card: rounded bottom, no fade */
+:root[data-theme="light"] .hero-round {
+  border-bottom-left-radius: 40px;
+  border-bottom-right-radius: 40px;
+}
+:root[data-theme="light"] .hero-round .hero-blend {
+  display: none;
+}

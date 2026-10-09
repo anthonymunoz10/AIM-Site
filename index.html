@@ -47,6 +47,18 @@
         "description": "Underground utility, directional drilling, and restoration services."
       }
     </script>
+    <script>
+      // pick light/dark before first paint (see src/lib/theme.js)
+      (function () {
+        var ready = ["/", "/services"], t = "dark";
+        try {
+          var saved = localStorage.getItem("aim-theme");
+          t = saved === "light" || saved === "dark" ? saved
+            : (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
+        } catch (e) {}
+        document.documentElement.setAttribute("data-theme", t === "light" && ready.indexOf(location.pathname) !== -1 ? "light" : "dark");
+      })();
+    </script>
   </head>
   <body>
     <!-- Netlify form detection (the real forms are rendered by React) -->

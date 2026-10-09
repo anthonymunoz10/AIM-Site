@@ -14,7 +14,7 @@ function FloatSection({ children, tone = "light" }) {
 
   const toneCls =
     tone === "dark"
-      ? "bg-[var(--ink)] text-white border-white/12"
+      ? "dark-surface bg-[var(--ink)] text-white border-white/12"
       : "bg-white text-[var(--ink)] border-black/10";
 
   const innerOverlay =
@@ -143,7 +143,7 @@ export default function Services() {
       </div>
 
       {/* HERO */}
-      <header className="relative min-h-[72svh] md:min-h-[72vh] bg-black overflow-hidden">
+      <header className="hero-round relative min-h-[72svh] md:min-h-[72vh] bg-black overflow-hidden">
         <div
           className="absolute inset-0 bg-center bg-cover"
           style={{ backgroundImage: "url('/img/projects-bg.jpg')" }}

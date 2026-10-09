@@ -1,4 +1,4 @@
-import React, { useMemo, useRef, useState } from "react";
+import React, { useMemo, useRef } from "react";
 import { motion, useScroll, useTransform, useInView } from "framer-motion";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { useHead } from "@unhead/react";
@@ -11,7 +11,7 @@ function FloatSection({ children, tone = "light" }) {
 
   const toneCls =
     tone === "dark"
-      ? "bg-[var(--ink)] text-white border-white/12"
+      ? "dark-surface bg-[var(--ink)] text-white border-white/12"
       : "bg-white text-[var(--ink)] border-black/10";
 
   const innerOverlay =
@@ -69,7 +69,7 @@ function Hero() {
   return (
     <header
       ref={heroRef}
-      className="relative min-h-[100svh] bg-[var(--black)] overflow-hidden"
+      className="hero-round relative min-h-[100svh] bg-[var(--black)] overflow-hidden"
     >
       {/* Background video layer */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
@@ -258,7 +258,7 @@ function Hero() {
         </Container>
       </div>
 
-    </header>
+        </header>
   );
 }
 
@@ -276,7 +276,7 @@ function QuickActions() {
   return (
     <div id="next" className="py-8 md:py-10">
       <Container>
-        <div className="rounded-[22px] border border-white/12 bg-[rgba(0,0,0,0.72)] backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.45)] overflow-hidden">
+        <div className="dark-surface rounded-[22px] border border-white/12 bg-[rgba(0,0,0,0.72)] backdrop-blur-xl shadow-[0_30px_120px_rgba(0,0,0,0.45)] overflow-hidden">
           <div className="grid md:grid-cols-3">
             {items.map((x) => (
               <a
