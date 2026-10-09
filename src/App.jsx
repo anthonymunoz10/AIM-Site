@@ -16,6 +16,7 @@ import Privacy from "./pages/Privacy.jsx";
 import Terms from "./pages/Terms.jsx";
 import DeleteAccount from "./pages/DeleteAccount.jsx";
 import SmsOptIn from "./pages/SmsOptIn.jsx";
+import Residential from "./pages/Residential.jsx";
 
 function Page({ children }) {
   return (
@@ -153,6 +154,14 @@ export default function App() {
             element={
               <Page>
                 <Services />
+              </Page>
+            }
+          />
+          <Route
+            path="/residential"
+            element={
+              <Page>
+                <Residential />
               </Page>
             }
           />

@@ -2,6 +2,8 @@
 import React, { useEffect, useMemo, useRef, useState } from "react";
 import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
+import FileAttachments from "../components/FileAttachments.jsx";
+import { appendFiles } from "../lib/attachments.js";
 import {
   MobileMenu,
   Nav,
@@ -190,53 +192,143 @@ function PageShell({ children }) {
 }
 
 /* ---------------------------------------------
-   Form (clean submit UX - UI only)
+   Form: Commercial / Residential, project type, photo
 ---------------------------------------------- */
-function encode(data) {
-  return new URLSearchParams(data).toString();
+
+const PROJECT_TYPES = {
+  commercial: [
+    "Directional drilling",
+    "Ductbank",
+    "Water / sewer",
+    "Excavation / trenching",
+    "Concrete / asphalt restoration",
+    "Other",
+  ],
+  residential: [
+    "Kitchen",
+    "Bathroom",
+    "Flooring",
+    "Painting / drywall",
+    "Roofing",
+    "Plumbing / drainage",
+    "HVAC",
+    "Electrical",
+    "Remodel / addition",
+    "Other",
+  ],
+};
+
+const fieldCls =
+  "mt-2 w-full rounded-xl border border-white/10 bg-white/[0.06] px-4 py-3.5 text-[16px] font-semibold text-white placeholder:text-white/30 outline-none transition focus:border-[var(--brand-orange)] focus:bg-white/[0.09]";
+const labelCls = "block text-[13px] font-bold text-white/70";
+const selectCls = fieldCls.replace("bg-white/[0.06]", "bg-[#1b1f24]").replace("focus:bg-white/[0.09]", "");
+
+function SideCard({ value, title, sub, checked, onChange }) {
+  return (
+    <label
+      className={[
+        "relative flex cursor-pointer flex-col rounded-2xl border p-4 transition",
+        checked
+          ? "border-[var(--brand-orange)] bg-[rgba(240,138,0,0.12)]"
+          : "border-white/10 bg-white/[0.04] hover:border-white/25",
+      ].join(" ")}
+    >
+      <input
+        type="radio"
+        name="side"
+        value={value}
+        checked={checked}
+        onChange={onChange}
+        className="sr-only"
+      />
+      <span className="flex items-center justify-between gap-3">
+        <span className="text-[16px] font-extrabold text-white">{title}</span>
+        <span
+          className={[
+            "grid h-5 w-5 shrink-0 place-items-center rounded-full border-2 transition",
+            checked ? "border-[var(--brand-orange)]" : "border-white/30",
+          ].join(" ")}
+        >
+          {checked && <span className="h-2.5 w-2.5 rounded-full bg-[var(--brand-orange)]" />}
+        </span>
+      </span>
+      <span className="mt-1 text-[13px] font-semibold text-white/55">{sub}</span>
+    </label>
+  );
 }
 
 function FormCard({ emailHref, email, sent = false }) {
   const [state, setState] = useState(sent ? "sent" : "idle");
+  const [side, setSide] = useState("residential");
+  const [type, setType] = useState("");
+  const [files, setFiles] = useState([]);
+  const [fileError, setFileError] = useState("");
+  const [compressing, setCompressing] = useState(false);
+
+  if (state === "sent") {
+    return (
+      <div className="rounded-[22px] border border-white/12 bg-white/5 p-8 text-center">
+        <div className="mx-auto grid h-14 w-14 place-items-center rounded-full bg-[var(--brand-orange)] text-2xl font-extrabold text-white">
+          ✓
+        </div>
+        <h3 className="mt-5 text-2xl font-extrabold text-white">Request received</h3>
+        <p className="mx-auto mt-2 max-w-[40ch] font-semibold text-white/70">
+          Thanks for contacting AIM. We’ll review your project details and contact you at the number you provided. You can also call us below.
+        </p>
+        <div className="mt-6 flex flex-wrap justify-center gap-3">
+          <a
+            href="tel:3053315759"
+            className="rounded-full bg-[var(--brand-orange)] px-7 py-3 text-sm font-bold uppercase tracking-wider text-white hover:opacity-90 transition"
+          >
+            Call (305) 331-5759
+          </a>
+          <button
+            type="button"
+            onClick={() => {
+              setState("idle");
+              setFiles([]);
+              setFileError("");
+              setType("");
+              window.history.replaceState({}, "", "/contact");
+            }}
+            className="rounded-full border border-white/18 px-7 py-3 text-sm font-bold uppercase tracking-wider text-white hover:bg-white/10 transition"
+          >
+            Send another
+          </button>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <form
       name="contact"
       method="POST"
+      encType="multipart/form-data"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
       onSubmit={async (e) => {
         e.preventDefault();
-        if (state !== "idle") return;
-
+        if (state !== "idle" || fileError || compressing) return;
         setState("sending");
 
         const form = e.currentTarget;
-        const formData = new FormData(form);
-
         try {
-          const res = await fetch("/", {
-            method: "POST",
-            headers: { "Content-Type": "application/x-www-form-urlencoded" },
-            body: encode(Object.fromEntries(formData)),
-          });
-
+          // multipart so the optional photo uploads with the rest
+          const data = new FormData(form);
+          appendFiles(data, files);
+          const res = await fetch("/", { method: "POST", body: data });
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
-
           setState("sent");
-          form.reset();
-
-          // optional: keep your sent behavior + scroll logic
           window.history.replaceState({}, "", "/contact?sent=1");
         } catch (err) {
           console.error(err);
           setState("idle");
-          alert("Couldn’t send message. Please try again.");
+          alert("Couldn’t send your message. Please try again or call (305) 331-5759.");
         }
       }}
-      className="rounded-[22px] border border-white/12 bg-white/5 backdrop-blur-xl p-5 md:p-6"
+      className="rounded-[22px] border border-white/12 bg-white/[0.03] p-5 md:p-7"
     >
-
       <input type="hidden" name="form-name" value="contact" />
       <p className="hidden">
         <label>
@@ -244,106 +336,161 @@ function FormCard({ emailHref, email, sent = false }) {
         </label>
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2">
-        <div>
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Name <span className="text-white/30">*</span>
-          </label>
-          <input
-            required
-            name="name"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="Your name"
-          />
+      {/* 1. What kind of work */}
+      <div className="text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        1 · What do you need?
+      </div>
+      <div className="mt-3 grid gap-3 sm:grid-cols-2">
+        <SideCard
+          value="residential"
+          title="Residential"
+          sub="Remodels, roofing, home services"
+          checked={side === "residential"}
+          onChange={() => {
+            setSide("residential");
+            setType("");
+          }}
+        />
+        <SideCard
+          value="commercial"
+          title="Commercial & Utility"
+          sub="Drilling, ductbank, water/sewer"
+          checked={side === "commercial"}
+          onChange={() => {
+            setSide("commercial");
+            setType("");
+          }}
+        />
+      </div>
 
+      <div className="mt-5 text-[13px] font-bold text-white/70">Type of project</div>
+      <div className="mt-2 flex flex-wrap gap-2">
+        {PROJECT_TYPES[side].map((t) => (
+          <label
+            key={t}
+            className={[
+              "cursor-pointer rounded-full border px-4 py-2 text-[13px] font-bold transition",
+              type === t
+                ? "border-[var(--brand-orange)] bg-[var(--brand-orange)] text-white"
+                : "border-white/12 bg-white/[0.04] text-white/75 hover:border-white/30",
+            ].join(" ")}
+          >
+            <input
+              type="radio"
+              name="project-type"
+              value={t}
+              checked={type === t}
+              onChange={() => setType(t)}
+              className="sr-only"
+            />
+            {t}
+          </label>
+        ))}
+      </div>
+
+      {/* 2. Contact info */}
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        2 · Your info
+      </div>
+      <div className="mt-3 grid gap-4 sm:grid-cols-2">
+        <div>
+          <label htmlFor="contact-name" className={labelCls}>Name *</label>
+          <input required id="contact-name" name="name" autoComplete="name" className={fieldCls} placeholder="Full name" />
         </div>
-
         <div>
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Email <span className="text-white/30">*</span>
-          </label>
+          <label htmlFor="contact-phone" className={labelCls}>Phone *</label>
           <input
             required
-            name="email"
+            id="contact-phone" name="phone"
+            type="tel"
+            autoComplete="tel"
+            className={fieldCls}
+            placeholder="(305) 555-0123"
+          />
+        </div>
+        <div>
+          <label htmlFor="contact-email" className={labelCls}>Email (optional)</label>
+          <input
+            id="contact-email" name="email"
             type="email"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
+            autoComplete="email"
+            className={fieldCls}
             placeholder="you@email.com"
           />
-
         </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Phone (optional)
+        <div>
+          <label htmlFor="contact-location" className={labelCls}>
+            {side === "residential" ? "Address or ZIP" : "Project location"}
           </label>
           <input
-            name="phone"
-            type="tel"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="(###) ###-####"
+            id="contact-location" name="location"
+            className={fieldCls}
+            placeholder={side === "residential" ? "Street or ZIP code" : "City, State"}
           />
-
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Project location (optional)
-          </label>
-          <input
-            name="location"
-            className="mt-2 w-full rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="City, State"
-          />
-
-        </div>
-
-        <div className="md:col-span-2">
-          <label className="block text-[11px] uppercase tracking-[0.22em] font-extrabold text-white/60">
-            Message <span className="text-white/30">*</span>
-          </label>
-          <textarea
-            required
-            name="message"
-            rows={5}
-            className="mt-2 w-full resize-none rounded-2xl border border-white/12 bg-black/30 px-4 py-3 font-semibold text-white placeholder:text-white/35 outline-none focus:ring-2 focus:ring-[rgba(233,151,19,0.35)]"
-            placeholder="Scope, timeline, constraints, and what you need from us…"
-          />
-
         </div>
       </div>
 
-      <div className="mt-5 flex flex-wrap items-center gap-3">
-        <button
-          type="submit"
-          disabled={state !== "idle"}
-          className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition disabled:opacity-60 disabled:hover:opacity-60"
-        >
-          {state === "idle" ? "Send Message" : state === "sending" ? "Sending…" : "Sent ✓"}
-        </button>
-
-        <span className="text-white/55 font-semibold text-sm">
-          For attachments/photos, email{" "}
-          <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
-            {email}
-          </a>
-          .
-        </span>
+      {/* 3. Details */}
+      <div className="mt-6 text-[11px] font-extrabold uppercase tracking-[0.22em] text-[var(--brand-orange)]">
+        3 · Project details
+      </div>
+      <div className="mt-3">
+        <label htmlFor="contact-timeline" className={labelCls}>When do you need it? (optional)</label>
+        <select id="contact-timeline" name="timeline" defaultValue="" className={selectCls}>
+          <option value="">Select timing</option>
+          <option>As soon as possible</option>
+          <option>Within a month</option>
+          <option>In 1–3 months</option>
+          <option>Just planning / flexible</option>
+        </select>
+      </div>
+      <div className="mt-3">
+        <label htmlFor="contact-message" className={labelCls}>Tell us about the job *</label>
+        <textarea
+          required
+          id="contact-message" name="message"
+          rows={4}
+          className={`${fieldCls} resize-none`}
+          placeholder={
+            side === "residential"
+              ? "What do you want done? Rough size, materials, anything we should know…"
+              : "Scope, footage, timeline, site constraints…"
+          }
+        />
       </div>
 
-      {state === "sent" && (
-        <div className="mt-4 rounded-2xl border border-white/12 bg-white/5 px-4 py-3 text-sm font-semibold text-white/75">
-          Thanks — we received your message. If it’s urgent, call and we’ll help faster.
-        </div>
-      )}
+      <FileAttachments
+        files={files}
+        setFiles={setFiles}
+        fileError={fileError}
+        setFileError={setFileError}
+        compressing={compressing}
+        setCompressing={setCompressing}
+      />
+
+      <button
+        type="submit"
+        disabled={state !== "idle" || Boolean(fileError) || compressing}
+        className="mt-6 w-full rounded-full bg-[var(--brand-orange)] px-7 py-4 text-sm font-extrabold uppercase tracking-wider text-white shadow-[0_12px_40px_rgba(240,138,0,0.35)] hover:opacity-90 transition disabled:opacity-60"
+      >
+        {state === "sending" ? "Sending…" : compressing ? "Preparing photos…" : "Request an estimate"}
+      </button>
+
+      <p className="mt-4 text-center text-[13px] font-semibold text-white/45">
+        Prefer email?{" "}
+        <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
+          {email}
+        </a>
+      </p>
     </form>
   );
 }
-
 function NetlifyFormDetector() {
   return (
     <form
       name="contact"
       method="POST"
+      encType="multipart/form-data"
       data-netlify="true"
       data-netlify-honeypot="bot-field"
       hidden
@@ -355,6 +502,14 @@ function NetlifyFormDetector() {
       <input type="tel" name="phone" />
       <input type="text" name="location" />
       <textarea name="message" />
+      <input type="text" name="side" />
+      <input type="text" name="project-type" />
+      <input name="timeline" />
+      <input type="file" name="photo" />
+      <input type="file" name="photo-2" />
+      <input type="file" name="photo-3" />
+      <input type="file" name="photo-4" />
+      <input type="file" name="photo-5" />
       <button type="submit">Send</button>
     </form>
   );
@@ -374,7 +529,7 @@ useHead({
     {
       name: "description",
       content:
-        "Contact AIM Construction Management for underground utility, directional drilling, and restoration. Share your scope, timeline, and site constraints for a fast response.",
+        "Contact AIM Construction Management for underground utility, directional drilling, and restoration. Share your scope, timeline, and site constraints so we can review your project.",
     },
 
     // Open Graph
@@ -382,7 +537,7 @@ useHead({
     {
       property: "og:description",
       content:
-        "Reach the right person quickly—send scope details for underground utility, drilling, and restoration work.",
+        "Reach the right person—send scope details for underground utility, drilling, and restoration work.",
     },
     { property: "og:type", content: "website" },
     { property: "og:url", content: "https://aimconstructionmgt.com/contact" },
@@ -467,8 +622,7 @@ useHead({
             <div className="max-w-[920px]">
               <FadeIn delay={0.05}>
                 <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
-                  Fast response
-                  <span className="ml-3 text-white/50 font-bold">• usually within 1 business day</span>
+                  Get in touch
                 </div>
               </FadeIn>
 
@@ -480,7 +634,7 @@ useHead({
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="max-w-[70ch] text-white/72 font-semibold leading-relaxed">
-                  Share your scope, timeline, and site constraints. We’ll reply quickly with next steps.
+                  Share your scope, timeline, and site constraints. We’ll follow up with next steps.
                 </p>
               </FadeIn>
 
@@ -514,20 +668,20 @@ useHead({
                 <div className="h-[1px] flex-1 bg-black/10 min-w-0" />
                 <div className="inline-flex items-center gap-2 rounded-full border border-black/10 bg-white/70 px-3 py-1 text-[11px] font-bold text-black/60">
                   <span className="inline-block h-1.5 w-1.5 rounded-full bg-[var(--brand-orange)]" />
-                  Fast replies
+                  Call or text
                 </div>
               </div>
 
               <h2 className="mt-4 text-[28px] md:text-[36px] font-extrabold tracking-tight text-[var(--ink)]">
                 Reach the right person{" "}
                 <span className="bg-[linear-gradient(90deg,var(--brand-orange),#ffcf7a)] bg-clip-text text-transparent">
-                  instantly
+                  directly
                 </span>
                 .
               </h2>
 
               <p className="mt-2 max-w-[62ch] text-[15px] font-semibold text-black/60 leading-relaxed">
-                Tap a contact card to call or text. For photos/attachments, email is best.
+                Tap a contact card to call or text. Photos and plans can go in the form below.
               </p>
 
               {/* EMAIL */}
@@ -555,7 +709,7 @@ useHead({
 
 
                       <div className="mt-1 text-sm font-semibold text-black/55">
-                        Best for scope + photos
+                        Good for large plans or files
                       </div>
                     </div>
 
@@ -570,7 +724,7 @@ useHead({
                   </div>
 
                   <div className="mt-4 text-[12px] font-semibold text-black/55">
-                    Include location + timeline for the quickest turnaround.
+                    Include location and timeline with your request.
                   </div>
                 </a>
               </div>
@@ -700,7 +854,7 @@ useHead({
                 </div>
 
                 <div className="mt-4 text-[13px] font-semibold text-black/60">
-                  For attachments/photos, email is usually fastest.
+                  Photos and plans can be attached in the form below, or emailed if they’re large.
                 </div>
 
                 <div className="mt-5 h-[2px] w-full rounded-full bg-[linear-gradient(90deg,var(--brand-orange),transparent)]" />
@@ -711,7 +865,7 @@ useHead({
                   Helpful details
                 </div>
                 <div className="mt-2 text-white font-extrabold text-[18px] leading-tight">
-                  Faster quotes
+                  Better estimates
                 </div>
                 <div className="mt-2 text-sm font-semibold text-white/70">
                   Add location, timeline, scope summary, and any constraints.
@@ -734,17 +888,8 @@ useHead({
                   Send us the details.
                 </h2>
                 <p className="mt-3 text-white/75 font-semibold leading-relaxed">
-                  Share the essentials and we’ll follow up with next steps. If you need to attach photos,
-                  email them to{" "}
-                  <a className="underline decoration-white/30 hover:decoration-white/70" href={emailHref}>
-                    {email}
-                  </a>
-                  .
+                  Tell us what you need. Add photos or plans if you have them.
                 </p>
-
-                <div className="mt-6 text-sm font-semibold text-white/60">
-                  Prefer a call? Tap a contact card above.
-                </div>
               </div>
 
               <div className="lg:col-span-7 min-w-0">

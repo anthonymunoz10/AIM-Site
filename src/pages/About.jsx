@@ -674,7 +674,7 @@ export default function About() {
               <h2 className="mt-3 text-3xl md:text-4xl font-extrabold text-white leading-tight">
                 Need underground utility or restoration handled right?
               </h2>
-              <p className="mt-2 text-white/75 font-semibold">Send scope + photos and we’ll review quickly.</p>
+              <p className="mt-2 text-white/75 font-semibold">Send scope + photos and we’ll review your project.</p>
             </div>
 
             <div className="md:col-span-5 flex flex-wrap md:justify-end gap-3">

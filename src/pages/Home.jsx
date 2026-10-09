@@ -299,6 +299,65 @@ function QuickActions() {
   );
 }
 
+function TwoSides() {
+  const sides = [
+    {
+      tag: "Commercial & Utility",
+      title: "Underground utility, drilling & restoration",
+      desc: "Ductbank, water and sewer, directional drilling (2”–24”), and concrete/asphalt restoration for GCs, utilities and agencies.",
+      big: "Commercial",
+      href: "/services",
+      cta: "View Commercial",
+    },
+    {
+      tag: "Residential",
+      title: "Remodeling, roofing & home services",
+      desc: "Kitchens, bathrooms, flooring, painting, roofing and full remodels, permitted and managed start to finish.",
+      big: "Residential",
+      href: "/residential",
+      cta: "View Residential",
+    },
+  ];
+
+  return (
+    <FloatSection tone="light">
+      <div className="text-center">
+        <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
+          What are you building?
+        </div>
+        <h2 className="mt-3 text-3xl md:text-5xl font-extrabold text-brand-ink leading-tight">
+          Two sides, <span className="text-[var(--brand-orange)]">one standard</span>
+        </h2>
+      </div>
+
+      <div className="mt-8 grid gap-5 md:grid-cols-2">
+        {sides.map((x) => (
+          <a
+            key={x.href}
+            href={x.href}
+            className="group block rounded-[22px] overflow-hidden border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.16)]"
+          >
+            <div className="relative h-36 md:h-44 overflow-hidden bg-[var(--ink)]">
+              <div className="absolute inset-0 [background:radial-gradient(600px_260px_at_15%_20%,rgba(233,151,19,0.35),transparent_60%)] group-hover:scale-[1.05] transition duration-500" />
+              <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
+              <div className="absolute left-6 bottom-4 text-[clamp(2.2rem,6vw,3.4rem)] font-extrabold tracking-tight text-white/90 leading-none">
+                {x.big}
+              </div>
+            </div>
+            <div className="p-6">
+              <h3 className="text-2xl font-extrabold text-brand-ink">{x.title}</h3>
+              <p className="mt-2 text-black/65 font-semibold">{x.desc}</p>
+              <div className="mt-5 inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white group-hover:opacity-90 transition">
+                {x.cta} →
+              </div>
+            </div>
+          </a>
+        ))}
+      </div>
+    </FloatSection>
+  );
+}
+
 function StatRow() {
   const stats = useMemo(
     () => [
@@ -356,6 +415,7 @@ function HomeContent() {
           <div className="relative">
             <Hero />
             <QuickActions />
+            <TwoSides />
             <StatRow />
 
             {/* WHO WE ARE */}
@@ -504,7 +564,7 @@ function HomeContent() {
 
               <div className="mt-8 grid gap-5 md:grid-cols-4">
                 {[
-                  { n: "01", t: "Scope Review", d: "We review plans, photos, constraints, and schedule needs—fast and clear." },
+                  { n: "01", t: "Scope Review", d: "We review plans, photos, constraints, and schedule needs in detail." },
                   { n: "02", t: "Plan + Mobilize", d: "Right equipment, right crew, right safety approach—no surprises." },
                   { n: "03", t: "Build + Restore", d: "Execute the scope, then restore concrete/asphalt to spec and expectations." },
                   { n: "04", t: "Closeout", d: "Clean finish, documented progress, and responsive communication." },

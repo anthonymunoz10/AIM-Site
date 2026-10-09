@@ -1,6 +1,7 @@
 import React, { useEffect, useRef, useState } from "react";
 import { motion } from "framer-motion";
 import { Link } from "react-router-dom";
+import { LICENSES } from "../data/licenses.js";
 
 function FooterNavLink({ to, className, children }) {
   const handleClick = () => {
@@ -198,7 +199,8 @@ export function MobileMenu() {
   const links = [
     { to: "/", label: "Home" },
     { to: "/about", label: "Who We Are" },
-    { to: "/services", label: "Services" },
+    { to: "/services", label: "Commercial" },
+    { to: "/residential", label: "Residential" },
     { to: "/projects", label: "Projects" },
     { to: "/contact", label: "Contact" },
   ];
@@ -365,7 +367,13 @@ export function Nav() {
                   className="hover:text-[var(--brand-orange)]"
                   to="/services"
                 >
-                  Services
+                  Commercial
+                </Link>
+                <Link
+                  className="hover:text-[var(--brand-orange)]"
+                  to="/residential"
+                >
+                  Residential
                 </Link>
                 <Link
                   className="hover:text-[var(--brand-orange)]"
@@ -520,7 +528,8 @@ export function Footer() {
 
             <p className="mt-6 max-w-[46ch] text-[16px] md:text-[17px] text-black/75 font-semibold leading-relaxed">
               Safety-first operations and dependable delivery for underground
-              utility, directional drilling, and restoration work.
+              utility, directional drilling, restoration, and residential
+              remodeling.
             </p>
 
             <div className="mt-8 h-1 w-28 rounded-full bg-black/25 mx-auto md:mx-0" />
@@ -541,7 +550,10 @@ export function Footer() {
 
                 <div className="mt-5 grid gap-3 font-semibold justify-items-center md:justify-items-start">
                   <FooterNavLink className={footerLink} to="/services">
-                    Services
+                    Commercial
+                  </FooterNavLink>
+                  <FooterNavLink className={footerLink} to="/residential">
+                    Residential
                   </FooterNavLink>
                   <FooterNavLink className={footerLink} to="/about">
                     Company
@@ -616,7 +628,12 @@ export function Footer() {
             <Container>
               <div className="flex flex-col items-center gap-2 text-center md:flex-row md:justify-between md:text-left">
                 <div>
-                  © {year} AIM Construction Management. All rights reserved.
+                  <div>
+                    © {year} AIM Construction Management. All rights reserved.
+                  </div>
+                  <div className="mt-1 text-black/55">
+                    {LICENSES.map((l) => `${l.label} ${l.number}`).join(" • ")}
+                  </div>
                 </div>
                 <div className="flex flex-wrap items-center justify-center gap-x-4 gap-y-2">
                   <FooterNavLink
