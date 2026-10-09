@@ -11,6 +11,7 @@
       content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
 
+    <!--seo-->
     <!-- ✅ Title/description for HOME (SPA will override per route later) -->
     <title>AIM Construction Management | Underground Utility & Directional Drilling</title>
     <meta
@@ -30,24 +31,174 @@
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://aimconstructionmgt.com/" />
     <meta property="og:image" content="https://aimconstructionmgt.com/img/og-cover.png" />
+    <!--/seo-->
 
     <!-- ✅ Performance: preload your hero poster if it exists -->
     <link rel="preload" as="image" href="/img/hero-poster.webp" fetchpriority="high" />
 
     <!-- ✅ Structured data -->
     <script type="application/ld+json">
-      {
-        "@context": "https://schema.org",
-        "@type": "GeneralContractor",
-        "name": "AIM Construction Management",
-        "url": "https://aimconstructionmgt.com/",
-        "telephone": "+1-305-331-5759",
-        "email": "aimconstructionmgt@gmail.com",
-        "areaServed": "Florida",
-        "description": "Underground utility, directional drilling, and restoration services."
+{
+  "@context": "https://schema.org",
+  "@type": "GeneralContractor",
+  "@id": "https://aimconstructionmgt.com/#business",
+  "name": "AIM Construction Management",
+  "legalName": "AIM Construction Management Inc.",
+  "url": "https://aimconstructionmgt.com/",
+  "logo": "https://aimconstructionmgt.com/img/logo.png",
+  "image": "https://aimconstructionmgt.com/img/og-cover.png",
+  "telephone": "+1-305-331-5759",
+  "email": "aimconstructionmgt@gmail.com",
+  "description": "Florida-certified underground utility and building contractor based in Miami Lakes. Commercial water main, sewer, force main, ductbank, horizontal directional drilling (2″–24″) and concrete/asphalt restoration, plus residential remodeling, kitchens, bathrooms and roofing in South Florida.",
+  "address": {
+    "@type": "PostalAddress",
+    "streetAddress": "7900 Oak Lane, Suite 479",
+    "addressLocality": "Miami Lakes",
+    "addressRegion": "FL",
+    "postalCode": "33016",
+    "addressCountry": "US"
+  },
+  "areaServed": [
+    {
+      "@type": "AdministrativeArea",
+      "name": "Miami-Dade County, FL"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Broward County, FL"
+    },
+    {
+      "@type": "AdministrativeArea",
+      "name": "Palm Beach County, FL"
+    },
+    {
+      "@type": "State",
+      "name": "Florida"
+    }
+  ],
+  "hasCredential": [
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "license",
+      "name": "Florida Certified Underground Utility Contractor",
+      "identifier": "CUC1226535",
+      "recognizedBy": {
+        "@type": "GovernmentOrganization",
+        "name": "Florida Department of Business and Professional Regulation"
       }
+    },
+    {
+      "@type": "EducationalOccupationalCredential",
+      "credentialCategory": "license",
+      "name": "Florida Certified Building Contractor",
+      "identifier": "CBC1263235",
+      "recognizedBy": {
+        "@type": "GovernmentOrganization",
+        "name": "Florida Department of Business and Professional Regulation"
+      }
+    }
+  ],
+  "knowsAbout": [
+    "Underground utilities",
+    "Horizontal directional drilling",
+    "Water main installation",
+    "Sanitary sewer",
+    "Force main",
+    "Electrical ductbank",
+    "Telecom ductbank",
+    "Concrete and asphalt restoration",
+    "Kitchen remodeling",
+    "Bathroom remodeling",
+    "Roofing",
+    "Home remodeling"
+  ],
+  "hasOfferCatalog": {
+    "@type": "OfferCatalog",
+    "name": "Services",
+    "itemListElement": [
+      {
+        "@type": "OfferCatalog",
+        "name": "Commercial",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Horizontal directional drilling",
+              "url": "https://aimconstructionmgt.com/services/directional-drilling"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Water main, sewer and force main",
+              "url": "https://aimconstructionmgt.com/services/water-sewer"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Electrical and telecom ductbank",
+              "url": "https://aimconstructionmgt.com/services/ductbank"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Concrete and asphalt restoration",
+              "url": "https://aimconstructionmgt.com/services/restoration"
+            }
+          }
+        ]
+      },
+      {
+        "@type": "OfferCatalog",
+        "name": "Residential",
+        "itemListElement": [
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Kitchen remodeling",
+              "url": "https://aimconstructionmgt.com/residential/kitchen-remodeling"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Bathroom remodeling",
+              "url": "https://aimconstructionmgt.com/residential/bathroom-remodeling"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Roof replacement and repair",
+              "url": "https://aimconstructionmgt.com/residential/roofing"
+            }
+          },
+          {
+            "@type": "Offer",
+            "itemOffered": {
+              "@type": "Service",
+              "name": "Home remodeling and additions",
+              "url": "https://aimconstructionmgt.com/residential/home-remodeling"
+            }
+          }
+        ]
+      }
+    ]
+  }
+}
     </script>
     <script>
+      // mark JS as on, so the prerendered copy stays hidden (scripts/prerender.mjs)
+      document.documentElement.classList.add("js");
       // pick light/dark before first paint (see src/lib/theme.js)
       (function () {
         var ready = ["/", "/services"], t = "dark";
@@ -56,9 +207,10 @@
           t = saved === "light" || saved === "dark" ? saved
             : (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
         } catch (e) {}
-        document.documentElement.setAttribute("data-theme", t === "light" && ready.indexOf(location.pathname) !== -1 ? "light" : "dark");
+        document.documentElement.setAttribute("data-theme", t === "light" && (ready.indexOf(location.pathname) !== -1 || /^\/(services|residential)\/[a-z-]+\/?$/.test(location.pathname)) ? "light" : "dark");
       })();
     </script>
+      <style>html.js #root > .prerendered { display: none; }</style>
   </head>
   <body>
     <!-- Netlify form detection (the real forms are rendered by React) -->
