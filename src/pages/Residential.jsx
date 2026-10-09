@@ -9,7 +9,8 @@ import {
   Container,
   HeroBlend,
 } from "../components/SiteChrome";
-import { compressImage } from "../lib/compressImage.js";
+import FileAttachments from "../components/FileAttachments.jsx";
+import { appendFiles } from "../lib/attachments.js";
 import { LICENSES } from "../data/licenses.js";
 
 /* ---------------------------------------------
@@ -199,6 +200,9 @@ const labelCls =
 
 function QuoteForm() {
   const [state, setState] = useState("idle"); // idle | sending | sent
+  const [files, setFiles] = useState([]);
+  const [fileError, setFileError] = useState("");
+  const [compressing, setCompressing] = useState(false);
 
   return (
     <form
@@ -209,16 +213,12 @@ function QuoteForm() {
       data-netlify-honeypot="bot-field"
       onSubmit={async (e) => {
         e.preventDefault();
-        if (state !== "idle") return;
+        if (state !== "idle" || fileError || compressing) return;
         setState("sending");
 
         const form = e.currentTarget;
         const formData = new FormData(form);
-        const photo = formData.get("photo");
-        if (photo && photo.size) {
-          // shrink phone photos so they fit Netlify's upload limit
-          formData.set("photo", await compressImage(photo).catch(() => photo));
-        }
+        appendFiles(formData, files);
 
         try {
           // multipart body so the optional photo uploads too
@@ -226,6 +226,7 @@ function QuoteForm() {
           if (!res.ok) throw new Error(`Submit failed: ${res.status}`);
           setState("sent");
           form.reset();
+          setFiles([]);
         } catch (err) {
           console.error(err);
           setState("idle");
@@ -325,12 +326,13 @@ function QuoteForm() {
         </div>
 
         <div className="md:col-span-2">
-          <label className={labelCls}>Photo (optional)</label>
-          <input
-            name="photo"
-            type="file"
-            accept="image/*"
-            className="mt-2 block w-full text-sm font-semibold text-white/70 file:mr-4 file:rounded-full file:border-0 file:bg-white/10 file:px-4 file:py-2 file:text-xs file:font-extrabold file:uppercase file:tracking-wider file:text-white hover:file:bg-white/15"
+          <FileAttachments
+            files={files}
+            setFiles={setFiles}
+            fileError={fileError}
+            setFileError={setFileError}
+            compressing={compressing}
+            setCompressing={setCompressing}
           />
         </div>
       </div>
@@ -338,10 +340,10 @@ function QuoteForm() {
       <div className="mt-5 flex flex-wrap items-center gap-3">
         <button
           type="submit"
-          disabled={state !== "idle"}
+          disabled={state !== "idle" || Boolean(fileError) || compressing}
           className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition disabled:opacity-60"
         >
-          {state === "idle" ? "Request Estimate" : state === "sending" ? "Sending…" : "Sent ✓"}
+          {state === "sending" ? "Sending…" : state === "sent" ? "Sent ✓" : compressing ? "Preparing photos…" : "Request Estimate"}
         </button>
         <span className="text-white/55 font-semibold text-sm">
           Or call{" "}
