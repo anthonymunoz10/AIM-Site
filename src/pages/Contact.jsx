@@ -545,7 +545,7 @@ useHead({
     { property: "og:url", content: "https://aimconstructionmgt.com/contact" },
 
     // Optional but recommended (use a real image you have)
-    { property: "og:image", content: "https://aimconstructionmgt.com/img/hero-poster.webp" },
+    { property: "og:image", content: "https://aimconstructionmgt.com/img/og-aim.jpg" },
   ],
   link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/contact" }],
 });

@@ -112,7 +112,7 @@ export default function Services() {
     "AIM Construction Management: water main, sanitary sewer and force main, ductbank, directional drilling (2\u201d\u201324\u201d), and concrete/asphalt restoration across Florida and beyond.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/services";
-  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+  const ogImage = "https://aimconstructionmgt.com/img/og-aim.jpg";
 
   useHead({
     title,

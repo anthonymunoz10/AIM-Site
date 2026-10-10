@@ -124,7 +124,10 @@ export default function ServicePage() {
           { property: "og:description", content: page.metaDescription },
           { property: "og:type", content: "website" },
           { property: "og:url", content: canonical },
-          { property: "og:image", content: SITE + page.image },
+          {
+            property: "og:image",
+            content: SITE + (page.side === "residential" ? "/img/og-residential.jpg" : "/img/og-aim.jpg"),
+          },
         ]
       : [],
     link: [{ rel: "canonical", href: canonical }],

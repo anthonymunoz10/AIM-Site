@@ -387,7 +387,7 @@ export default function Residential() {
       { property: "og:description", content: description },
       { property: "og:type", content: "website" },
       { property: "og:url", content: canonicalUrl },
-      { property: "og:image", content: "https://aimconstructionmgt.com/img/og-cover.png" },
+      { property: "og:image", content: "https://aimconstructionmgt.com/img/og-residential.jpg" },
     ],
     link: [{ rel: "canonical", href: canonicalUrl }],
   });
