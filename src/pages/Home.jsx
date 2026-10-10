@@ -648,15 +648,15 @@ export default function Home() {
       },
 
       // Open Graph
-      { property: "og:title", content: "AIM Construction Management" },
+      { property: "og:title", content: "AIM Construction Management | Underground Utility & Remodeling" },
       {
         property: "og:description",
         content:
-          "Safety-first crews delivering underground utility, directional drilling, and restoration—fast, dependable execution.",
+          "Licensed underground utility contractor in Miami Lakes, FL: water & sewer, force main, ductbank, directional drilling and restoration statewide, plus residential remodeling and roofing.",
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://aimconstructionmgt.com/" },
-      { property: "og:image", content: "https://aimconstructionmgt.com/img/hero-poster.webp" },
+      { property: "og:image", content: "https://aimconstructionmgt.com/img/og-aim.jpg" },
     ],
     link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/" }],
   });

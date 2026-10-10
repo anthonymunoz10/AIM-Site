@@ -17,6 +17,8 @@ const dist = path.join(root, "dist");
 const { render } = await import(pathToFileURL(path.join(root, "dist-ssr", "entry-server.js")).href);
 const { SERVICE_PAGES } = await import(pathToFileURL(path.join(root, "src", "data", "servicePages.js")).href);
 
+const SITE = "https://aimconstructionmgt.com";
+
 const ROUTES = [
   "/",
   "/services",
@@ -52,8 +54,15 @@ let ok = 0;
 for (const route of ROUTES) {
   const { html, headTags } = await render(route);
   if (!html || html.length < 500) throw new Error(`prerender: ${route} rendered almost nothing`);
+  // link previews (iMessage, WhatsApp, LinkedIn...) read these; fill gaps with the brand card
+  let tags = headTags;
+  if (!/property="og:image"/.test(tags)) tags += `\n<meta property="og:image" content="${SITE}/img/og-aim.jpg">`;
+  tags +=
+    `\n<meta property="og:site_name" content="AIM Construction Management">` +
+    `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">` +
+    `\n<meta name="twitter:card" content="summary_large_image">`;
   const page = template
-    .replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, headTags)
+    .replace(/<!--seo-->[\s\S]*?<!--\/seo-->/, tags)
     .replace('<div id="root"></div>', `<div id="root"><div class="prerendered">${stripMedia(html)}</div></div>`);
   const outDir = route === "/" ? dist : path.join(dist, route.slice(1));
   fs.mkdirSync(outDir, { recursive: true });

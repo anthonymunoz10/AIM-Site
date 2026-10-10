@@ -103,7 +103,7 @@ export default function Projects() {
     "Explore AIM Construction Management project highlights including underground utility, directional drilling, and restoration work across Florida and beyond.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/projects";
-  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+  const ogImage = "https://aimconstructionmgt.com/img/og-aim.jpg";
 
   useHead({
     title,

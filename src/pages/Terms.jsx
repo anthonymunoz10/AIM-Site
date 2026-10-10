@@ -89,7 +89,7 @@ export default function Terms() {
     "Read the terms of use for AIM Construction Management’s website, including acceptable use, content ownership, and third-party links.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/terms";
-  const ogImage = "https://aimconstructionmgt.com/img/projects-bg.jpg";
+  const ogImage = "https://aimconstructionmgt.com/img/og-aim.jpg";
 
   useHead({
     title,
