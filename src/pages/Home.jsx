@@ -151,6 +151,15 @@ function Hero() {
             <div className="flex-1" />
 
             <div>
+              {/* headline for phones (desktop has the h1 below) */}
+              <motion.p
+                initial={{ opacity: 0, y: 18 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ duration: 0.7, delay: 0.14 }}
+                className="mb-4 font-['Barlow',sans-serif] text-[clamp(2.4rem,9vw,3.4rem)] leading-[0.95] font-extrabold tracking-tight text-white"
+              >
+                Plan. Build. <span className="text-[var(--brand-orange)]">Deliver.</span>
+              </motion.p>
               <motion.p
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
@@ -330,7 +339,7 @@ function TwoSides() {
         </h2>
       </div>
 
-      <div className="mt-8 grid gap-5 md:grid-cols-2">
+      <div className="mt-8 grid gap-5 sm:grid-cols-2">
         {sides.map((x) => (
           <a
             key={x.href}
@@ -347,7 +356,7 @@ function TwoSides() {
             <div className="p-6">
               <h3 className="text-2xl font-extrabold text-brand-ink">{x.title}</h3>
               <p className="mt-2 text-black/65 font-semibold">{x.desc}</p>
-              <div className="mt-5 inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white group-hover:opacity-90 transition">
+              <div className="mt-5 inline-flex whitespace-nowrap rounded-full bg-[var(--brand-orange)] px-5 py-3 font-bold uppercase tracking-wider text-xs text-white group-hover:opacity-90 transition md:px-6 md:text-sm">
                 {x.cta} →
               </div>
             </div>
@@ -371,7 +380,7 @@ function StatRow() {
 
   return (
     <FloatSection tone="dark">
-      <div id="stats" className="grid gap-4 md:grid-cols-4">
+      <div id="stats" className="grid gap-4 grid-cols-2 md:grid-cols-4">
         {stats.map((s) => (
           <div
             key={s.bottom}
@@ -562,7 +571,7 @@ function HomeContent() {
                 />
               </div>
 
-              <div className="mt-8 grid gap-5 md:grid-cols-4">
+              <div className="mt-8 grid gap-5 sm:grid-cols-2 md:grid-cols-4">
                 {[
                   { n: "01", t: "Scope Review", d: "We review plans, photos, constraints, and schedule needs in detail." },
                   { n: "02", t: "Plan + Mobilize", d: "Right equipment, right crew, right safety approach—no surprises." },

@@ -740,7 +740,7 @@ useHead({
                   <div className="h-[1px] flex-1 bg-black/10 min-w-0" />
                 </div>
 
-                <div className="mt-4 grid gap-4 md:grid-cols-2 min-w-0 max-w-full">
+                <div className="mt-4 grid gap-4 sm:grid-cols-2 min-w-0 max-w-full">
                   {contacts.map((c) => (
                     <div key={c.name} className="w-full max-w-full min-w-0">
                       {/* Whole card clickable (no nested <a> issues) */}
