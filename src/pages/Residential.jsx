@@ -249,7 +249,7 @@ function QuoteForm() {
         </label>
       </p>
 
-      <div className="grid gap-4 md:grid-cols-2">
+      <div className="grid gap-4 sm:grid-cols-2">
         <div>
           <label className={labelCls}>
             Name <span className="text-white/30">*</span>

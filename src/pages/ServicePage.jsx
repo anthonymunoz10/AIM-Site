@@ -246,7 +246,7 @@ export default function ServicePage() {
           <h2 className="text-2xl md:text-3xl font-extrabold text-white">
             Why <span className="text-[var(--brand-orange)]">AIM</span>
           </h2>
-          <ul className="mt-5 grid gap-3 md:grid-cols-2">
+          <ul className="mt-5 grid gap-3 sm:grid-cols-2">
             {page.why.map((w) => (
               <li
                 key={w}

@@ -1,5 +1,12 @@
 @import "tailwindcss";
 
+/* "sm" starts at 544px (Tailwind default is 640px) so the unfolded iPhone Duo
+   (~626px wide upright) and small tablets get two-column cards instead of a
+   stretched phone layout. Phones (under ~440px) are unaffected. */
+@theme {
+  --breakpoint-sm: 34rem;
+}
+
 html, body {
   width: 100%;
   overflow-x: clip;

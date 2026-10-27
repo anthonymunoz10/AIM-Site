@@ -13,7 +13,8 @@ export const THEME_EVENT = "aim-theme-change";
 const LIGHT_READY_PATTERN = /^\/(services|residential)\/[a-z-]+\/?$/;
 
 export function isLightReady(pathname) {
-  return LIGHT_READY_PATHS.includes(pathname) || LIGHT_READY_PATTERN.test(pathname);
+  const path = pathname.length > 1 ? pathname.replace(/\/+$/, "") : pathname; // "/services/" = "/services"
+  return LIGHT_READY_PATHS.includes(path) || LIGHT_READY_PATTERN.test(path);
 }
 
 export function getPreferredTheme() {

@@ -402,16 +402,17 @@ export function Nav() {
                 : "border-white/10 bg-black/25 backdrop-blur-md",
             ].join(" ")}
           >
-            <div className="flex items-center justify-between px-6 py-4">
+            <div className="flex items-center justify-between gap-3 px-4 py-3 lg:px-6 lg:py-4">
               <Link to="/" className="flex items-center gap-3">
                 <img
                   src="/img/logo.png"
                   alt="Aim Construction"
-                  className="h-11 w-auto"
+                  className="h-9 w-auto lg:h-11"
                 />
               </Link>
 
-              <div className="flex items-center gap-8 text-xs uppercase tracking-[0.18em] font-semibold text-white/85">
+              {/* tighter spacing between 768-1024px (unfolded iPhone Duo sideways, small tablets) */}
+              <div className="flex items-center gap-4 whitespace-nowrap text-[11px] uppercase tracking-[0.1em] font-semibold text-white/85 lg:gap-8 lg:text-xs lg:tracking-[0.18em]">
                 <Link className="hover:text-[var(--brand-orange)]" to="/about">
                   Who We Are
                 </Link>
@@ -445,9 +446,10 @@ export function Nav() {
                 <ThemeToggle />
                 <Link
                   to="/contact"
-                  className="rounded-full bg-[var(--brand-orange)] px-5 py-2.5 font-bold uppercase tracking-wider text-xs text-white hover:opacity-90 transition"
+                  className="whitespace-nowrap rounded-full bg-[var(--brand-orange)] px-4 py-2.5 font-bold uppercase tracking-wider text-xs text-white hover:opacity-90 transition lg:px-5"
                 >
-                  Request a Quote
+                  <span className="lg:hidden">Quote</span>
+                  <span className="hidden lg:inline">Request a Quote</span>
                 </Link>
               </div>
             </div>
