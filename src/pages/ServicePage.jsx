@@ -172,7 +172,7 @@ export default function ServicePage() {
           className="absolute inset-0 bg-center bg-cover"
           style={{ backgroundImage: `url('${page.image}')` }}
         />
-        <div className="absolute inset-0 bg-black/60" />
+        <div className={`absolute inset-0 ${page.side === "residential" ? "bg-black/45" : "bg-black/60"}`} />
         <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_18%_18%,rgba(233,151,19,0.28),transparent_60%)]" />
         <div className="absolute inset-0 [background:radial-gradient(1200px_700px_at_50%_35%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.62)_70%,rgba(0,0,0,0.88)_100%)]" />
 
@@ -210,6 +210,11 @@ export default function ServicePage() {
             </div>
           </Container>
         </div>
+        {page.imageCredit && (
+          <div className="absolute bottom-4 right-5 z-20 rounded-full bg-black/45 px-3 py-1 text-[10px] font-semibold tracking-wide text-white/75 backdrop-blur">
+            {page.imageCredit}
+          </div>
+        )}
         <HeroBlend height={100} />
       </header>
 

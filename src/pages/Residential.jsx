@@ -107,12 +107,14 @@ const SERVICES = [
   {
     key: "kitchens",
     title: "Kitchens",
+    img: "/img/stock-kitchen-800.webp",
     page: "/residential/kitchen-remodeling",
     desc: "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances.",
   },
   {
     key: "bathrooms",
     title: "Bathrooms",
+    img: "/img/stock-bath-800.webp",
     page: "/residential/bathroom-remodeling",
     desc: "Bathroom remodels from tub-to-shower conversions to complete gut renovations.",
   },
@@ -503,8 +505,23 @@ export default function Residential() {
             {SERVICES.map((s) => (
               <div
                 key={s.key}
-                className="rounded-[22px] border border-black/10 bg-white p-6 shadow-[0_14px_50px_rgba(0,0,0,0.08)]"
+                className="overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.08)]"
               >
+                {s.img && (
+                  <figure className="relative">
+                    <img
+                      src={s.img}
+                      alt={`${s.title} design inspiration`}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-44 w-full object-cover"
+                    />
+                    <figcaption className="absolute bottom-2 right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur">
+                      Design inspiration – stock photography
+                    </figcaption>
+                  </figure>
+                )}
+                <div className="p-6">
                 <div className="h-[4px] w-12 rounded-full bg-[var(--brand-orange)]" />
                 <h3 className="mt-4 text-xl font-extrabold text-[var(--ink)]">{s.title}</h3>
                 <p className="mt-2 text-black/65 font-semibold leading-relaxed">{s.desc}</p>
@@ -516,6 +533,7 @@ export default function Residential() {
                     Learn more →
                   </Link>
                 )}
+                </div>
               </div>
             ))}
           </div>
