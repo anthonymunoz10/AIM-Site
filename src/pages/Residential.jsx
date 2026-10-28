@@ -19,13 +19,13 @@ import { trackLead } from "../lib/analytics.js";
    Small primitives (match the rest of the site)
 ---------------------------------------------- */
 
-function FloatSection({ children, tone = "light", id }) {
+function FloatSection({ children, tone = "light", id, keepDark = false }) {
   const shell =
     "w-full max-w-full min-w-0 rounded-[26px] border overflow-hidden shadow-[0_22px_70px_rgba(0,0,0,0.18)]";
 
   const toneCls =
     tone === "dark"
-      ? "bg-[var(--ink)] text-white border-white/12"
+      ? `${keepDark ? "" : "dark-surface "}bg-[var(--ink)] text-white border-white/12`
       : "bg-white text-[var(--ink)] border-black/10";
 
   const innerOverlay =
@@ -374,9 +374,9 @@ function QuoteForm() {
 ---------------------------------------------- */
 
 export default function Residential() {
-  const title = "Residential Remodeling & Roofing | AIM Construction Management";
+  const title = "Home Remodeling, Kitchens, Bathrooms & Roofing | AIM Construction Management";
   const description =
-    "Kitchens, bathrooms, flooring, painting, roofing, and remodels in South Florida. Licensed, insured, permitted work from AIM Construction Management.";
+    "Kitchen, bathroom and home remodeling plus roofing in South Florida. Written estimates, permits handled and every trade coordinated by AIM Construction Management (CBC1263235).";
   const canonicalUrl = "https://aimconstructionmgt.com/residential";
 
   useHead({
@@ -399,56 +399,87 @@ export default function Residential() {
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
+          <img src="/img/logo.png" alt="Aim Construction" className="logo-on-dark h-16 w-auto opacity-90" />
+          <img src="/img/logo-dark.png" alt="" aria-hidden="true" className="logo-on-light h-16 w-auto" />
         </a>
       </div>
       <div className="md:hidden">
         <MobileMenu />
       </div>
 
-      {/* HERO */}
-      <header className="relative min-h-[72svh] md:min-h-[72vh] bg-black overflow-hidden">
-        <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_18%_18%,rgba(233,151,19,0.30),transparent_60%)]" />
-        <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_85%_30%,rgba(255,255,255,0.08),transparent_60%)]" />
-        <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
-
-        <div className="relative z-10 pt-44 pb-16 md:pt-52">
+      {/* HERO: warm and homeowner-focused; commercial background as supporting credibility */}
+      <header className="res-hero dark-surface hero-round relative overflow-hidden">
+        <div className="relative z-10 pt-44 pb-14 md:pt-44 md:pb-20">
           <Container>
-            <div className="max-w-[920px] mx-auto text-center">
-              <FadeIn delay={0.05}>
-                <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
-                  Residential
+            <div className="grid gap-10 md:grid-cols-12 md:items-center">
+              <div className="md:col-span-7 text-center md:text-left">
+                <FadeIn delay={0.05}>
+                  <div className="inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75">
+                    Residential remodeling • South Florida
+                  </div>
+                </FadeIn>
+
+                <FadeIn delay={0.12} className="mt-5">
+                  <h1 className="text-[clamp(2.2rem,5vw,4rem)] leading-[0.98] font-extrabold tracking-tight text-white">
+                    The remodel you want,{" "}
+                    <span className="text-[var(--brand-orange)]">handled start to finish.</span>
+                  </h1>
+                </FadeIn>
+
+                <FadeIn delay={0.18} className="mt-4">
+                  <p className="mx-auto md:mx-0 max-w-[56ch] text-white/75 font-semibold leading-relaxed">
+                    Kitchens, bathrooms, renovations and roofing. We walk your home with you, give you a
+                    clear written estimate, pull the permits and coordinate every trade through the
+                    final walkthrough.
+                  </p>
+                </FadeIn>
+
+                <FadeIn delay={0.24} className="mt-7 flex flex-wrap gap-3 justify-center md:justify-start">
+                  <button
+                    type="button"
+                    onClick={() => scrollToId("estimate")}
+                    className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
+                  >
+                    Get an Estimate
+                  </button>
+                  <a
+                    href="tel:3053315759"
+                    className="rounded-full border border-white/18 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
+                  >
+                    Call (305) 331-5759
+                  </a>
+                </FadeIn>
+
+                <FadeIn delay={0.3} className="mt-6">
+                  <p className="mx-auto md:mx-0 max-w-[56ch] text-sm font-semibold text-white/60">
+                    Backed by AIM&apos;s licensed commercial construction work across Florida.
+                    Florida Certified Building Contractor CBC1263235.
+                  </p>
+                </FadeIn>
+              </div>
+
+              <FadeIn delay={0.2} className="md:col-span-5">
+                <div className="rounded-[26px] border border-white/12 bg-white/[0.06] p-6 md:p-7 text-left">
+                  <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
+                    What you can count on
+                  </div>
+                  <ul className="mt-4 grid gap-3">
+                    {[
+                      ["Written estimate", "After a site visit, before any work starts."],
+                      ["Permits handled", "We pull permits and schedule inspections."],
+                      ["One point of contact", "We coordinate every trade on your job."],
+                      ["Licensed trades", "Roofing, plumbing, HVAC and electrical by Florida-licensed contractors."],
+                    ].map(([t, d]) => (
+                      <li key={t} className="flex gap-3">
+                        <span aria-hidden="true" className="mt-1.5 h-2.5 w-2.5 shrink-0 rounded-full bg-[var(--brand-orange)]" />
+                        <div>
+                          <div className="font-extrabold text-white">{t}</div>
+                          <div className="text-sm font-semibold text-white/65 leading-snug">{d}</div>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
                 </div>
-              </FadeIn>
-
-              <FadeIn delay={0.12} className="mt-5">
-                <h1 className="text-[clamp(2.2rem,5.2vw,4.2rem)] leading-[0.95] font-extrabold tracking-tight text-white">
-                  Your home, built{" "}
-                  <span className="text-[var(--brand-orange)]">to commercial standards</span>
-                </h1>
-              </FadeIn>
-
-              <FadeIn delay={0.18} className="mt-4">
-                <p className="mx-auto max-w-[60ch] text-white/72 font-semibold leading-relaxed">
-                  Kitchens, bathrooms, flooring, painting, roofing and full remodels, run with
-                  the same standards we bring to commercial and utility work.
-                </p>
-              </FadeIn>
-
-              <FadeIn delay={0.24} className="mt-8 flex flex-wrap gap-3 justify-center">
-                <button
-                  type="button"
-                  onClick={() => scrollToId("estimate")}
-                  className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                >
-                  Get an Estimate
-                </button>
-                <a
-                  href="tel:3053315759"
-                  className="rounded-full border border-white/18 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                >
-                  Call Now
-                </a>
               </FadeIn>
             </div>
           </Container>
@@ -538,7 +569,7 @@ export default function Residential() {
         </FloatSection>
 
         {/* ESTIMATE FORM */}
-        <FloatSection tone="dark" id="estimate">
+        <FloatSection tone="dark" id="estimate" keepDark>
           <div className="grid gap-8 lg:grid-cols-12 lg:items-start min-w-0">
             <div className="lg:col-span-5 min-w-0">
               <div className="text-xs uppercase tracking-[0.22em] font-bold text-white/60">
@@ -567,18 +598,29 @@ export default function Residential() {
           </div>
         </FloatSection>
 
-        {/* COMMERCIAL CROSS-LINK */}
+        {/* COMMERCIAL TRACK RECORD (supporting credibility, real projects only) */}
         <FloatSection tone="light">
           <div className="grid gap-6 md:grid-cols-12 md:items-center">
-            <div className="md:col-span-8">
+            <div className="md:col-span-7">
               <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">
-                Commercial & utility
+                The company behind your remodel
               </div>
               <h2 className="mt-3 text-2xl md:text-3xl font-extrabold text-[var(--ink)] leading-tight">
-                Looking for underground utility, directional drilling or restoration?
+                The same team that builds for ports, utilities and public agencies.
               </h2>
+              <p className="mt-3 text-black/65 font-semibold leading-relaxed">
+                AIM&apos;s commercial work includes ductbank at the Port of Miami, the Virginia Key
+                wastewater plant and FPL Turkey Point. That experience with schedules, permits and
+                inspections is what we bring to your home.
+              </p>
             </div>
-            <div className="md:col-span-4 flex md:justify-end">
+            <div className="md:col-span-5 flex flex-wrap gap-3 md:justify-end">
+              <a
+                href="/projects"
+                className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
+              >
+                See Our Projects
+              </a>
               <a
                 href="/services"
                 className="rounded-full border border-black/15 bg-white px-7 py-3 font-bold uppercase tracking-wider text-sm text-black/70 hover:border-[var(--brand-orange)] hover:text-[var(--brand-orange)] transition"

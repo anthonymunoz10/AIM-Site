@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import { Link, useLocation } from "react-router-dom";
 import { getPreferredTheme, setPreferredTheme, isLightReady, THEME_EVENT } from "../lib/theme.js";
 import { LICENSES } from "../data/licenses.js";
+import { sideForPath } from "../lib/side.js";
 
 function FooterNavLink({ to, className, children }) {
   const handleClick = () => {
@@ -147,10 +148,12 @@ export const Container = ({ children }) => (
 ---------------------------- */
 export function ThemeToggle({ className = "" }) {
   const { pathname } = useLocation();
-  const [theme, setTheme] = useState(() => getPreferredTheme());
+  // re-read on each change; the default depends on the page (residential opens light)
+  const [, setTick] = useState(0);
+  const theme = getPreferredTheme(pathname);
 
   useEffect(() => {
-    const onChange = (e) => setTheme(e.detail);
+    const onChange = () => setTick((n) => n + 1);
     window.addEventListener(THEME_EVENT, onChange);
     return () => window.removeEventListener(THEME_EVENT, onChange);
   }, []);
@@ -185,6 +188,48 @@ export function ThemeToggle({ className = "" }) {
         </svg>
       )}
     </button>
+  );
+}
+
+/* ----------------------------
+   COMMERCIAL / RESIDENTIAL SWITCH
+   Two sides of AIM; the side you're on is highlighted.
+---------------------------- */
+export function SideSwitch({ size = "md", onNavigate, className = "" }) {
+  const { pathname } = useLocation();
+  const active = sideForPath(pathname);
+  const opts = [
+    { key: "commercial", to: "/services", label: "Commercial" },
+    { key: "residential", to: "/residential", label: "Residential" },
+  ];
+  const pad = size === "lg" ? "px-5 py-3 text-sm" : "px-3.5 py-2 text-[11px] lg:px-4 lg:text-xs";
+  return (
+    <div
+      role="navigation"
+      aria-label="Choose commercial or residential"
+      className={`inline-flex shrink-0 items-center rounded-full border border-white/15 bg-white/[0.06] p-1 ${className}`}
+    >
+      {opts.map((o) => {
+        const on = active === o.key;
+        return (
+          <Link
+            key={o.key}
+            to={o.to}
+            onClick={onNavigate}
+            aria-current={on ? "page" : undefined}
+            className={[
+              "rounded-full whitespace-nowrap font-extrabold uppercase tracking-[0.12em] transition",
+              pad,
+              on
+                ? "bg-[var(--brand-orange)] text-white shadow-[0_6px_20px_rgba(240,138,0,0.35)]"
+                : "text-white/80 hover:text-white hover:bg-white/10",
+            ].join(" ")}
+          >
+            {o.label}
+          </Link>
+        );
+      })}
+    </div>
   );
 }
 
@@ -248,8 +293,6 @@ export function MobileMenu() {
   const links = [
     { to: "/", label: "Home" },
     { to: "/about", label: "Who We Are" },
-    { to: "/services", label: "Commercial" },
-    { to: "/residential", label: "Residential" },
     { to: "/projects", label: "Projects" },
     { to: "/contact", label: "Contact" },
   ];
@@ -336,6 +379,10 @@ export function MobileMenu() {
               </div>
             </div>
 
+            <div className="relative px-6 pt-5 pb-1">
+              <SideSwitch size="lg" onNavigate={() => setOpen(false)} className="w-full [&>a]:flex-1 [&>a]:text-center" />
+            </div>
+
             <div className="relative px-6 py-2">
               <nav className="grid">
                 {links.map((l) => (
@@ -395,7 +442,7 @@ export function Nav() {
         <div className="pt-5">
           <div
             className={[
-              "rounded-2xl border transition-all duration-300",
+              "site-nav rounded-2xl border transition-all duration-300",
               "shadow-[0_20px_80px_rgba(0,0,0,0.45)]",
               scrolled
                 ? "border-white/10 bg-black/60 backdrop-blur-xl"
@@ -411,22 +458,12 @@ export function Nav() {
                 />
               </Link>
 
+              <SideSwitch />
+
               {/* tighter spacing between 768-1024px (unfolded iPhone Duo sideways, small tablets) */}
               <div className="flex items-center gap-4 whitespace-nowrap text-[11px] uppercase tracking-[0.1em] font-semibold text-white/85 lg:gap-8 lg:text-xs lg:tracking-[0.18em]">
                 <Link className="hover:text-[var(--brand-orange)]" to="/about">
                   Who We Are
-                </Link>
-                <Link
-                  className="hover:text-[var(--brand-orange)]"
-                  to="/services"
-                >
-                  Commercial
-                </Link>
-                <Link
-                  className="hover:text-[var(--brand-orange)]"
-                  to="/residential"
-                >
-                  Residential
                 </Link>
                 <Link
                   className="hover:text-[var(--brand-orange)]"

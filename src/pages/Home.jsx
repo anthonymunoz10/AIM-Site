@@ -56,6 +56,62 @@ function RevealLines({ lines = [], as: Tag = "h2", className = "", delay = 0 }) 
   );
 }
 
+// The two sides of AIM, shown in the first screen of the home page
+const PATHS = [
+  {
+    key: "commercial",
+    href: "/services",
+    title: "Commercial & Utilities",
+    desc: "Underground utilities, ductbank, directional drilling and restoration.",
+    cta: "View Commercial",
+  },
+  {
+    key: "residential",
+    href: "/residential",
+    title: "Residential Remodeling",
+    desc: "Kitchens, bathrooms, renovations and roofing.",
+    cta: "View Residential",
+  },
+];
+
+function PathCards({ compact = false }) {
+  return (
+    <div className={`grid gap-3 ${compact ? "" : "sm:grid-cols-2 md:gap-4"}`}>
+      {PATHS.map((p) => (
+        <a
+          key={p.key}
+          href={p.href}
+          className={[
+            "group flex items-center justify-between gap-4 rounded-[22px] border border-white/15 bg-black/45 backdrop-blur-md text-left transition hover:border-[var(--brand-orange)] hover:bg-black/60",
+            compact ? "px-5 py-4" : "flex-col items-start px-6 py-5",
+          ].join(" ")}
+        >
+          <div>
+            <div className={`font-extrabold text-white leading-tight ${compact ? "text-lg" : "text-xl md:text-2xl"}`}>
+              {p.title}
+            </div>
+            <div className={`mt-1 text-white/70 font-medium leading-snug ${compact ? "text-[13px]" : "text-sm"}`}>
+              {p.desc}
+            </div>
+          </div>
+          {compact ? (
+            <span
+              aria-hidden="true"
+              className="grid h-10 w-10 shrink-0 place-items-center rounded-full bg-[var(--brand-orange)] text-white text-lg font-bold group-hover:opacity-90"
+            >
+              →
+            </span>
+          ) : (
+            <span className="mt-4 inline-flex whitespace-nowrap rounded-full bg-[var(--brand-orange)] px-5 py-2.5 font-bold uppercase tracking-wider text-xs text-white group-hover:opacity-90 transition">
+              {p.cta} →
+            </span>
+          )}
+        </a>
+      ))}
+    </div>
+  );
+}
+
 function Hero() {
   const heroRef = useRef(null);
   const { scrollYProgress } = useScroll({
@@ -144,7 +200,7 @@ function Hero() {
                 transition={{ duration: 0.6, delay: 0.12 }}
                 className="mt-4 inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[10px] uppercase tracking-[0.24em] font-extrabold text-white/75"
               >
-                Underground Utility • Directional Drilling • Restoration
+                Commercial • Residential • Florida-licensed
               </motion.div>
             </div>
 
@@ -160,40 +216,19 @@ function Hero() {
               >
                 Plan. Build. <span className="text-[var(--brand-orange)]">Deliver.</span>
               </motion.p>
-              <motion.p
-                initial={{ opacity: 0, y: 18 }}
-                animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.18 }}
-                className="mx-auto max-w-[48ch] text-white/72 font-medium text-[15px] leading-relaxed"
-              >
-                Safety-first crews delivering fast, dependable underground utility,
-                directional drilling, and restoration work across Florida and beyond.
-              </motion.p>
-
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.7, delay: 0.22 }}
-                className="mt-6 flex flex-wrap justify-center gap-3"
+                transition={{ duration: 0.7, delay: 0.2 }}
+                className="mx-auto max-w-[520px]"
               >
-                <a
-                  href="/projects"
-                  className="rounded-full bg-[var(--brand-orange)] px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                >
-                  See Our Work
-                </a>
-                <a
-                  href="/contact"
-                  className="rounded-full border border-white/20 bg-white/0 px-7 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                >
-                  Contact Us
-                </a>
+                <PathCards compact />
               </motion.div>
             </div>
           </div>
 
           {/* DESKTOP */}
-          <div className="hidden md:block pt-40">
+          <div className="hidden md:block pt-36 pb-24">
             <div className="max-w-[720px] text-left">
               <motion.div
                 initial={{ opacity: 0, y: 16 }}
@@ -201,7 +236,7 @@ function Hero() {
                 transition={{ duration: 0.55 }}
                 className="mt-2 inline-flex items-center rounded-full border border-white/12 bg-white/5 px-4 py-2 text-[11px] uppercase tracking-[0.24em] font-extrabold text-white/75"
               >
-                Underground Utility • Directional Drilling • Restoration
+                Commercial • Residential • Florida-licensed
               </motion.div>
 
               <motion.h1
@@ -217,30 +252,19 @@ function Hero() {
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.1 }}
-                className="mt-4 max-w-[60ch] text-white/72 font-medium text-base leading-relaxed"
+                className="mt-4 max-w-[60ch] text-white/75 font-medium text-base leading-relaxed"
               >
-                Safety-first crews delivering fast, dependable underground utility,
-                directional drilling, and restoration work across Florida and beyond.
+                Florida-licensed contractor based in Miami Lakes. Underground utility work for
+                contractors and agencies, and remodeling for homeowners.
               </motion.p>
 
               <motion.div
                 initial={{ opacity: 0, y: 18 }}
                 animate={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.7, delay: 0.15 }}
-                className="mt-7 flex flex-wrap gap-3"
+                className="mt-7"
               >
-                <a
-                  href="/projects"
-                  className="rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                >
-                  See Our Work
-                </a>
-                <a
-                  href="/contact"
-                  className="rounded-full border border-white/20 bg-white/0 px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:bg-white/10 transition"
-                >
-                  Contact Us
-                </a>
+                <PathCards />
               </motion.div>
             </div>
           </div>
@@ -308,65 +332,6 @@ function QuickActions() {
   );
 }
 
-function TwoSides() {
-  const sides = [
-    {
-      tag: "Commercial & Utility",
-      title: "Underground utility, drilling & restoration",
-      desc: "Ductbank, water and sewer, directional drilling (2”–24”), and concrete/asphalt restoration for GCs, utilities and agencies.",
-      big: "Commercial",
-      href: "/services",
-      cta: "View Commercial",
-    },
-    {
-      tag: "Residential",
-      title: "Remodeling, roofing & home services",
-      desc: "Kitchens, bathrooms, flooring, painting, roofing and full remodels, permitted and managed start to finish.",
-      big: "Residential",
-      href: "/residential",
-      cta: "View Residential",
-    },
-  ];
-
-  return (
-    <FloatSection tone="light">
-      <div className="text-center">
-        <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
-          What are you building?
-        </div>
-        <h2 className="mt-3 text-3xl md:text-5xl font-extrabold text-brand-ink leading-tight">
-          Two sides, <span className="text-[var(--brand-orange)]">one standard</span>
-        </h2>
-      </div>
-
-      <div className="mt-8 grid gap-5 sm:grid-cols-2">
-        {sides.map((x) => (
-          <a
-            key={x.href}
-            href={x.href}
-            className="group block rounded-[22px] overflow-hidden border border-black/10 bg-white shadow-[0_18px_60px_rgba(0,0,0,0.16)]"
-          >
-            <div className="relative h-36 md:h-44 overflow-hidden bg-[var(--ink)]">
-              <div className="absolute inset-0 [background:radial-gradient(600px_260px_at_15%_20%,rgba(233,151,19,0.35),transparent_60%)] group-hover:scale-[1.05] transition duration-500" />
-              <div className="absolute inset-0 noise opacity-[0.08] mix-blend-overlay" />
-              <div className="absolute left-6 bottom-4 text-[clamp(2.2rem,6vw,3.4rem)] font-extrabold tracking-tight text-white/90 leading-none">
-                {x.big}
-              </div>
-            </div>
-            <div className="p-6">
-              <h3 className="text-2xl font-extrabold text-brand-ink">{x.title}</h3>
-              <p className="mt-2 text-black/65 font-semibold">{x.desc}</p>
-              <div className="mt-5 inline-flex whitespace-nowrap rounded-full bg-[var(--brand-orange)] px-5 py-3 font-bold uppercase tracking-wider text-xs text-white group-hover:opacity-90 transition md:px-6 md:text-sm">
-                {x.cta} →
-              </div>
-            </div>
-          </a>
-        ))}
-      </div>
-    </FloatSection>
-  );
-}
-
 function StatRow() {
   const stats = useMemo(
     () => [
@@ -424,7 +389,56 @@ function HomeContent() {
           <div className="relative">
             <Hero />
             <QuickActions />
-            <TwoSides />
+            {/* RECENT WORK */}
+            <FloatSection tone="light">
+              <div className="text-center">
+                <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
+                  Recent Work
+                </div>
+
+                <RevealLines
+                  as="h2"
+                  className="mt-3 text-4xl md:text-5xl font-extrabold text-brand-ink"
+                  lines={["Featured projects"]}
+                />
+              </div>
+
+              <div className="mt-8 grid gap-5 sm:grid-cols-3">
+                {[
+                  { img: "/img/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project?id=virginia-key-phase3" },
+                  { img: "/img/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project?id=miami-beach-ductbank" },
+                  { img: "/img/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project?id=port-of-miami" },
+                ].map((x) => (
+                  <a
+                    key={x.title}
+                    href={x.href}
+                    className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
+                  >
+                    <div className="h-56 overflow-hidden">
+                      <img loading="lazy" decoding="async"
+                        src={x.img}
+                        alt={x.title}
+                        className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                      />
+                    </div>
+                    <div className="p-6">
+                      <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">{x.tag}</div>
+                      <div className="mt-2 text-2xl font-extrabold text-brand-ink">{x.title}</div>
+                      <div className="mt-1 text-black/65 font-semibold">{x.loc}</div>
+                    </div>
+                  </a>
+                ))}
+              </div>
+
+              <div className="mt-8 text-center">
+                <a
+                  href="/projects"
+                  className="inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
+                >
+                  View Full Portfolio
+                </a>
+              </div>
+            </FloatSection>
             <StatRow />
 
             {/* WHO WE ARE */}
@@ -587,56 +601,6 @@ function HomeContent() {
               </div>
             </FloatSection>
 
-            {/* RECENT WORK */}
-            <FloatSection tone="light">
-              <div className="text-center">
-                <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/60">
-                  Recent Work
-                </div>
-
-                <RevealLines
-                  as="h2"
-                  className="mt-3 text-4xl md:text-5xl font-extrabold text-brand-ink"
-                  lines={["Featured projects"]}
-                />
-              </div>
-
-              <div className="mt-8 grid gap-5 md:grid-cols-3">
-                {[
-                  { img: "/img/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project?id=virginia-key-phase3" },
-                  { img: "/img/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project?id=miami-beach-ductbank" },
-                  { img: "/img/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project?id=port-of-miami" },
-                ].map((x) => (
-                  <a
-                    key={x.title}
-                    href={x.href}
-                    className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
-                  >
-                    <div className="h-56 overflow-hidden">
-                      <img loading="lazy" decoding="async"
-                        src={x.img}
-                        alt={x.title}
-                        className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
-                      />
-                    </div>
-                    <div className="p-6">
-                      <div className="text-xs uppercase tracking-[0.22em] font-bold text-black/55">{x.tag}</div>
-                      <div className="mt-2 text-2xl font-extrabold text-brand-ink">{x.title}</div>
-                      <div className="mt-1 text-black/65 font-semibold">{x.loc}</div>
-                    </div>
-                  </a>
-                ))}
-              </div>
-
-              <div className="mt-8 text-center">
-                <a
-                  href="/projects"
-                  className="inline-flex rounded-full bg-[var(--brand-orange)] px-6 py-3 font-bold uppercase tracking-wider text-sm text-white hover:opacity-90 transition"
-                >
-                  View Full Portfolio
-                </a>
-              </div>
-            </FloatSection>
           </div>
         </div>
 
