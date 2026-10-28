@@ -320,6 +320,19 @@ export function MobileMenu() {
         <div className="absolute inset-0 bg-black/55 backdrop-blur-[2px]" />
       </div>
 
+      {/* Commercial / Residential switch, always visible on phones */}
+      <motion.div
+        className="pointer-events-none fixed inset-x-0 z-[65] flex justify-center"
+        style={{ top: "calc(max(env(safe-area-inset-top), 14px) + 32px)" }}
+        initial={false}
+        animate={{ opacity: open || hideAtBottom ? 0 : 1, y: hideAtBottom ? -90 : 0 }}
+        transition={{ duration: 0.2 }}
+      >
+        <div className="pointer-events-auto rounded-full bg-black/55 shadow-[0_10px_30px_rgba(0,0,0,0.35)] backdrop-blur-xl">
+          <SideSwitch />
+        </div>
+      </motion.div>
+
       {/* Sheet */}
       <motion.div
         className="fixed left-0 right-0 top-0 z-[70]"

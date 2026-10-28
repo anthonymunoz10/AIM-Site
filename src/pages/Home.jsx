@@ -125,7 +125,7 @@ function Hero() {
   return (
     <header
       ref={heroRef}
-      className="hero-round relative min-h-[100svh] bg-black overflow-hidden"
+      className="hero-round relative min-h-[100svh] md:min-h-0 bg-black overflow-hidden"
     >
       {/* Background video layer */}
       <motion.div style={{ y, opacity }} className="absolute inset-0">
@@ -189,7 +189,7 @@ function Hero() {
         <MobileMenu />
       </div>
 
-      <div className="relative z-10 min-h-[100svh]">
+      <div className="relative z-10 min-h-[100svh] md:min-h-0">
         <Container>
           {/* MOBILE */}
           <div className="md:hidden flex min-h-[100svh] flex-col pt-44 pb-24 text-center">
@@ -228,7 +228,7 @@ function Hero() {
           </div>
 
           {/* DESKTOP */}
-          <div className="hidden md:block pt-36 pb-24">
+          <div className="hidden md:block pt-36 pb-28">
             <div className="max-w-[720px] text-left">
               <motion.div
                 initial={{ opacity: 0, y: 16 }}

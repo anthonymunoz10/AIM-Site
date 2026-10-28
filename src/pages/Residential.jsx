@@ -488,26 +488,6 @@ export default function Residential() {
       </header>
 
       <section className="pt-6">
-        {/* TRUST STRIP */}
-        <FloatSection tone="dark">
-          <div className="grid gap-3 grid-cols-2 md:grid-cols-4 md:gap-4">
-            {[
-              { top: "Licensed", bottom: "Florida state-certified" },
-              { top: "Insured", bottom: "Fully insured on every job" },
-              { top: "Permitted", bottom: "We pull and close permits" },
-              { top: "One call", bottom: "We manage every trade" },
-            ].map((s) => (
-              <div
-                key={s.top}
-                className="rounded-2xl border border-white/10 bg-white/5 px-3 py-5 md:px-5 md:py-6 text-center"
-              >
-                <div className="text-xl md:text-2xl font-extrabold text-white">{s.top}</div>
-                <div className="mt-2 text-sm font-semibold text-white/70">{s.bottom}</div>
-              </div>
-            ))}
-          </div>
-        </FloatSection>
-
         {/* SERVICES */}
         <FloatSection tone="light" id="services">
           <div className="text-center">

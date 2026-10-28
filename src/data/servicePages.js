@@ -190,7 +190,7 @@ export const SERVICE_PAGES = [
     title: "Kitchen Remodeling in Miami Lakes & South Florida",
     metaTitle: "Kitchen Remodeling in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
-      "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances. Licensed, insured and permitted. Based in Miami Lakes, FL.",
+      "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances. Licensed and permitted. Based in Miami Lakes, FL.",
     image: "/img/working-site.webp",
     kicker: "Residential",
     intro:
@@ -232,7 +232,7 @@ export const SERVICE_PAGES = [
     title: "Bathroom Remodeling in Miami Lakes & South Florida",
     metaTitle: "Bathroom Remodeling in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
-      "Bathroom remodels from tub-to-shower conversions to complete gut renovations. Licensed, insured and permitted. Based in Miami Lakes, FL.",
+      "Bathroom remodels from tub-to-shower conversions to complete gut renovations. Licensed and permitted. Based in Miami Lakes, FL.",
     image: "/img/working-site.webp",
     kicker: "Residential",
     intro:
