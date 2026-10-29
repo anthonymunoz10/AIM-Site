@@ -4,7 +4,8 @@
 // tools (ChatGPT, Gemini, Perplexity, Claude) can match AIM to specific
 // searches like "directional drilling Miami" or "kitchen remodel Miami Lakes".
 //
-// Keep every statement true. Only list work AIM actually does, and don't
+// Keep every statement true. Stock photos must carry imageCredit so they
+// are never mistaken for AIM jobs (see docs/ASSET_CREDITS.md). Only list work AIM actually does, and don't
 // add response-time promises.
 
 export const SERVICE_AREA_COMMERCIAL =
@@ -190,8 +191,9 @@ export const SERVICE_PAGES = [
     title: "Kitchen Remodeling in Miami Lakes & South Florida",
     metaTitle: "Kitchen Remodeling in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
-      "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances. Licensed, insured and permitted. Based in Miami Lakes, FL.",
-    image: "/img/working-site.webp",
+      "Full kitchen remodels: layout changes, cabinets, countertops, backsplash, lighting and appliances. Licensed and permitted. Based in Miami Lakes, FL.",
+    image: "/img/stock-kitchen-1600.webp",
+    imageCredit: "Design inspiration \u2013 stock photography",
     kicker: "Residential",
     intro:
       "AIM Construction Management remodels kitchens across South Florida, from cabinet and countertop updates to full layout changes. We pull the permits, schedule the licensed trades and run the job start to finish.",
@@ -232,8 +234,9 @@ export const SERVICE_PAGES = [
     title: "Bathroom Remodeling in Miami Lakes & South Florida",
     metaTitle: "Bathroom Remodeling in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
-      "Bathroom remodels from tub-to-shower conversions to complete gut renovations. Licensed, insured and permitted. Based in Miami Lakes, FL.",
-    image: "/img/working-site.webp",
+      "Bathroom remodels from tub-to-shower conversions to complete gut renovations. Licensed and permitted. Based in Miami Lakes, FL.",
+    image: "/img/stock-bath-1600.webp",
+    imageCredit: "Design inspiration \u2013 stock photography",
     kicker: "Residential",
     intro:
       "AIM remodels bathrooms across South Florida, from tub-to-shower conversions to complete gut renovations, with permits, licensed plumbing and electrical, and one contractor running the job.",
@@ -315,7 +318,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Home Remodeling & Additions in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
       "Whole-home renovations, room additions, flooring, painting and drywall. Permitted and inspected work from a Florida Certified Building Contractor based in Miami Lakes.",
-    image: "/img/working-site.webp",
+    image: "/img/stock-kitchen-1600.webp",
+    imageCredit: "Design inspiration \u2013 stock photography",
     kicker: "Residential",
     intro:
       "AIM handles whole-home renovations and room additions across South Florida, plus the finish work that goes with them: flooring, painting and drywall. Structural changes are permitted and inspected, and every trade is coordinated by one contractor.",

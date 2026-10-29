@@ -1,11 +1,10 @@
 // src/App.jsx
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 import Lenis from "@studio-freight/lenis";
 import { useLocation } from "react-router-dom";
 import { AnimatePresence } from "framer-motion";
 import AppRoutes from "./AppRoutes.jsx";
 
-import AppLoader from "./components/AppLoader.jsx";
 import { applyTheme, THEME_EVENT } from "./lib/theme.js";
 import { initAnalytics, trackPageView } from "./lib/analytics.js";
 
@@ -52,20 +51,6 @@ export default function App() {
 
   const lenisRef = useRef(null);
   const rafRef = useRef(null);
-
-  // ✅ Loader shows only once per tab session
-  const [bootDone, setBootDone] = useState(() => {
-    return sessionStorage.getItem("bootDone") === "1";
-  });
-
-  useEffect(() => {
-    if (bootDone) return;
-    const t = setTimeout(() => {
-      sessionStorage.setItem("bootDone", "1");
-      setBootDone(true);
-    }, 750);
-    return () => clearTimeout(t);
-  }, [bootDone]);
 
   // ✅ Disable browser’s scroll restoration (prevents “kept scroll”)
   useEffect(() => {
@@ -139,8 +124,6 @@ export default function App() {
 
   return (
     <>
-      <AppLoader done={bootDone} />
-
       <AnimatePresence mode="wait" initial={false}>
         <AppRoutes key={location.pathname} location={location} />
       </AnimatePresence>

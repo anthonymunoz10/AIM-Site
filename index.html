@@ -204,12 +204,14 @@
       document.documentElement.classList.add("js");
       // pick light/dark before first paint (see src/lib/theme.js)
       (function () {
-        var ready = ["/", "/services"], t = "dark";
+        var ready = ["/", "/services", "/residential"], t = "dark";
+        var resi = /^\/residential(\/|$)/.test(location.pathname);
         try {
           var saved = localStorage.getItem("aim-theme");
           t = saved === "light" || saved === "dark" ? saved
+            : resi ? "light"
             : (window.matchMedia && window.matchMedia("(prefers-color-scheme: light)").matches ? "light" : "dark");
-        } catch (e) {}
+        } catch (e) { if (resi) t = "light"; }
         document.documentElement.setAttribute("data-theme", t === "light" && (ready.indexOf(location.pathname.replace(/(.)\/+$/, "$1")) !== -1 || /^\/(services|residential)\/[a-z-]+\/?$/.test(location.pathname)) ? "light" : "dark");
       })();
     </script>

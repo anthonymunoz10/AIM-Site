@@ -3,8 +3,10 @@
 // Light / dark mode. The visitor's choice is remembered; otherwise the site
 // follows their phone or computer setting. Pages listed in LIGHT_READY_PATHS
 // have been designed for light mode; every other page stays dark for now.
+// Residential pages open in the warm light look unless the visitor has
+// picked a mode themselves.
 
-export const LIGHT_READY_PATHS = ["/", "/services"];
+export const LIGHT_READY_PATHS = ["/", "/services", "/residential"];
 
 const KEY = "aim-theme";
 export const THEME_EVENT = "aim-theme-change";
@@ -17,13 +19,18 @@ export function isLightReady(pathname) {
   return LIGHT_READY_PATHS.includes(path) || LIGHT_READY_PATTERN.test(path);
 }
 
-export function getPreferredTheme() {
+export function isResidentialPath(pathname = "") {
+  return /^\/residential(\/|$)/.test(pathname);
+}
+
+export function getPreferredTheme(pathname = "") {
   try {
     const saved = localStorage.getItem(KEY);
     if (saved === "light" || saved === "dark") return saved;
   } catch {
     /* storage blocked: fall back to device setting */
   }
+  if (isResidentialPath(pathname)) return "light";
   try {
     if (window.matchMedia("(prefers-color-scheme: light)").matches) return "light";
   } catch {
@@ -41,7 +48,7 @@ export function setPreferredTheme(theme) {
   window.dispatchEvent(new CustomEvent(THEME_EVENT, { detail: theme }));
 }
 
-export function applyTheme(pathname, preferred = getPreferredTheme()) {
+export function applyTheme(pathname, preferred = getPreferredTheme(pathname)) {
   const theme = preferred === "light" && isLightReady(pathname) ? "light" : "dark";
   document.documentElement.setAttribute("data-theme", theme);
   return theme;

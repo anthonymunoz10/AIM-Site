@@ -183,3 +183,30 @@ h1, h2, h3 {
 :root[data-theme="light"] .hero-round .hero-blend {
   display: none;
 }
+
+
+/* Header pill stays solid charcoal on light pages so its white text reads */
+:root[data-theme="light"] .site-nav {
+  background: rgba(31, 30, 29, 0.9) !important;
+  border-color: rgba(255, 255, 255, 0.08) !important;
+}
+
+/* Logo swap: white-lettered logo on dark, dark-lettered logo on light */
+.logo-on-light { display: none; }
+:root[data-theme="light"] .logo-on-light { display: inline-block; }
+:root[data-theme="light"] .logo-on-dark { display: none; }
+
+/* Residential hero: warm charcoal in dark mode, warm ivory in light mode */
+.res-hero {
+  background:
+    radial-gradient(900px 520px at 12% 10%, rgba(240, 138, 0, 0.22), transparent 60%),
+    var(--ink);
+}
+:root[data-theme="light"] .res-hero.dark-surface {
+  background:
+    radial-gradient(900px 560px at 10% 0%, rgba(240, 138, 0, 0.16), transparent 62%),
+    radial-gradient(800px 500px at 100% 100%, rgba(240, 138, 0, 0.08), transparent 60%),
+    linear-gradient(180deg, #fffefb 0%, #f3f0e8 100%) !important;
+  box-shadow: none !important;
+  border: 0 !important;
+}
