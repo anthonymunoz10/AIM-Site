@@ -26,7 +26,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Directional Drilling (HDD) Contractor in Miami & Across Florida | AIM Construction",
     metaDescription:
       "Horizontal directional drilling (HDD) from 2″ to 24″ for water, sewer, force main, electrical and telecom. Florida-certified underground utility contractor based in Miami Lakes, drilling statewide.",
-    image: "/img/projects-bg.jpg",
+    image: "/img/wide/savannah-fiber.webp",
+    cardImage: "/img/thumbs/savannah-fiber.2.webp",
     kicker: "Commercial",
     intro:
       "AIM Construction Management performs horizontal directional drilling (HDD) for utilities, general contractors, public agencies and private customers. We bore from 2″ to 24″ to install water, sewer, force main, electrical and telecom lines under roads, driveways and sensitive areas with minimal surface disruption.",
@@ -69,7 +70,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Water Main & Sewer Contractor in Miami & South Florida | AIM Construction",
     metaDescription:
       "Water main installation, sanitary sewer, force main, open-cut trenching, manholes and utility structures. Florida-certified underground utility contractor based in Miami Lakes.",
-    image: "/img/about-bg.jpg",
+    image: "/img/wide/miami-shores-main.3.webp",
+    cardImage: "/img/thumbs/miami-shores-main.3.webp",
     kicker: "Commercial",
     intro:
       "AIM installs water and sewer infrastructure for general contractors and public agencies: water main, gravity sanitary sewer, force main, manholes and utility structures, by open-cut trench or directional drill.",
@@ -112,7 +114,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Ductbank Contractor in Miami & South Florida | AIM Construction",
     metaDescription:
       "Concrete-encased electrical and telecom ductbank, conduit, utility structures and cable pulling for electrical contractors and GCs. Based in Miami Lakes, Florida.",
-    image: "/img/projects-bg.jpg",
+    image: "/img/wide/port-of-miami.6.webp",
+    cardImage: "/img/thumbs/port-of-miami.6.webp",
     kicker: "Commercial",
     intro:
       "AIM builds electrical and telecom ductbank for electrical contractors and general contractors: trenching, conduit installation, concrete encasement, utility structures and cable pulling, with directional drilling where open-cut won't work.",
@@ -155,7 +158,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Concrete & Asphalt Restoration in Miami & South Florida | AIM Construction",
     metaDescription:
       "Concrete and asphalt restoration after utility installation: sidewalks, driveways, curbs and pavement patches. Underground utility contractor based in Miami Lakes, Florida.",
-    image: "/img/about-bg.jpg",
+    image: "/img/wide/port-of-miami.10.webp",
+    cardImage: "/img/thumbs/port-of-miami.10.webp",
     kicker: "Commercial",
     intro:
       "After the pipe or conduit is in, AIM restores the site: concrete sidewalks, driveways and curbs, and asphalt pavement patches, so the job is closed out by the same contractor that dug it.",
@@ -278,7 +282,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Roof Replacement & Repair in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
       "Roof replacements and repairs: shingle, tile, metal and flat roofs, performed by Florida-licensed roofing contractors under permit and managed by AIM Construction.",
-    image: "/img/working-site.webp",
+    image: "/img/stock-roofing-1600.webp",
+    imageCredit: "Design inspiration \u2013 stock photography",
     kicker: "Residential",
     intro:
       "AIM manages roof replacements and repairs for South Florida homeowners: shingle, tile, metal and flat roofs. Roofing work is performed by Florida-licensed roofing contractors under permit, with AIM coordinating the job from estimate to final inspection.",

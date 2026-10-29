@@ -3,6 +3,7 @@ import { motion, useInView } from "framer-motion";
 import { useHead } from "@unhead/react";
 import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/SiteChrome";
 import { PROJECTS } from "../data/projects";
+import { thumb } from "../lib/img.js";
 
 /* ---------------------------------------------
    Small primitives (match Home/About)
@@ -158,7 +159,7 @@ export default function Projects() {
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
       <div className="md:hidden">
@@ -298,9 +299,9 @@ export default function Projects() {
                   href={`/project?id=${p.id}`}
                   className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
                 >
-                  <div className="relative h-56 overflow-hidden">
+                  <div className="relative h-40 sm:h-48 md:h-56 overflow-hidden">
                     <img
-                      src={p.img}
+                      src={thumb(p.img)}
                       alt={p.title}
                       className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"
                       loading="lazy"

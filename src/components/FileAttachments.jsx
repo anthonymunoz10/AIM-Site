@@ -27,7 +27,7 @@ export default function FileAttachments({ files, setFiles, fileError, setFileErr
               {files.length ? `Add more files (${files.length} of 5)` : "Add photos or plans (optional)"}
             </span>
             <span className="block text-[13px] font-semibold text-white/50">
-              {compressing ? "Preparing photos…" : "Up to 5 photos or PDFs · large photos are resized automatically"}
+              {compressing ? "Preparing photos…" : "Up to 5 photos or PDFs · 7 MB total · large photos are resized automatically"}
             </span>
           </span>
           <input

@@ -354,7 +354,7 @@ export default function Project() {
       {/* mobile logo + menu like Home/About */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
       <div className="md:hidden">

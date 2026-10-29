@@ -121,22 +121,27 @@ const SERVICES = [
   {
     key: "flooring",
     title: "Flooring",
+    img: "/img/stock-flooring-800.webp",
     desc: "Tile, luxury vinyl, laminate and wood flooring, including demo and subfloor prep.",
   },
   {
     key: "painting",
     title: "Painting & Drywall",
+    img: "/img/stock-painting-800.webp",
+    captionTop: true, // keep the label off the roller
     desc: "Interior and exterior painting, drywall repair, texture and trim.",
   },
   {
     key: "remodels",
     title: "Remodels & Additions",
+    img: "/img/stock-remodel-800.webp",
     page: "/residential/home-remodeling",
     desc: "Whole-home renovations, room additions, and structural changes, permitted and inspected.",
   },
   {
     key: "roofing",
     title: "Roofing",
+    img: "/img/stock-roofing-800.webp",
     page: "/residential/roofing",
     desc: "Roof replacements and repairs: shingle, tile, metal and flat roofs.",
     trade: true,
@@ -144,18 +149,21 @@ const SERVICES = [
   {
     key: "plumbing",
     title: "Plumbing",
+    img: "/img/stock-plumbing-800.webp",
     desc: "Fixture swaps, repipes, water heaters and remodel plumbing.",
     trade: true,
   },
   {
     key: "hvac",
     title: "HVAC",
+    img: "/img/stock-hvac-800.webp",
     desc: "AC replacement, ductwork and ventilation as part of your project.",
     trade: true,
   },
   {
     key: "electrical",
     title: "Electrical",
+    img: "/img/stock-electrical-800.webp",
     desc: "Panel upgrades, lighting, outlets and remodel wiring.",
     trade: true,
   },
@@ -401,8 +409,8 @@ export default function Residential() {
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="logo-on-dark h-16 w-auto opacity-90" />
-          <img src="/img/logo-dark.png" alt="" aria-hidden="true" className="logo-on-light h-16 w-auto" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="logo-on-dark h-16 w-auto opacity-90" />
+          <img src="/img/logo-dark.webp" alt="" aria-hidden="true" className="logo-on-light h-16 w-auto" />
         </a>
       </div>
       <div className="md:hidden">
@@ -514,9 +522,9 @@ export default function Residential() {
                       alt={`${s.title} design inspiration`}
                       loading="lazy"
                       decoding="async"
-                      className="h-44 w-full object-cover"
+                      className="h-32 sm:h-40 w-full object-cover"
                     />
-                    <figcaption className="absolute bottom-2 right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur">
+                    <figcaption className={`absolute ${s.captionTop ? "top-2" : "bottom-2"} right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur`}>
                       Design inspiration – stock photography
                     </figcaption>
                   </figure>

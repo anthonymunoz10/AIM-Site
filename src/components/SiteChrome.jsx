@@ -374,7 +374,7 @@ export function MobileMenu() {
                 aria-label="Home"
               >
                 <img
-                  src="/img/logo.png"
+                  src="/img/logo.webp"
                   alt="Aim Construction"
                   className="h-10 w-auto"
                 />
@@ -465,7 +465,7 @@ export function Nav() {
             <div className="flex items-center justify-between gap-3 px-4 py-3 lg:px-6 lg:py-4">
               <Link to="/" className="flex items-center gap-3">
                 <img
-                  src="/img/logo.png"
+                  src="/img/logo.webp"
                   alt="Aim Construction"
                   className="h-9 w-auto lg:h-11"
                 />
@@ -624,7 +624,7 @@ export function Footer() {
           {/* Left */}
           <div className="md:col-span-5 flex flex-col items-center md:items-start">
             <img
-              src="/img/logo.png"
+              src="/img/logo.webp"
               alt="Aim Construction"
               className="h-12 w-auto"
               style={{

@@ -119,6 +119,13 @@ function Hero() {
     offset: ["start start", "end start"],
   });
   const [ready, setReady] = React.useState(false);
+  // skip the background video for Low Data Mode / reduced-motion visitors (poster stays)
+  const [showVideo, setShowVideo] = React.useState(false);
+  React.useEffect(() => {
+    const saveData = navigator.connection?.saveData;
+    const calm = window.matchMedia?.("(prefers-reduced-motion: reduce)").matches;
+    if (!saveData && !calm) setShowVideo(true);
+  }, []);
   const y = useTransform(scrollYProgress, [0, 1], ["0%", "10%"]);
   const opacity = useTransform(scrollYProgress, [0, 1], [1, 0.35]);
 
@@ -139,6 +146,7 @@ function Hero() {
           }}
         />
 
+        {showVideo && (
         <video
           className={`h-full w-full object-cover transition-opacity duration-700 ${ready ? "opacity-100" : "opacity-0"}`}
           autoPlay
@@ -149,9 +157,10 @@ function Hero() {
           poster="/img/hero-poster.webp"
           onCanPlay={() => setReady(true)}
         >
-          <source src="/video/hero-vid.webm" type="video/webm" />
-          <source src="/video/hero-vid.web.mp4" type="video/mp4" />
+          <source src="/video/hero-540.webm" type="video/webm" />
+          <source src="/video/hero-540.mp4" type="video/mp4" />
         </video>
+        )}
 
 
 
@@ -177,7 +186,7 @@ function Hero() {
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
           <img
-            src="/img/logo.png"
+            src="/img/logo.webp"
             alt="Aim Construction"
             className="h-16 w-auto opacity-90"
           />
@@ -405,16 +414,16 @@ function HomeContent() {
 
               <div className="mt-8 grid gap-5 sm:grid-cols-3">
                 {[
-                  { img: "/img/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project?id=virginia-key-phase3" },
-                  { img: "/img/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project?id=miami-beach-ductbank" },
-                  { img: "/img/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project?id=port-of-miami" },
+                  { img: "/img/thumbs/virginia-key-phase3.webp", tag: "Infrastructure", title: "WWTP Virginia Key – Phase 3", loc: "Virginia Key, FL", href: "/project?id=virginia-key-phase3" },
+                  { img: "/img/thumbs/miami-beach-ductbank.webp", tag: "Infrastructure", title: "Miami Beach Ductbank", loc: "Miami Beach, FL", href: "/project?id=miami-beach-ductbank" },
+                  { img: "/img/thumbs/port-of-miami.webp", tag: "Infrastructure", title: "Port of Miami Ductbank", loc: "Miami, FL", href: "/project?id=port-of-miami" },
                 ].map((x) => (
                   <a
                     key={x.title}
                     href={x.href}
                     className="group rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white block"
                   >
-                    <div className="h-56 overflow-hidden">
+                    <div className="h-40 sm:h-48 md:h-56 overflow-hidden">
                       <img loading="lazy" decoding="async"
                         src={x.img}
                         alt={x.title}
@@ -492,8 +501,8 @@ function HomeContent() {
 
                 <div className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.18)]">
                   <img loading="lazy" decoding="async"
-                    src="/img/about-image.webp"
-                    alt="Construction planning"
+                    src="/img/thumbs/working-site.webp"
+                    alt="AIM crew working on an underground utility job"
                     className="h-full w-full object-cover"
                   />
                 </div>
@@ -522,17 +531,17 @@ function HomeContent() {
               <div className="mt-8 grid gap-5 md:grid-cols-3">
                 {[
                   {
-                    img: "/img/service-planning.webp",
+                    img: "/img/thumbs/ft-lauderdale-police.5.webp",
                     title: "Underground Utility",
                     desc: "Ductbank, trenching, water/sewer install, cable pulls, and open cut scope.",
                   },
                   {
-                    img: "/img/service-maintenance.webp",
+                    img: "/img/thumbs/savannah-fiber.2.webp",
                     title: "Directional Drilling",
                     desc: "2”–24” bores with a fleet designed for complex runs and demanding field conditions.",
                   },
                   {
-                    img: "/img/service-general.webp",
+                    img: "/img/thumbs/port-of-miami.10.webp",
                     title: "Restoration",
                     desc: "Concrete and asphalt restoration, bridge attachments, finish work built to spec.",
                   },
@@ -541,7 +550,7 @@ function HomeContent() {
                     key={c.title}
                     className="rounded-[22px] overflow-hidden border border-black/10 shadow-[0_18px_60px_rgba(0,0,0,0.16)] bg-white"
                   >
-                    <div className="h-52">
+                    <div className="h-36 sm:h-44 md:h-52">
                       <img loading="lazy" decoding="async" src={c.img} alt={c.title} className="h-full w-full object-cover" />
                     </div>
                     <div className="p-6">
@@ -631,7 +640,10 @@ export default function Home() {
       { property: "og:url", content: "https://aimconstructionmgt.com/" },
       { property: "og:image", content: "https://aimconstructionmgt.com/img/og-aim.jpg" },
     ],
-    link: [{ rel: "canonical", href: "https://aimconstructionmgt.com/" }],
+    link: [
+      { rel: "canonical", href: "https://aimconstructionmgt.com/" },
+      { rel: "preload", as: "image", href: "/img/hero-poster.webp", fetchpriority: "high" },
+    ],
   });
 
   return <HomeContent />;
