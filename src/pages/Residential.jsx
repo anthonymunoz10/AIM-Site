@@ -401,8 +401,8 @@ export default function Residential() {
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="logo-on-dark h-16 w-auto opacity-90" />
-          <img src="/img/logo-dark.png" alt="" aria-hidden="true" className="logo-on-light h-16 w-auto" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="logo-on-dark h-16 w-auto opacity-90" />
+          <img src="/img/logo-dark.webp" alt="" aria-hidden="true" className="logo-on-light h-16 w-auto" />
         </a>
       </div>
       <div className="md:hidden">
@@ -514,7 +514,7 @@ export default function Residential() {
                       alt={`${s.title} design inspiration`}
                       loading="lazy"
                       decoding="async"
-                      className="h-44 w-full object-cover"
+                      className="h-32 sm:h-40 w-full object-cover"
                     />
                     <figcaption className="absolute bottom-2 right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur">
                       Design inspiration – stock photography

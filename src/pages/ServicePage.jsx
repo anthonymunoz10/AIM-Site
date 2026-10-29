@@ -11,6 +11,7 @@ import { MobileMenu, Nav, Footer, Container, HeroBlend } from "../components/Sit
 import { SERVICE_PAGES, getServicePage } from "../data/servicePages.js";
 import { LICENSES } from "../data/licenses.js";
 import { PROJECTS } from "../data/projects.js";
+import { thumb } from "../lib/img.js";
 
 const SITE = "https://aimconstructionmgt.com";
 
@@ -159,7 +160,7 @@ export default function ServicePage() {
 
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
       <div className="md:hidden">
@@ -281,7 +282,7 @@ export default function ServicePage() {
                 >
                   <div className="aspect-[16/10] bg-[var(--ink)] overflow-hidden">
                     <img
-                      src={pr.img}
+                      src={thumb(pr.img)}
                       alt={pr.title}
                       loading="lazy"
                       className="h-full w-full object-cover group-hover:scale-[1.03] transition duration-500"

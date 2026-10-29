@@ -137,7 +137,7 @@ export default function Services() {
       {/* mobile logo + menu */}
       <div className="md:hidden absolute top-24 left-1/2 -translate-x-1/2 z-20">
         <a href="/" aria-label="Home" className="inline-flex items-center justify-center">
-          <img src="/img/logo.png" alt="Aim Construction" className="h-16 w-auto opacity-90" />
+          <img src="/img/logo.webp" alt="Aim Construction" className="h-16 w-auto opacity-90" />
         </a>
       </div>
       <div className="md:hidden">
@@ -229,12 +229,23 @@ export default function Services() {
                 <Link
                   key={p.slug}
                   to={p.path}
-                  className="group rounded-[22px] border border-black/10 bg-white p-5 shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
+                  className="group overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
                 >
-                  <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
-                  <div className="mt-3 text-lg font-extrabold text-[var(--ink)]">{p.nav}</div>
-                  <div className="mt-1 text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] group-hover:opacity-80">
-                    Learn more →
+                  {p.cardImage && (
+                    <img
+                      src={p.cardImage}
+                      alt={`${p.nav} by AIM`}
+                      loading="lazy"
+                      decoding="async"
+                      className="h-28 sm:h-32 w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                    />
+                  )}
+                  <div className="p-5">
+                    <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
+                    <div className="mt-3 text-lg font-extrabold text-[var(--ink)]">{p.nav}</div>
+                    <div className="mt-1 text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] group-hover:opacity-80">
+                      Learn more →
+                    </div>
                   </div>
                 </Link>
               ))}
@@ -361,22 +372,33 @@ export default function Services() {
                       Fleet &amp; Capabilities
                     </h3>
                     <p className="mt-3 text-black/70 font-semibold leading-relaxed">
-                      The right machines, support trucks, and tooling to keep production moving.
+                      Our own machines, support trucks, and tooling to keep production moving.
                     </p>
 
-                    <ul className="mt-6 grid gap-3">
+                    <div className="mt-5 grid grid-cols-3 gap-2">
                       {[
-                        "23x30 Vermeer directional bore machine",
-                        "24x40 Vermeer directional bore machine",
-                        "80x100 Vermeer directional bore machine",
-                        "250x300 Vermeer directional bore machine",
+                        ["/img/thumbs/IMG_7432.webp", "AIM directional bore rig"],
+                        ["/img/thumbs/miami-shores-main.3.webp", "AIM excavator setting force main"],
+                        ["/img/thumbs/savannah-fiber.webp", "AIM drill on a fiber bore"],
+                      ].map(([src, alt]) => (
+                        <img
+                          key={src}
+                          src={src}
+                          alt={alt}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-20 sm:h-24 w-full rounded-xl object-cover"
+                        />
+                      ))}
+                    </div>
+
+                    <ul className="mt-5 grid gap-3">
+                      {[
+                        "Vermeer directional drills: 23×30, 24×40, 80×100, 250×300",
+                        "Excavators and loaders",
                         "Vacuum truck",
-                        "Trailers",
-                        "Reclaimers",
-                        "Excavators",
-                        "Loaders",
-                        "Dump trucks",
-                        "Mixing unit",
+                        "Dump trucks and trailers",
+                        "Reclaimers and mixing unit",
                       ].map((t) => (
                         <li
                           key={t}

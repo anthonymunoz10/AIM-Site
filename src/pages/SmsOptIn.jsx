@@ -163,7 +163,7 @@ export default function SmsOptIn() {
           className="inline-flex items-center justify-center"
         >
           <img
-            src="/img/logo.png"
+            src="/img/logo.webp"
             alt="AIM Project Management"
             className="h-16 w-auto opacity-90"
           />
