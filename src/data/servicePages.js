@@ -282,7 +282,8 @@ export const SERVICE_PAGES = [
     metaTitle: "Roof Replacement & Repair in Miami Lakes & South Florida | AIM Construction",
     metaDescription:
       "Roof replacements and repairs: shingle, tile, metal and flat roofs, performed by Florida-licensed roofing contractors under permit and managed by AIM Construction.",
-    image: "/img/working-site.webp",
+    image: "/img/stock-roofing-1600.webp",
+    imageCredit: "Design inspiration \u2013 stock photography",
     kicker: "Residential",
     intro:
       "AIM manages roof replacements and repairs for South Florida homeowners: shingle, tile, metal and flat roofs. Roofing work is performed by Florida-licensed roofing contractors under permit, with AIM coordinating the job from estimate to final inspection.",

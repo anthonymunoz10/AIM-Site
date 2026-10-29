@@ -121,22 +121,26 @@ const SERVICES = [
   {
     key: "flooring",
     title: "Flooring",
+    img: "/img/stock-flooring-800.webp",
     desc: "Tile, luxury vinyl, laminate and wood flooring, including demo and subfloor prep.",
   },
   {
     key: "painting",
     title: "Painting & Drywall",
+    img: "/img/stock-painting-800.webp",
     desc: "Interior and exterior painting, drywall repair, texture and trim.",
   },
   {
     key: "remodels",
     title: "Remodels & Additions",
+    img: "/img/stock-remodel-800.webp",
     page: "/residential/home-remodeling",
     desc: "Whole-home renovations, room additions, and structural changes, permitted and inspected.",
   },
   {
     key: "roofing",
     title: "Roofing",
+    img: "/img/stock-roofing-800.webp",
     page: "/residential/roofing",
     desc: "Roof replacements and repairs: shingle, tile, metal and flat roofs.",
     trade: true,
@@ -144,18 +148,21 @@ const SERVICES = [
   {
     key: "plumbing",
     title: "Plumbing",
+    img: "/img/stock-plumbing-800.webp",
     desc: "Fixture swaps, repipes, water heaters and remodel plumbing.",
     trade: true,
   },
   {
     key: "hvac",
     title: "HVAC",
+    img: "/img/stock-hvac-800.webp",
     desc: "AC replacement, ductwork and ventilation as part of your project.",
     trade: true,
   },
   {
     key: "electrical",
     title: "Electrical",
+    img: "/img/stock-electrical-800.webp",
     desc: "Panel upgrades, lighting, outlets and remodel wiring.",
     trade: true,
   },
