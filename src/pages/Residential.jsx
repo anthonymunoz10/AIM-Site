@@ -128,6 +128,7 @@ const SERVICES = [
     key: "painting",
     title: "Painting & Drywall",
     img: "/img/stock-painting-800.webp",
+    captionTop: true, // keep the label off the roller
     desc: "Interior and exterior painting, drywall repair, texture and trim.",
   },
   {
@@ -523,7 +524,7 @@ export default function Residential() {
                       decoding="async"
                       className="h-32 sm:h-40 w-full object-cover"
                     />
-                    <figcaption className="absolute bottom-2 right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur">
+                    <figcaption className={`absolute ${s.captionTop ? "top-2" : "bottom-2"} right-2 rounded-full bg-black/50 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur`}>
                       Design inspiration – stock photography
                     </figcaption>
                   </figure>
