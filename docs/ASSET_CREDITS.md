@@ -43,6 +43,6 @@ unconfirmed) and shopfront painting (Anna Mould, Unsplash aUN_OnV3B90: grainy, c
 /services/framing and /services/commercial-painting keep the blueprint-grid hero until a better photo
 or a real AIM job photo is available.
 
-Framing (added November 9, 2026): public/img/stock-int-framing-1600.webp and -800.webp come from an
-image Anthony supplied (no photographer, source or license recorded; no source metadata in the file).
+Framing and painting (added November 9, 2026): public/img/stock-int-framing-* and stock-int-painting-* come from
+images Anthony supplied (no photographer, source or license recorded; no source metadata in the file).
 Labeled "Service illustration" only. Record its source here if known; replace with a real AIM photo when available.

@@ -387,7 +387,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Commercial Interior & Exterior Painting in South Florida | AIM Construction",
     metaDescription:
       "Interior and exterior commercial painting for offices, retail and commercial buildings, including buildouts and repaints. Self-performed by AIM crews based in Miami Lakes, FL.",
-    image: null,
+    image: "/img/stock-int-painting-1600.webp",
+    cardImage: "/img/stock-int-painting-800.webp",
+    imageAlt: "Painter rolling white paint on an interior wall of an empty office (illustration)",
+    imageCredit: "Service illustration",
     kicker: "Commercial",
     intro:
       "AIM paints commercial interiors and exteriors, as part of a buildout or on its own: walls, ceilings, doors and frames, and building exteriors.",
