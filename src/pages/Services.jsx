@@ -112,7 +112,7 @@ export default function Services() {
     "AIM Construction Management: underground utilities (water, sewer, force main, ductbank, directional drilling 2\u201d\u201324\u201d, restoration) and commercial building & interiors (framing, drywall, ceilings, painting, doors, tenant buildouts) in Florida.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/services";
-  const ogImage = "https://aimconstructionmgt.com/img/og-aim.jpg";
+  const ogImage = "https://aimconstructionmgt.com/img/og-aim-v2.jpg";
 
   useHead({
     title,

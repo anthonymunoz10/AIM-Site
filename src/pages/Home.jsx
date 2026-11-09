@@ -638,7 +638,7 @@ export default function Home() {
       },
       { property: "og:type", content: "website" },
       { property: "og:url", content: "https://aimconstructionmgt.com/" },
-      { property: "og:image", content: "https://aimconstructionmgt.com/img/og-aim.jpg" },
+      { property: "og:image", content: "https://aimconstructionmgt.com/img/og-aim-v2.jpg" },
     ],
     link: [
       { rel: "canonical", href: "https://aimconstructionmgt.com/" },

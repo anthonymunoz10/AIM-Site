@@ -56,7 +56,7 @@ for (const route of ROUTES) {
   if (!html || html.length < 500) throw new Error(`prerender: ${route} rendered almost nothing`);
   // link previews (iMessage, WhatsApp, LinkedIn...) read these; fill gaps with the brand card
   let tags = headTags;
-  if (!/property="og:image"/.test(tags)) tags += `\n<meta property="og:image" content="${SITE}/img/og-aim.jpg">`;
+  if (!/property="og:image"/.test(tags)) tags += `\n<meta property="og:image" content="${SITE}/img/og-aim-v2.jpg">`;
   tags +=
     `\n<meta property="og:site_name" content="AIM Construction Management">` +
     `\n<meta property="og:image:width" content="1200">\n<meta property="og:image:height" content="630">` +
