@@ -204,7 +204,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Tenant Buildouts & Commercial Renovations in South Florida | AIM Construction",
     metaDescription:
       "Commercial tenant buildouts and interior renovations: demolition, framing, drywall, ceilings, doors and paint, self-performed by AIM crews. Florida Certified Building Contractor based in Miami Lakes.",
-    image: null,
+    image: "/img/stock-int-buildout-1600.webp",
+    cardImage: "/img/stock-int-buildout-800.webp",
+    imageAlt: "Office renovation area with a ladder, exposed wiring and large windows (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
     kicker: "Commercial",
     intro:
       "AIM Construction Management builds out and renovates commercial interiors for owners, tenants and general contractors: offices, retail and other commercial spaces. Our own crews handle the framing, drywall, ceilings, doors and paint, and we coordinate the licensed trades and permits.",
@@ -290,7 +293,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Commercial Drywall Installation & Finishing in South Florida | AIM Construction",
     metaDescription:
       "Commercial drywall hanging, taping and finishing, patching and repairs for offices, retail and commercial interiors. Self-performed by AIM crews based in Miami Lakes, FL.",
-    image: null,
+    image: "/img/stock-int-drywall-1600.webp",
+    cardImage: "/img/stock-int-drywall-800.webp",
+    imageAlt: "Taped drywall seams across walls and ceiling (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
     kicker: "Commercial",
     intro:
       "AIM hangs, tapes and finishes drywall for commercial interiors, from new buildouts to repairs and patching in occupied spaces.",
@@ -333,7 +339,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Acoustical Ceiling Installation in South Florida | AIM Construction",
     metaDescription:
       "Suspended acoustical ceiling grid and tile installation and replacement for commercial spaces, plus drywall ceilings and soffits. Self-performed by AIM crews, Miami Lakes, FL.",
-    image: null,
+    image: "/img/stock-int-ceilings-1600.webp",
+    cardImage: "/img/stock-int-ceilings-800.webp",
+    imageAlt: "Suspended ceiling tile grid with recessed light panels in an office (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
     kicker: "Commercial",
     intro:
       "AIM installs and replaces suspended acoustical ceilings for offices, retail and other commercial spaces: grid, tile and the drywall ceilings and soffits around them.",
@@ -417,7 +426,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Commercial Door, Frame & Hardware Installation in South Florida | AIM Construction",
     metaDescription:
       "Installation of commercial doors, hollow metal frames and door hardware for buildouts and renovations. Self-performed by AIM crews based in Miami Lakes, FL.",
-    image: null,
+    image: "/img/stock-int-doors-1600.webp",
+    cardImage: "/img/stock-int-doors-800.webp",
+    imageAlt: "Metal pull handle on a commercial door beside wired glass (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
     kicker: "Commercial",
     intro:
       "AIM installs commercial doors, hollow metal frames and hardware as part of interior buildouts and renovations.",

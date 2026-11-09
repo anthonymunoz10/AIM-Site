@@ -252,14 +252,28 @@ export default function Services() {
                     to={p.path}
                     className="group overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
                   >
-                    {p.cardImage && (
-                      <img
-                        src={p.cardImage}
-                        alt={`${p.nav} by AIM`}
-                        loading="lazy"
-                        decoding="async"
-                        className="h-28 sm:h-32 w-full object-cover group-hover:scale-[1.03] transition duration-500"
-                      />
+                    {p.cardImage ? (
+                      <figure className="relative overflow-hidden">
+                        <img
+                          src={p.cardImage}
+                          alt={p.imageAlt || `${p.nav} by AIM`}
+                          loading="lazy"
+                          decoding="async"
+                          className="h-28 sm:h-32 w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                        />
+                        {p.imageCredit && (
+                          <figcaption className="absolute bottom-2 left-2 rounded-full bg-black/55 px-2.5 py-0.5 text-[10px] font-semibold text-white/85 backdrop-blur">
+                            {p.imageCredit}
+                          </figcaption>
+                        )}
+                      </figure>
+                    ) : (
+                      g.key === "interiors" && (
+                        <div
+                          aria-hidden="true"
+                          className="h-28 sm:h-32 w-full bg-[#1F1E1D] [background-image:linear-gradient(rgba(255,255,255,0.07)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.07)_1px,transparent_1px)] [background-size:22px_22px]"
+                        />
+                      )
                     )}
                     <div className="p-5">
                       <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
