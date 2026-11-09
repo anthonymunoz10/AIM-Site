@@ -203,6 +203,11 @@ const PROJECT_TYPES = {
     "Water / sewer",
     "Excavation / trenching",
     "Concrete / asphalt restoration",
+    "Tenant buildout / renovation",
+    "Framing / drywall",
+    "Ceilings",
+    "Commercial painting",
+    "Doors & hardware",
     "Other",
   ],
   residential: [
@@ -355,8 +360,8 @@ function FormCard({ emailHref, email, sent = false }) {
         />
         <SideCard
           value="commercial"
-          title="Commercial & Utility"
-          sub="Drilling, ductbank, water/sewer"
+          title="Commercial"
+          sub="Utilities, drilling, interiors & buildouts"
           checked={side === "commercial"}
           onChange={() => {
             setSide("commercial");

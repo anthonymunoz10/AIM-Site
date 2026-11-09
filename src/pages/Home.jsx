@@ -61,8 +61,8 @@ const PATHS = [
   {
     key: "commercial",
     href: "/services",
-    title: "Commercial & Utilities",
-    desc: "Underground utilities, ductbank, directional drilling and restoration.",
+    title: "Commercial",
+    desc: "Underground utilities, directional drilling, framing, drywall and tenant buildouts.",
     cta: "View Commercial",
   },
   {

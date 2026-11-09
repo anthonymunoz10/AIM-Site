@@ -106,10 +106,10 @@ function scrollToId(id) {
 ---------------------------------------------- */
 
 export default function Services() {
-  const title = "Commercial Underground Utility & Directional Drilling Services | AIM Construction";
+  const title = "Commercial Construction: Underground Utilities, Drilling & Interiors | AIM Construction";
 
   const description =
-    "AIM Construction Management: water main, sanitary sewer and force main, ductbank, directional drilling (2\u201d\u201324\u201d), and concrete/asphalt restoration across Florida and beyond.";
+    "AIM Construction Management: underground utilities (water, sewer, force main, ductbank, directional drilling 2\u201d\u201324\u201d, restoration) and commercial building & interiors (framing, drywall, ceilings, painting, doors, tenant buildouts) in Florida.";
 
   const canonicalUrl = "https://aimconstructionmgt.com/services";
   const ogImage = "https://aimconstructionmgt.com/img/og-aim.jpg";
@@ -166,14 +166,14 @@ export default function Services() {
 
               <FadeIn delay={0.12} className="mt-5">
                 <h1 className="text-[clamp(2.2rem,5.2vw,4.2rem)] leading-[0.95] font-extrabold tracking-tight text-white">
-                  Underground Utilities{" "}
-                  <span className="text-[var(--brand-orange)]">&amp; Directional Drilling</span>
+                  Commercial{" "}
+                  <span className="text-[var(--brand-orange)]">Construction</span>
                 </h1>
               </FadeIn>
 
               <FadeIn delay={0.18} className="mt-4">
                 <p className="text-white/72 font-semibold leading-relaxed">
-                  Water &amp; sewer • Force main • Ductbank • Directional drilling • Restoration
+                  Underground utilities • Directional drilling • Framing &amp; drywall • Ceilings • Tenant buildouts
                 </p>
               </FadeIn>
 
@@ -207,6 +207,7 @@ export default function Services() {
               { id: "utility", label: "Underground Utility" },
               { id: "drilling", label: "Directional Drilling" },
               { id: "restoration", label: "Restoration" },
+              { id: "interiors", label: "Building & Interiors" },
               { id: "equipment", label: "Equipment" },
             ].map((x) => (
               <button
@@ -221,37 +222,66 @@ export default function Services() {
           </div>
         </FloatSection>
 
-        {/* Service detail pages */}
-        <div className="pb-6">
-          <Container>
-            <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
-              {SERVICE_PAGES.filter((p) => p.side === "commercial").map((p) => (
-                <Link
-                  key={p.slug}
-                  to={p.path}
-                  className="group overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
-                >
-                  {p.cardImage && (
-                    <img
-                      src={p.cardImage}
-                      alt={`${p.nav} by AIM`}
-                      loading="lazy"
-                      decoding="async"
-                      className="h-28 sm:h-32 w-full object-cover group-hover:scale-[1.03] transition duration-500"
-                    />
-                  )}
-                  <div className="p-5">
-                    <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
-                    <div className="mt-3 text-lg font-extrabold text-[var(--ink)]">{p.nav}</div>
-                    <div className="mt-1 text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] group-hover:opacity-80">
-                      Learn more →
+        {/* Service detail pages, in two groups */}
+        {[
+          {
+            key: "underground",
+            id: "underground-services",
+            title: "Underground Utilities",
+            sub: "Water, sewer, force main, ductbank, directional drilling and restoration.",
+          },
+          {
+            key: "interiors",
+            id: "interiors",
+            title: "Building & Interiors",
+            sub: "Self-performed by AIM crews: framing, drywall, ceilings, painting, doors and tenant buildouts. Florida Certified Building Contractor CBC1263235.",
+          },
+        ].map((g) => (
+          <div key={g.key} id={g.id} className="pb-6 scroll-mt-28">
+            <Container>
+              <div className="mb-4 flex flex-wrap items-end justify-between gap-2 px-1">
+                <div>
+                  <h2 className="text-2xl md:text-3xl font-extrabold text-[var(--ink)]">{g.title}</h2>
+                  <p className="mt-1 text-sm font-semibold text-black/60 max-w-[70ch]">{g.sub}</p>
+                </div>
+              </div>
+              <div className="grid gap-4 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4">
+                {SERVICE_PAGES.filter((p) => p.side === "commercial" && p.group === g.key).map((p) => (
+                  <Link
+                    key={p.slug}
+                    to={p.path}
+                    className="group overflow-hidden rounded-[22px] border border-black/10 bg-white shadow-[0_14px_50px_rgba(0,0,0,0.10)] hover:border-[var(--brand-orange)] transition"
+                  >
+                    {p.cardImage && (
+                      <img
+                        src={p.cardImage}
+                        alt={`${p.nav} by AIM`}
+                        loading="lazy"
+                        decoding="async"
+                        className="h-28 sm:h-32 w-full object-cover group-hover:scale-[1.03] transition duration-500"
+                      />
+                    )}
+                    <div className="p-5">
+                      <div className="h-[4px] w-10 rounded-full bg-[var(--brand-orange)]" />
+                      <div className="mt-3 text-lg font-extrabold text-[var(--ink)]">{p.nav}</div>
+                      <div className="mt-1 text-sm font-extrabold uppercase tracking-wider text-[var(--brand-orange)] group-hover:opacity-80">
+                        Learn more →
+                      </div>
                     </div>
-                  </div>
-                </Link>
-              ))}
-            </div>
-          </Container>
-        </div>
+                  </Link>
+                ))}
+              </div>
+              {g.key === "interiors" && (
+                <p className="mt-4 px-1 text-sm font-semibold text-black/60">
+                  General contractors: licensing and insurance documents are available for prequalification.{" "}
+                  <a href="/contact" className="font-extrabold text-[var(--brand-orange)] hover:opacity-80">
+                    Request a quote or send plans →
+                  </a>
+                </p>
+              )}
+            </Container>
+          </div>
+        ))}
 
         {/* Split grid: LEFT services, RIGHT equipment */}
         <div className="pb-6">
