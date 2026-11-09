@@ -11,6 +11,9 @@
 export const SERVICE_AREA_COMMERCIAL =
   "Based in Miami Lakes and working across Florida, with directional drilling jobs from the Panhandle, Orlando, Tampa and Fort Myers down through Palm Beach, Broward, Miami-Dade and the Florida Keys, plus completed projects in Virginia, North Carolina, South Carolina and Georgia.";
 
+export const SERVICE_AREA_INTERIORS =
+  "Based in Miami Lakes and serving commercial building projects across South Florida.";
+
 export const SERVICE_AREA_RESIDENTIAL =
   "Based in Miami Lakes and serving homeowners across South Florida.";
 
@@ -18,6 +21,7 @@ export const SERVICE_PAGES = [
   /* ---------------- COMMERCIAL ---------------- */
   {
     slug: "directional-drilling",
+    group: "underground",
     projects: ["savannah-fiber"],
     side: "commercial",
     path: "/services/directional-drilling",
@@ -62,6 +66,7 @@ export const SERVICE_PAGES = [
   },
   {
     slug: "water-sewer",
+    group: "underground",
     projects: ["miami-shores-force-main", "port-everglades-2025"],
     side: "commercial",
     path: "/services/water-sewer",
@@ -106,6 +111,7 @@ export const SERVICE_PAGES = [
   },
   {
     slug: "ductbank",
+    group: "underground",
     projects: ["port-of-miami", "virginia-key-phase3", "ft-lauderdale-police", "fpl-turkey-point", "miami-beach-ductbank", "team-fishel-fpl"],
     side: "commercial",
     path: "/services/ductbank",
@@ -150,6 +156,7 @@ export const SERVICE_PAGES = [
   },
   {
     slug: "restoration",
+    group: "underground",
     projects: ["port-everglades-2025"],
     side: "commercial",
     path: "/services/restoration",
@@ -182,6 +189,281 @@ export const SERVICE_PAGES = [
       {
         q: "Where does AIM work?",
         a: SERVICE_AREA_COMMERCIAL,
+      },
+    ],
+  },
+
+  /* ---------------- COMMERCIAL: BUILDING & INTERIORS ---------------- */
+  {
+    slug: "tenant-buildouts",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/tenant-buildouts",
+    nav: "Tenant Buildouts & Renovations",
+    title: "Commercial Tenant Buildouts & Renovations in South Florida",
+    metaTitle: "Tenant Buildouts & Commercial Renovations in South Florida | AIM Construction",
+    metaDescription:
+      "Commercial tenant buildouts and interior renovations: demolition, framing, drywall, ceilings, doors and paint, self-performed by AIM crews. Florida Certified Building Contractor based in Miami Lakes.",
+    image: "/img/stock-int-buildout-1600.webp",
+    cardImage: "/img/stock-int-buildout-800.webp",
+    imageAlt: "Office renovation area with a ladder, exposed wiring and large windows (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
+    kicker: "Commercial",
+    intro:
+      "AIM Construction Management builds out and renovates commercial interiors for owners, tenants and general contractors: offices, retail and other commercial spaces. Our own crews handle the framing, drywall, ceilings, doors and paint, and we coordinate the licensed trades and permits.",
+    bullets: [
+      "Interior demolition",
+      "Metal stud framing and drywall",
+      "Acoustical ceilings",
+      "Doors, frames and hardware",
+      "Commercial painting",
+      "Permits and inspections, with licensed MEP trades coordinated",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you handle the whole buildout?",
+        a: "Yes. We can run the buildout as the contractor, self-performing the interior trades and coordinating licensed electrical, plumbing and HVAC contractors under permit.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
+      },
+    ],
+  },
+  {
+    slug: "framing",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/framing",
+    nav: "Metal Stud Framing",
+    title: "Commercial Metal Stud Framing in South Florida",
+    metaTitle: "Commercial Metal Stud Framing in South Florida | AIM Construction",
+    metaDescription:
+      "Metal stud framing for commercial interiors: partitions, soffits, bulkheads and blocking, self-performed by AIM crews. Florida Certified Building Contractor based in Miami Lakes.",
+    image: "/img/stock-int-framing-1600.webp",
+    cardImage: "/img/stock-int-framing-800.webp",
+    imageAlt: "Metal stud partition walls framed inside an open office floor (illustration)",
+    imageCredit: "Service illustration",
+    kicker: "Commercial",
+    intro:
+      "AIM frames commercial interiors with light-gauge metal studs: new partition walls, soffits and bulkheads, furring and in-wall blocking, laid out to the drawings and ready for drywall.",
+    bullets: [
+      "Interior partition walls",
+      "Soffits and bulkheads",
+      "Furring and chases",
+      "In-wall blocking for fixtures and equipment",
+      "Layout to drawings",
+      "Framing for doors and openings",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you work as a subcontractor to general contractors?",
+        a: "Yes. We work as a subcontractor to general contractors and directly for building owners and tenants. Send the drawings and scope and we will review and price it.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
+      },
+    ],
+  },
+  {
+    slug: "drywall",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/drywall",
+    nav: "Drywall & Finishes",
+    title: "Commercial Drywall & Finishing in South Florida",
+    metaTitle: "Commercial Drywall Installation & Finishing in South Florida | AIM Construction",
+    metaDescription:
+      "Commercial drywall hanging, taping and finishing, patching and repairs for offices, retail and commercial interiors. Self-performed by AIM crews based in Miami Lakes, FL.",
+    image: "/img/stock-int-drywall-1600.webp",
+    cardImage: "/img/stock-int-drywall-800.webp",
+    imageAlt: "Taped drywall seams across walls and ceiling (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
+    kicker: "Commercial",
+    intro:
+      "AIM hangs, tapes and finishes drywall for commercial interiors, from new buildouts to repairs and patching in occupied spaces.",
+    bullets: [
+      "Drywall hanging",
+      "Taping and finishing",
+      "Patching and repairs",
+      "Corner bead and trim",
+      "Ready-for-paint surfaces",
+      "Coordination with framing, ceilings and paint",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you work as a subcontractor to general contractors?",
+        a: "Yes. We work as a subcontractor to general contractors and directly for building owners and tenants. Send the drawings and scope and we will review and price it.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
+      },
+    ],
+  },
+  {
+    slug: "ceilings",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/ceilings",
+    nav: "Acoustical Ceilings",
+    title: "Commercial Acoustical Ceilings in South Florida",
+    metaTitle: "Acoustical Ceiling Installation in South Florida | AIM Construction",
+    metaDescription:
+      "Suspended acoustical ceiling grid and tile installation and replacement for commercial spaces, plus drywall ceilings and soffits. Self-performed by AIM crews, Miami Lakes, FL.",
+    image: "/img/stock-int-ceilings-1600.webp",
+    cardImage: "/img/stock-int-ceilings-800.webp",
+    imageAlt: "Suspended ceiling tile grid with recessed light panels in an office (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
+    kicker: "Commercial",
+    intro:
+      "AIM installs and replaces suspended acoustical ceilings for offices, retail and other commercial spaces: grid, tile and the drywall ceilings and soffits around them.",
+    bullets: [
+      "Suspended ceiling grid",
+      "Acoustical ceiling tile",
+      "Tile replacement",
+      "Drywall ceilings and soffits",
+      "Coordination with lighting and HVAC trades",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you work as a subcontractor to general contractors?",
+        a: "Yes. We work as a subcontractor to general contractors and directly for building owners and tenants. Send the drawings and scope and we will review and price it.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
+      },
+    ],
+  },
+  {
+    slug: "commercial-painting",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/commercial-painting",
+    nav: "Commercial Painting",
+    title: "Commercial Painting in South Florida",
+    metaTitle: "Commercial Interior & Exterior Painting in South Florida | AIM Construction",
+    metaDescription:
+      "Interior and exterior commercial painting for offices, retail and commercial buildings, including buildouts and repaints. Self-performed by AIM crews based in Miami Lakes, FL.",
+    image: "/img/stock-int-painting-1600.webp",
+    cardImage: "/img/stock-int-painting-800.webp",
+    imageAlt: "Painter rolling white paint on an interior wall of an empty office (illustration)",
+    imageCredit: "Service illustration",
+    kicker: "Commercial",
+    intro:
+      "AIM paints commercial interiors and exteriors, as part of a buildout or on its own: walls, ceilings, doors and frames, and building exteriors.",
+    bullets: [
+      "Interior walls and ceilings",
+      "Doors and frames",
+      "Exterior painting",
+      "Repaints in occupied spaces",
+      "Painting as part of a buildout",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you work as a subcontractor to general contractors?",
+        a: "Yes. We work as a subcontractor to general contractors and directly for building owners and tenants. Send the drawings and scope and we will review and price it.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
+      },
+    ],
+  },
+  {
+    slug: "doors-hardware",
+    group: "interiors",
+    side: "commercial",
+    path: "/services/doors-hardware",
+    nav: "Doors, Frames & Hardware",
+    title: "Commercial Doors, Frames & Hardware in South Florida",
+    metaTitle: "Commercial Door, Frame & Hardware Installation in South Florida | AIM Construction",
+    metaDescription:
+      "Installation of commercial doors, hollow metal frames and door hardware for buildouts and renovations. Self-performed by AIM crews based in Miami Lakes, FL.",
+    image: "/img/stock-int-doors-1600.webp",
+    cardImage: "/img/stock-int-doors-800.webp",
+    imageAlt: "Metal pull handle on a commercial door beside wired glass (stock photo)",
+    imageCredit: "Service illustration \u2013 stock photography",
+    kicker: "Commercial",
+    intro:
+      "AIM installs commercial doors, hollow metal frames and hardware as part of interior buildouts and renovations.",
+    bullets: [
+      "Hollow metal frames",
+      "Wood and metal doors",
+      "Door hardware installation",
+      "Door replacement in renovations",
+      "Coordination with framing and drywall",
+    ],
+    why: [
+      "Self-performed by AIM crews",
+      "Florida Certified Building Contractor (CBC1263235)",
+      "Works as a subcontractor to GCs or direct for owners",
+      "Licensing and insurance documents provided for prequalification",
+    ],
+    faqs: [
+      {
+        q: "Do you work as a subcontractor to general contractors?",
+        a: "Yes. We work as a subcontractor to general contractors and directly for building owners and tenants. Send the drawings and scope and we will review and price it.",
+      },
+      {
+        q: "Do you self-perform the work?",
+        a: "Yes. This work is performed by AIM's own crews.",
+      },
+      {
+        q: "Where do you work?",
+        a: SERVICE_AREA_INTERIORS,
       },
     ],
   },

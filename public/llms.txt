@@ -1,6 +1,6 @@
 # AIM Construction Management
 
-> Florida-certified underground utility and building contractor based in Miami Lakes, FL. Commercial underground utility work (water main, sewer, force main, ductbank, horizontal directional drilling 2"–24", concrete/asphalt restoration) and residential remodeling (kitchens, bathrooms, roofing, whole-home remodels) in South Florida.
+> Florida-certified underground utility and building contractor based in Miami Lakes, FL. Commercial underground utility work (water main, sewer, force main, ductbank, horizontal directional drilling 2"–24", concrete/asphalt restoration), commercial building and interiors (framing, drywall, ceilings, painting, doors, tenant buildouts) and residential remodeling (kitchens, bathrooms, roofing, whole-home remodels) in South Florida.
 
 - Legal name: AIM Construction Management Inc.
 - Office: 7900 Oak Lane, Suite 479, Miami Lakes, FL 33016
@@ -19,6 +19,15 @@
 - [Electrical and telecom ductbank](https://aimconstructionmgt.com/services/ductbank): concrete-encased ductbank, conduit, utility structures, cable pulling
 - [Concrete and asphalt restoration](https://aimconstructionmgt.com/services/restoration): restoration after trenching and boring
 - [All commercial services and equipment](https://aimconstructionmgt.com/services)
+
+## Commercial building & interiors (self-performed by AIM crews, South Florida)
+
+- [Tenant buildouts and commercial renovations](https://aimconstructionmgt.com/services/tenant-buildouts)
+- [Metal stud framing](https://aimconstructionmgt.com/services/framing)
+- [Commercial drywall and finishes](https://aimconstructionmgt.com/services/drywall)
+- [Acoustical ceilings](https://aimconstructionmgt.com/services/ceilings)
+- [Commercial painting](https://aimconstructionmgt.com/services/commercial-painting)
+- [Doors, frames and hardware](https://aimconstructionmgt.com/services/doors-hardware)
 
 ## Residential services
 

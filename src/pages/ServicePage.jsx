@@ -86,9 +86,11 @@ function structuredData(page) {
       url,
       provider: { "@id": SITE + "/#business" },
       areaServed:
-        page.side === "commercial"
-          ? ["Florida"]
-          : ["Miami Lakes, FL", "South Florida"],
+        page.group === "interiors"
+          ? ["South Florida"]
+          : page.side === "commercial"
+            ? ["Florida"]
+            : ["Miami Lakes, FL", "South Florida"],
     },
     {
       "@context": "https://schema.org",
@@ -146,7 +148,10 @@ export default function ServicePage() {
   const projects = (page.projects || [])
     .map((id) => PROJECTS.find((pr) => pr.id === id))
     .filter(Boolean);
-  const siblings = SERVICE_PAGES.filter((p) => p.side === page.side && p.slug !== page.slug);
+  // related services: same group (underground / interiors) on commercial, same side on residential
+  const siblings = SERVICE_PAGES.filter(
+    (p) => p.side === page.side && (page.group ? p.group === page.group : true) && p.slug !== page.slug
+  );
   const cta = residential
     ? { href: "/residential#estimate", label: "Request an estimate" }
     : { href: "/contact", label: "Request a quote" };
@@ -169,10 +174,15 @@ export default function ServicePage() {
 
       {/* HERO */}
       <header className="hero-round relative min-h-[64svh] md:min-h-[64vh] bg-black overflow-hidden">
-        <div
-          className="absolute inset-0 bg-center bg-cover"
-          style={{ backgroundImage: `url('${page.image}')` }}
-        />
+        {page.image ? (
+          <div
+            className="absolute inset-0 bg-center bg-cover"
+            style={{ backgroundImage: `url('${page.image}')` }}
+          />
+        ) : (
+          /* no photo yet: subtle blueprint grid instead of a stock image */
+          <div className="absolute inset-0 bg-[#1F1E1D] [background-image:linear-gradient(rgba(255,255,255,0.06)_1px,transparent_1px),linear-gradient(90deg,rgba(255,255,255,0.06)_1px,transparent_1px)] [background-size:44px_44px]" />
+        )}
         <div className={`absolute inset-0 ${page.side === "residential" ? "bg-black/45" : "bg-black/60"}`} />
         <div className="absolute inset-0 [background:radial-gradient(900px_520px_at_18%_18%,rgba(233,151,19,0.28),transparent_60%)]" />
         <div className="absolute inset-0 [background:radial-gradient(1200px_700px_at_50%_35%,rgba(0,0,0,0)_0%,rgba(0,0,0,0.62)_70%,rgba(0,0,0,0.88)_100%)]" />

@@ -20,3 +20,29 @@ Used on: all nine service cards on the Residential page, and the hero of
 Pexels license checked October 28, 2026. The painting photo shows a stock model, not AIM staff;
 HVAC shows a ductless mini-split and electrical shows finished lighting, as service examples only.
 Replace with real AIM project photos as they become available.
+
+## Commercial Building & Interiors stock photos (added November 9, 2026)
+
+Labeled on the site as "Service illustration – stock photography". These are not AIM projects:
+never use them in Our Projects, case studies or before/after galleries. Licenses checked November 9, 2026.
+
+| Site file | Photographer | Source | License | Crop |
+|---|---|---|---|---|
+| public/img/stock-int-buildout-1600.webp, -800.webp | Shuaizhi Tian | [Pexels 10346959](https://www.pexels.com/photo/repair-in-modern-building-indoors-10346959/) | [Pexels License](https://www.pexels.com/license/) | source 0,650,3024,2162 |
+| public/img/stock-int-drywall-1600.webp, -800.webp | Brian Wangenheim | [Unsplash wTHQ-wMorp0](https://unsplash.com/photos/a-large-room-with-a-lot-of-paint-on-the-walls-wTHQ-wMorp0) | [Unsplash License](https://unsplash.com/license) | source 0,600,4400,2800 (graffiti and branded containers excluded) |
+| public/img/stock-int-ceilings-1600.webp, -800.webp | Valentin Ivantsov | [Pexels 40325299](https://www.pexels.com/photo/spacious-modern-office-interior-with-glass-partitions-40325299/) | [Pexels License](https://www.pexels.com/license/) | source 0,0,4394,2197 |
+| public/img/stock-int-doors-1600.webp, -800.webp | Nik (@helloimnik) | [Unsplash uEe-bkOMOfE](https://unsplash.com/photos/a-door-handle-with-a-push-sign-on-it-uEe-bkOMOfE) | [Unsplash License](https://unsplash.com/license) | source 0,3500,3630,5315 |
+
+Used on: the Building & Interiors cards on /services and the heroes of /services/tenant-buildouts,
+/services/drywall, /services/ceilings and /services/doors-hardware. The drywall setting is inferred
+(industrial/workshop), not stated by the photographer. The door photo illustrates hardware only; it
+does not show a verified hollow metal frame or fire rating.
+
+Held, not used: metal stud framing (Strange Happenings, Pexels 35496414: commercial setting
+unconfirmed) and shopfront painting (Anna Mould, Unsplash aUN_OnV3B90: grainy, crop loses roller).
+/services/framing and /services/commercial-painting keep the blueprint-grid hero until a better photo
+or a real AIM job photo is available.
+
+Framing and painting (added November 9, 2026): public/img/stock-int-framing-* and stock-int-painting-* come from
+images Anthony supplied (no photographer, source or license recorded; no source metadata in the file).
+Labeled "Service illustration" only. Record its source here if known; replace with a real AIM photo when available.
