@@ -250,7 +250,10 @@ export const SERVICE_PAGES = [
     metaTitle: "Commercial Metal Stud Framing in South Florida | AIM Construction",
     metaDescription:
       "Metal stud framing for commercial interiors: partitions, soffits, bulkheads and blocking, self-performed by AIM crews. Florida Certified Building Contractor based in Miami Lakes.",
-    image: null,
+    image: "/img/stock-int-framing-1600.webp",
+    cardImage: "/img/stock-int-framing-800.webp",
+    imageAlt: "Metal stud partition walls framed inside an open office floor (illustration)",
+    imageCredit: "Service illustration",
     kicker: "Commercial",
     intro:
       "AIM frames commercial interiors with light-gauge metal studs: new partition walls, soffits and bulkheads, furring and in-wall blocking, laid out to the drawings and ready for drywall.",
